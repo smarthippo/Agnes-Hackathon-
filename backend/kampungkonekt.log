@@ -1,0 +1,183 @@
+2026-06-15 10:54:56,996 [INFO] memory.storage: Memory storage initialized at data\kampungkonekt.db
+2026-06-15 10:54:57,128 [INFO] KampungKonekt: KampungKonekt initialized for senior: Grandma Lim (senior_001)
+2026-06-15 10:54:57,128 [INFO] KampungKonekt: ============================================================
+2026-06-15 10:54:57,128 [INFO] KampungKonekt: SIMULATING ONE WEEK OF INTERACTIONS
+2026-06-15 10:54:57,128 [INFO] KampungKonekt: ============================================================
+2026-06-15 10:54:57,128 [INFO] KampungKonekt: Day 7 ago: 'Today I went to the market and bought some chicken rice. Ver' [sentiment: positive]
+2026-06-15 10:54:57,128 [INFO] KampungKonekt: Processing voice input for senior_001: 'Today I went to the market and bought some chicken rice. Very nice lah!'
+2026-06-15 10:54:57,149 [WARNING] api.agnes_client: Agnes API call failed ([Errno 11001] getaddrinfo failed). Falling back to local processing.
+2026-06-15 10:54:57,158 [INFO] api.agnes_client: Local fallback: sentiment=neutral concerns=[] lang=en
+2026-06-15 10:54:57,158 [INFO] KampungKonekt: Agnes processed: sentiment=neutral concerns=[] lang=en
+2026-06-15 10:54:57,160 [INFO] memory.storage: Inserted memory entry #1 for senior_001
+2026-06-15 10:54:57,161 [ERROR] analytics.detector: Rule 'Food Insecurity Pattern' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,161 [ERROR] analytics.detector: Rule 'Loneliness Pattern' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,161 [ERROR] analytics.detector: Rule 'Physical Pain Mention' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,161 [ERROR] analytics.detector: Rule 'Depression Indicators' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,163 [INFO] KampungKonekt: Day 6 ago: 'My daughter called me today. So happy! She said she will vis' [sentiment: positive]
+2026-06-15 10:54:57,163 [INFO] KampungKonekt: Processing voice input for senior_001: 'My daughter called me today. So happy! She said she will visit next week.'
+2026-06-15 10:54:57,165 [WARNING] api.agnes_client: Agnes API call failed ([Errno 11001] getaddrinfo failed). Falling back to local processing.
+2026-06-15 10:54:57,165 [INFO] api.agnes_client: Local fallback: sentiment=positive concerns=[] lang=en
+2026-06-15 10:54:57,165 [INFO] KampungKonekt: Agnes processed: sentiment=positive concerns=[] lang=en
+2026-06-15 10:54:57,165 [INFO] memory.storage: Inserted memory entry #2 for senior_001
+2026-06-15 10:54:57,165 [ERROR] analytics.detector: Rule 'Food Insecurity Pattern' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,165 [ERROR] analytics.detector: Rule 'Loneliness Pattern' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,168 [ERROR] analytics.detector: Rule 'Physical Pain Mention' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,168 [ERROR] analytics.detector: Rule 'Depression Indicators' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,168 [INFO] KampungKonekt: Day 5 ago: 'Had noodles for lunch alone. The neighbour went to market wi' [sentiment: neutral]
+2026-06-15 10:54:57,168 [INFO] KampungKonekt: Processing voice input for senior_001: 'Had noodles for lunch alone. The neighbour went to market without me.'
+2026-06-15 10:54:57,168 [WARNING] api.agnes_client: Agnes API call failed ([Errno 11001] getaddrinfo failed). Falling back to local processing.
+2026-06-15 10:54:57,168 [INFO] api.agnes_client: Local fallback: sentiment=negative concerns=['loneliness'] lang=en
+2026-06-15 10:54:57,168 [INFO] KampungKonekt: Agnes processed: sentiment=negative concerns=['loneliness'] lang=en
+2026-06-15 10:54:57,168 [INFO] memory.storage: Inserted memory entry #3 for senior_001
+2026-06-15 10:54:57,168 [ERROR] analytics.detector: Rule 'Food Insecurity Pattern' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,168 [ERROR] analytics.detector: Rule 'Loneliness Pattern' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,168 [ERROR] analytics.detector: Rule 'Physical Pain Mention' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,168 [ERROR] analytics.detector: Rule 'Depression Indicators' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,174 [INFO] KampungKonekt: Day 4 ago: 'Bo lang cai gia. Nobody cooks for me today. My stomach is hu' [sentiment: negative]
+2026-06-15 10:54:57,174 [INFO] KampungKonekt: Processing voice input for senior_001: 'Bo lang cai gia. Nobody cooks for me today. My stomach is hungry.'
+2026-06-15 10:54:57,174 [WARNING] api.agnes_client: Agnes API call failed ([Errno 11001] getaddrinfo failed). Falling back to local processing.
+2026-06-15 10:54:57,174 [INFO] api.agnes_client: Local fallback: sentiment=negative concerns=['loneliness', 'food_insecurity'] lang=hak
+2026-06-15 10:54:57,174 [INFO] KampungKonekt: Agnes processed: sentiment=negative concerns=['loneliness', 'food_insecurity'] lang=hak
+2026-06-15 10:54:57,176 [INFO] memory.storage: Inserted memory entry #4 for senior_001
+2026-06-15 10:54:57,176 [ERROR] analytics.detector: Rule 'Food Insecurity Pattern' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,176 [ERROR] analytics.detector: Rule 'Loneliness Pattern' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,176 [ERROR] analytics.detector: Rule 'Physical Pain Mention' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,178 [ERROR] analytics.detector: Rule 'Depression Indicators' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,179 [INFO] KampungKonekt: Day 3 ago: 'Send li sia. Nobody is here. I sit alone in the room all day' [sentiment: negative]
+2026-06-15 10:54:57,179 [INFO] KampungKonekt: Processing voice input for senior_001: 'Send li sia. Nobody is here. I sit alone in the room all day.'
+2026-06-15 10:54:57,179 [WARNING] api.agnes_client: Agnes API call failed ([Errno 11001] getaddrinfo failed). Falling back to local processing.
+2026-06-15 10:54:57,179 [INFO] api.agnes_client: Local fallback: sentiment=negative concerns=['loneliness'] lang=en
+2026-06-15 10:54:57,182 [INFO] KampungKonekt: Agnes processed: sentiment=negative concerns=['loneliness'] lang=en
+2026-06-15 10:54:57,183 [INFO] memory.storage: Inserted memory entry #5 for senior_001
+2026-06-15 10:54:57,183 [ERROR] analytics.detector: Rule 'Food Insecurity Pattern' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,184 [ERROR] analytics.detector: Rule 'Loneliness Pattern' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,184 [ERROR] analytics.detector: Rule 'Physical Pain Mention' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,184 [ERROR] analytics.detector: Rule 'Depression Indicators' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,184 [INFO] KampungKonekt: Day 2 ago: 'My head hurts so much. Sakit kepala. Cannot sleep well also.' [sentiment: negative]
+2026-06-15 10:54:57,184 [INFO] KampungKonekt: Processing voice input for senior_001: 'My head hurts so much. Sakit kepala. Cannot sleep well also.'
+2026-06-15 10:54:57,184 [WARNING] api.agnes_client: Agnes API call failed ([Errno 11001] getaddrinfo failed). Falling back to local processing.
+2026-06-15 10:54:57,184 [INFO] api.agnes_client: Local fallback: sentiment=negative concerns=['physical_pain', 'medication_issues'] lang=ms
+2026-06-15 10:54:57,184 [INFO] KampungKonekt: Agnes processed: sentiment=negative concerns=['physical_pain', 'medication_issues'] lang=ms
+2026-06-15 10:54:57,189 [INFO] memory.storage: Inserted memory entry #6 for senior_001
+2026-06-15 10:54:57,190 [ERROR] analytics.detector: Rule 'Food Insecurity Pattern' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,190 [ERROR] analytics.detector: Rule 'Loneliness Pattern' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,190 [ERROR] analytics.detector: Rule 'Physical Pain Mention' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,190 [ERROR] analytics.detector: Rule 'Depression Indicators' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,190 [INFO] KampungKonekt: Day 1 ago: 'Bo u lang tsai. No one visits me. I feel so lonely. Want die' [sentiment: negative]
+2026-06-15 10:54:57,190 [INFO] KampungKonekt: Processing voice input for senior_001: 'Bo u lang tsai. No one visits me. I feel so lonely. Want die already.'
+2026-06-15 10:54:57,192 [WARNING] api.agnes_client: Agnes API call failed ([Errno 11001] getaddrinfo failed). Falling back to local processing.
+2026-06-15 10:54:57,192 [INFO] api.agnes_client: Local fallback: sentiment=negative concerns=['loneliness', 'depression_signs'] lang=hak
+2026-06-15 10:54:57,192 [INFO] KampungKonekt: Agnes processed: sentiment=negative concerns=['loneliness', 'depression_signs'] lang=hak
+2026-06-15 10:54:57,192 [INFO] memory.storage: Inserted memory entry #7 for senior_001
+2026-06-15 10:54:57,192 [ERROR] analytics.detector: Rule 'Food Insecurity Pattern' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,192 [ERROR] analytics.detector: Rule 'Loneliness Pattern' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,192 [ERROR] analytics.detector: Rule 'Physical Pain Mention' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,192 [ERROR] analytics.detector: Rule 'Depression Indicators' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,192 [INFO] KampungKonekt: ============================================================
+2026-06-15 10:54:57,192 [INFO] KampungKonekt: SIMULATION COMPLETE — Running welfare check...
+2026-06-15 10:54:57,201 [INFO] KampungKonekt: ============================================================
+2026-06-15 10:54:57,201 [INFO] KampungKonekt: Running full welfare check for senior_001
+2026-06-15 10:54:57,202 [ERROR] analytics.detector: Rule 'Consecutive Negative Sentiment' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,202 [ERROR] analytics.detector: Rule 'Food Insecurity Pattern' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,202 [ERROR] analytics.detector: Rule 'Loneliness Pattern' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,202 [ERROR] analytics.detector: Rule 'Physical Pain Mention' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,202 [ERROR] analytics.detector: Rule 'Depression Indicators' failed for senior_001: near "AND": syntax error
+2026-06-15 10:54:57,202 [INFO] reports.generator: No red flag or sufficient yellow flags for senior_001, skipping report.
+2026-06-15 10:54:57,202 [INFO] KampungKonekt: Welfare check complete: {'senior_id': 'senior_001', 'risk_level': 'green', 'risk_description': 'All clear — no welfare flags detected.', 'flags_triggered': 0, 'total_flags_all_time': 0, 'recent_interactions': 7}
+2026-06-15 10:54:57,202 [INFO] KampungKonekt: Welfare check result: {'senior_id': 'senior_001', 'risk_level': 'green', 'risk_description': 'All clear — no welfare flags detected.', 'flags_triggered': 0, 'total_flags_all_time': 0, 'recent_interactions': 7}
+2026-06-15 10:54:57,207 [INFO] memory.storage: Memory storage connection closed.
+2026-06-15 10:54:57,207 [INFO] KampungKonekt: Orchestrator shut down cleanly.
+2026-06-15 10:56:31,326 [INFO] memory.storage: Memory storage initialized at data\kampungkonekt.db
+2026-06-15 10:56:31,424 [INFO] KampungKonekt: KampungKonekt initialized for senior: Grandma Lim (senior_001)
+2026-06-15 10:56:31,434 [INFO] memory.storage: Memory storage connection closed.
+2026-06-15 10:56:31,434 [INFO] KampungKonekt: Orchestrator shut down cleanly.
+2026-06-15 10:56:40,107 [INFO] memory.storage: Memory storage initialized at data\kampungkonekt.db
+2026-06-15 10:56:40,260 [INFO] KampungKonekt: KampungKonekt initialized for senior: Grandma Lim (senior_001)
+2026-06-15 10:56:40,261 [INFO] memory.storage: Memory storage connection closed.
+2026-06-15 10:56:40,261 [INFO] KampungKonekt: Orchestrator shut down cleanly.
+2026-06-15 11:02:19,670 [INFO] memory.storage: Memory storage initialized at data\kampungkonekt.db
+2026-06-15 11:02:19,921 [INFO] KampungKonekt: KampungKonekt initialized for senior: Grandma Lim (senior_001)
+2026-06-15 11:02:19,921 [INFO] KampungKonekt: ============================================================
+2026-06-15 11:02:19,925 [INFO] KampungKonekt: SIMULATING ONE WEEK OF INTERACTIONS
+2026-06-15 11:02:19,925 [INFO] KampungKonekt: ============================================================
+2026-06-15 11:02:19,925 [INFO] KampungKonekt: Day 7 ago: 'Today I went to the market and bought some chicken rice. Ver' [sentiment: positive]
+2026-06-15 11:02:19,925 [INFO] KampungKonekt: Processing voice input for senior_001: 'Today I went to the market and bought some chicken rice. Very nice lah!'
+2026-06-15 11:02:19,945 [WARNING] api.agnes_client: Agnes API call failed ([Errno 11001] getaddrinfo failed). Falling back to local processing.
+2026-06-15 11:02:19,945 [INFO] api.agnes_client: Local fallback: sentiment=neutral concerns=[] lang=en
+2026-06-15 11:02:19,945 [INFO] KampungKonekt: Agnes processed: sentiment=neutral concerns=[] lang=en
+2026-06-15 11:02:19,953 [INFO] memory.storage: Inserted memory entry #1 for senior_001
+2026-06-15 11:02:19,955 [INFO] KampungKonekt: Day 6 ago: 'My daughter called me today. So happy! She said she will vis' [sentiment: positive]
+2026-06-15 11:02:19,955 [INFO] KampungKonekt: Processing voice input for senior_001: 'My daughter called me today. So happy! She said she will visit next week.'
+2026-06-15 11:02:19,955 [WARNING] api.agnes_client: Agnes API call failed ([Errno 11001] getaddrinfo failed). Falling back to local processing.
+2026-06-15 11:02:19,961 [INFO] api.agnes_client: Local fallback: sentiment=positive concerns=[] lang=en
+2026-06-15 11:02:19,961 [INFO] KampungKonekt: Agnes processed: sentiment=positive concerns=[] lang=en
+2026-06-15 11:02:19,961 [INFO] memory.storage: Inserted memory entry #2 for senior_001
+2026-06-15 11:02:19,965 [INFO] KampungKonekt: Day 5 ago: 'Had noodles for lunch alone. The neighbour went to market wi' [sentiment: neutral]
+2026-06-15 11:02:19,967 [INFO] KampungKonekt: Processing voice input for senior_001: 'Had noodles for lunch alone. The neighbour went to market without me.'
+2026-06-15 11:02:19,967 [WARNING] api.agnes_client: Agnes API call failed ([Errno 11001] getaddrinfo failed). Falling back to local processing.
+2026-06-15 11:02:19,967 [INFO] api.agnes_client: Local fallback: sentiment=negative concerns=['loneliness'] lang=en
+2026-06-15 11:02:19,967 [INFO] KampungKonekt: Agnes processed: sentiment=negative concerns=['loneliness'] lang=en
+2026-06-15 11:02:19,969 [INFO] memory.storage: Inserted memory entry #3 for senior_001
+2026-06-15 11:02:19,972 [INFO] KampungKonekt: Day 4 ago: 'Bo lang cai gia. Nobody cooks for me today. My stomach is hu' [sentiment: negative]
+2026-06-15 11:02:19,972 [INFO] KampungKonekt: Processing voice input for senior_001: 'Bo lang cai gia. Nobody cooks for me today. My stomach is hungry.'
+2026-06-15 11:02:19,978 [WARNING] api.agnes_client: Agnes API call failed ([Errno 11001] getaddrinfo failed). Falling back to local processing.
+2026-06-15 11:02:19,978 [INFO] api.agnes_client: Local fallback: sentiment=negative concerns=['loneliness', 'food_insecurity'] lang=hak
+2026-06-15 11:02:19,978 [INFO] KampungKonekt: Agnes processed: sentiment=negative concerns=['loneliness', 'food_insecurity'] lang=hak
+2026-06-15 11:02:19,978 [INFO] memory.storage: Inserted memory entry #4 for senior_001
+2026-06-15 11:02:19,978 [INFO] KampungKonekt: Day 3 ago: 'Send li sia. Nobody is here. I sit alone in the room all day' [sentiment: negative]
+2026-06-15 11:02:19,978 [INFO] KampungKonekt: Processing voice input for senior_001: 'Send li sia. Nobody is here. I sit alone in the room all day.'
+2026-06-15 11:02:19,978 [WARNING] api.agnes_client: Agnes API call failed ([Errno 11001] getaddrinfo failed). Falling back to local processing.
+2026-06-15 11:02:19,978 [INFO] api.agnes_client: Local fallback: sentiment=negative concerns=['loneliness'] lang=en
+2026-06-15 11:02:19,978 [INFO] KampungKonekt: Agnes processed: sentiment=negative concerns=['loneliness'] lang=en
+2026-06-15 11:02:19,978 [INFO] memory.storage: Inserted memory entry #5 for senior_001
+2026-06-15 11:02:19,986 [INFO] analytics.detector: Rule 'Loneliness Pattern' triggered 1 flag(s) for senior_001
+2026-06-15 11:02:19,988 [INFO] memory.storage: Inserted welfare flag #1 [yellow] for senior_001
+2026-06-15 11:02:19,990 [WARNING] KampungKonekt: 1 welfare flag(s) triggered for senior_001
+2026-06-15 11:02:19,990 [INFO] KampungKonekt: Day 2 ago: 'My head hurts so much. Sakit kepala. Cannot sleep well also.' [sentiment: negative]
+2026-06-15 11:02:19,990 [INFO] KampungKonekt: Processing voice input for senior_001: 'My head hurts so much. Sakit kepala. Cannot sleep well also.'
+2026-06-15 11:02:19,994 [WARNING] api.agnes_client: Agnes API call failed ([Errno 11001] getaddrinfo failed). Falling back to local processing.
+2026-06-15 11:02:19,994 [INFO] api.agnes_client: Local fallback: sentiment=negative concerns=['physical_pain', 'medication_issues'] lang=ms
+2026-06-15 11:02:19,994 [INFO] KampungKonekt: Agnes processed: sentiment=negative concerns=['physical_pain', 'medication_issues'] lang=ms
+2026-06-15 11:02:19,996 [INFO] memory.storage: Inserted memory entry #6 for senior_001
+2026-06-15 11:02:19,997 [INFO] analytics.detector: Rule 'Loneliness Pattern' triggered 1 flag(s) for senior_001
+2026-06-15 11:02:19,997 [INFO] analytics.detector: Rule 'Physical Pain Mention' triggered 1 flag(s) for senior_001
+2026-06-15 11:02:20,000 [INFO] memory.storage: Inserted welfare flag #2 [yellow] for senior_001
+2026-06-15 11:02:20,002 [INFO] memory.storage: Inserted welfare flag #3 [yellow] for senior_001
+2026-06-15 11:02:20,004 [WARNING] KampungKonekt: 2 welfare flag(s) triggered for senior_001
+2026-06-15 11:02:20,006 [INFO] KampungKonekt: Day 1 ago: 'Bo u lang tsai. No one visits me. I feel so lonely. Want die' [sentiment: negative]
+2026-06-15 11:02:20,006 [INFO] KampungKonekt: Processing voice input for senior_001: 'Bo u lang tsai. No one visits me. I feel so lonely. Want die already.'
+2026-06-15 11:02:20,008 [WARNING] api.agnes_client: Agnes API call failed ([Errno 11001] getaddrinfo failed). Falling back to local processing.
+2026-06-15 11:02:20,008 [INFO] api.agnes_client: Local fallback: sentiment=negative concerns=['loneliness', 'depression_signs'] lang=hak
+2026-06-15 11:02:20,008 [INFO] KampungKonekt: Agnes processed: sentiment=negative concerns=['loneliness', 'depression_signs'] lang=hak
+2026-06-15 11:02:20,010 [INFO] memory.storage: Inserted memory entry #7 for senior_001
+2026-06-15 11:02:20,010 [INFO] analytics.detector: Rule 'Loneliness Pattern' triggered 1 flag(s) for senior_001
+2026-06-15 11:02:20,010 [INFO] analytics.detector: Rule 'Depression Indicators' triggered 1 flag(s) for senior_001
+2026-06-15 11:02:20,010 [INFO] memory.storage: Inserted welfare flag #4 [yellow] for senior_001
+2026-06-15 11:02:20,010 [INFO] memory.storage: Inserted welfare flag #5 [red] for senior_001
+2026-06-15 11:02:20,010 [WARNING] KampungKonekt: 2 welfare flag(s) triggered for senior_001
+2026-06-15 11:02:20,010 [INFO] KampungKonekt: Red flag detected — generating welfare report.
+2026-06-15 11:02:20,018 [INFO] reports.generator: Generated welfare report for senior_001: 7 interactions, risk=red
+2026-06-15 11:02:20,024 [INFO] reports.generator: Welfare report saved to C:\Users\javer\Downloads\AgnesXSMU\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 11:02:20,027 [INFO] KampungKonekt: Welfare report saved to: C:\Users\javer\Downloads\AgnesXSMU\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 11:02:20,029 [INFO] KampungKonekt: ============================================================
+2026-06-15 11:02:20,029 [INFO] KampungKonekt: SIMULATION COMPLETE — Running welfare check...
+2026-06-15 11:02:20,029 [INFO] KampungKonekt: ============================================================
+2026-06-15 11:02:20,029 [INFO] KampungKonekt: Running full welfare check for senior_001
+2026-06-15 11:02:20,029 [INFO] analytics.detector: Rule 'Consecutive Negative Sentiment' triggered 1 flag(s) for senior_001
+2026-06-15 11:02:20,033 [INFO] analytics.detector: Rule 'Loneliness Pattern' triggered 1 flag(s) for senior_001
+2026-06-15 11:02:20,033 [INFO] memory.storage: Inserted welfare flag #6 [red] for senior_001
+2026-06-15 11:02:20,038 [INFO] memory.storage: Inserted welfare flag #7 [yellow] for senior_001
+2026-06-15 11:02:20,043 [INFO] reports.generator: Generated welfare report for senior_001: 7 interactions, risk=red
+2026-06-15 11:02:20,046 [INFO] reports.generator: Welfare report saved to C:\Users\javer\Downloads\AgnesXSMU\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 11:02:20,046 [INFO] KampungKonekt: Welfare check complete: {'senior_id': 'senior_001', 'risk_level': 'red', 'risk_description': '2 active red flag(s) requiring immediate attention.', 'flags_triggered': 2, 'total_flags_all_time': 7, 'recent_interactions': 7, 'report_path': 'C:\\Users\\javer\\Downloads\\AgnesXSMU\\backend\\reports\\welfare_senior_001_20260615.md', 'report_sentiment': {'positive': 1, 'neutral': 1, 'negative': 5}}
+2026-06-15 11:02:20,046 [INFO] KampungKonekt: Welfare check result: {'senior_id': 'senior_001', 'risk_level': 'red', 'risk_description': '2 active red flag(s) requiring immediate attention.', 'flags_triggered': 2, 'total_flags_all_time': 7, 'recent_interactions': 7, 'report_path': 'C:\\Users\\javer\\Downloads\\AgnesXSMU\\backend\\reports\\welfare_senior_001_20260615.md', 'report_sentiment': {'positive': 1, 'neutral': 1, 'negative': 5}}
+2026-06-15 11:02:20,050 [INFO] memory.storage: Memory storage connection closed.
+2026-06-15 11:02:20,050 [INFO] KampungKonekt: Orchestrator shut down cleanly.
+2026-06-15 11:03:36,528 [INFO] memory.storage: Memory storage initialized at data\kampungkonekt.db
+2026-06-15 11:03:36,746 [INFO] KampungKonekt: KampungKonekt initialized for senior: Grandma Lim (senior_001)
+2026-06-15 11:03:36,746 [INFO] memory.storage: Memory storage connection closed.
+2026-06-15 11:03:36,746 [INFO] KampungKonekt: Orchestrator shut down cleanly.
+2026-06-15 11:13:12,768 [INFO] memory.storage: Memory storage initialized at data\kampungkonekt.db
+2026-06-15 11:13:12,975 [INFO] KampungKonekt: KampungKonekt initialized for senior: Grandma Lim (senior_001)
+2026-06-15 11:13:12,983 [INFO] memory.storage: Memory storage connection closed.
+2026-06-15 11:13:12,986 [INFO] KampungKonekt: Orchestrator shut down cleanly.
