@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KampungKonekt — Your Friendly Companion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'kampung': ['Noto Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        'kampung': {
+                            'warm': '#FFF8F0',
+                            'orange': '#FF6B35',
+                            'green': '#2D6A4F',
+                            'light-green': '#52B788',
+                            'yellow': '#FFD60A',
+                            'dark': '#1A1A2E',
+                            'blue': '#0077B6',
+                        }
+                    },
+                    animation: {
+                        'pulse-giant': 'pulseGiant 2s ease-in-out infinite',
+                        'pulse-ring': 'pulseRing 1.5s ease-out infinite',
+                        'bounce-soft': 'bounceSoft 0.6s ease-in-out',
+                        'wave': 'wave 2s ease-in-out infinite',
+                        'fade-in': 'fadeIn 0.5s ease-in',
+                        'slide-up': 'slideUp 0.4s ease-out',
+                    },
+                    keyframes: {
+                        pulseGiant: {
+                            '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(255, 107, 53, 0.7)' },
+                            '50%': { transform: 'scale(1.03)', boxShadow: '0 0 40px 20px rgba(255, 107, 53, 0.3)' },
+                        },
+                        pulseRing: {
+                            '0%': { transform: 'scale(0.9)', opacity: '1' },
+                            '100%': { transform: 'scale(1.5)', opacity: '0' },
+                        },
+                        bounceSoft: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-8px)' },
+                        },
+                        wave: {
+                            '0%, 100%': { transform: 'rotate(0deg)' },
+                            '25%': { transform: 'rotate(20deg)' },
+                            '75%': { transform: 'rotate(-15deg)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Accessibility: Ensure minimum touch targets of 96px */
+        .touch-target-min {
+            min-height: 96px;
+            min-width: 96px;
+        }
+
+        /* High contrast focus indicators */
+        *:focus-visible {
+            outline: 4px solid #FFD60A;
+            outline-offset: 4px;
+        }
+
+        /* Smooth transitions for all interactive elements */
+        .interactive {
+            transition: all 0.3s ease;
+        }
+        .interactive:hover {
+            transform: scale(1.02);
+        }
+        .interactive:active {
+            transform: scale(0.98);
+        }
+
+        /* Listening state visualizer */
+        .sound-wave-bar {
+            width: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to top, #FF6B35, #FFD60A);
+            animation: soundWave 0.8s ease-in-out infinite;
+        }
+        .sound-wave-bar:nth-child(1) { animation-delay: 0s; height: 20px; }
+        .sound-wave-bar:nth-child(2) { animation-delay: 0.1s; height: 35px; }
+        .sound-wave-bar:nth-child(3) { animation-delay: 0.2s; height: 50px; }
+        .sound-wave-bar:nth-child(4) { animation-delay: 0.3s; height: 35px; }
+        .sound-wave-bar:nth-child(5) { animation-delay: 0.4s; height: 20px; }
+
+        @keyframes soundWave {
+            0%, 100% { transform: scaleY(0.5); }
+            50% { transform: scaleY(1.2); }
+        }
+
+        /* Hidden by default, shown when listening */
+        .listening-indicator {
+            display: none;
+        }
+        .listening-indicator.active {
+            display: flex;
+        }
+
+        /* Response card styling */
+        .response-card {
+            display: none;
+        }
+        .response-card.active {
+            display: block;
+        }
+
+        /* Prevent text selection for app-like feel */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Scrollbar styling for response area */
+        .response-scroll::-webkit-scrollbar {
+            width: 12px;
+        }
+        .response-scroll::-webkit-scrollbar-track {
+            background: #FFF8F0;
+            border-radius: 6px;
+        }
+        .response-scroll::-webkit-scrollbar-thumb {
+            background: #2D6A4F;
+            border-radius: 6px;
+        }
+
+        /* Background pattern for warmth */
+        .bg-pattern {
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(82, 183, 136, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 214, 10, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 107, 53, 0.05) 0%, transparent 60%);
+        }
+
+        /* Large button shadow depth for tactile feel */
+        .button-shadow {
+            box-shadow: 0 8px 0 #CC5500, 0 15px 30px rgba(0,0,0,0.15);
+        }
+        .button-shadow:active {
+            box-shadow: 0 2px 0 #CC5500, 0 5px 15px rgba(0,0,0,0.15);
+            transform: translateY(6px);
+        }
+    </style>
+</head>
+<body class="font-kampung bg-kampung-warm bg-pattern min-h-screen flex flex-col items-center justify-between overflow-x-hidden">
+
+    <!-- ============================================= -->
+    <!-- TOP HEADER: App Name & Greeting -->
+    <!-- ============================================= -->
+    <header class="w-full px-6 pt-8 pb-4 text-center animate-fade-in">
+        <!-- Logo / Brand -->
+        <div class="flex items-center justify-center gap-3 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-kampung-green" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            <h1 class="text-4xl md:text-5xl font-black text-kampung-green tracking-tight">
+                KampungKonekt
+            </h1>
+        </div>
+        <p id="greeting" class="text-2xl md:text-3xl font-bold text-kampung-dark mt-2" role="status" aria-live="polite">
+            Good Morning! 👋 How are you today?
+        </p>
+    </header>
+
+    <!-- ============================================= -->
+    <!-- MAIN CONTENT: Voice Button Area -->
+    <!-- ============================================= -->
+    <main class="flex-1 w-full max-w-2xl px-6 flex flex-col items-center justify-center py-8">
+
+        <!-- LISTENING INDICATOR (shown when mic is active) -->
+        <div id="listeningIndicator" class="listening-indicator flex-col items-center mb-8" role="status" aria-label="Listening...">
+            <!-- Sound Wave Visualizer -->
+            <div class="flex items-center gap-2 mb-6 h-16" aria-hidden="true">
+                <div class="sound-wave-bar"></div>
+                <div class="sound-wave-bar"></div>
+                <div class="sound-wave-bar"></div>
+                <div class="sound-wave-bar"></div>
+                <div class="sound-wave-bar"></div>
+            </div>
+            <p class="text-2xl font-bold text-kampung-orange animate-bounce-soft">
+                I'm listening... 🎤
+            </p>
+            <p class="text-xl text-kampung-dark mt-2 opacity-75">
+                You can speak in English, 中文, Melayu, or dialect
+            </p>
+        </div>
+
+        <!-- THINKING INDICATOR (shown when processing) -->
+        <div id="thinkingIndicator" class="flex-col items-center mb-8 hidden" role="status" aria-label="Thinking...">
+            <svg class="animate-spin h-16 w-16 text-kampung-blue mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p class="text-2xl font-bold text-kampung-blue">
+                Thinking... 💭
+            </p>
+        </div>
+
+        <!-- THE GIANT "TAP TO TALK" BUTTON -->
+        <div class="relative flex items-center justify-center mb-8">
+            <!-- Pulsing ring effect -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div class="w-64 h-64 rounded-full bg-kampung-orange opacity-20 animate-pulse-ring"></div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div class="w-72 h-72 rounded-full bg-kampung-yellow opacity-10 animate-pulse-ring" style="animation-delay: 0.5s;"></div>
+            </div>
+
+            <!-- Main Button -->
+            <button
+                id="micButton"
+                class="relative interactive touch-target-min w-64 h-64 md:w-72 md:h-72 rounded-full bg-gradient-to-br from-kampung-orange to-orange-600 text-white font-black text-3xl md:text-4xl button-shadow flex flex-col items-center justify-center gap-3 animate-pulse-giant z-10"
+                aria-label="Tap to talk. Speak in English, Singlish, Malay, Mandarin, or dialect."
+                type="button"
+            >
+                <!-- Microphone Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                    <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                </svg>
+                <!-- Trilingual Label -->
+                <span class="leading-tight">Tap to Talk</span>
+                <span class="text-2xl md:text-3xl opacity-90">Tekan Sini</span>
+                <span class="text-2xl md:text-3xl opacity-90">按这里</span>
+            </button>
+        </div>
+
+        <!-- QUICK ACTION PILLS (Secondary options) -->
+        <div class="flex flex-wrap justify-center gap-4 mb-8" role="group" aria-label="Quick actions">
+            <button
+                class="interactive flex items-center gap-3 px-8 py-4 bg-kampung-green text-white rounded-2xl text-xl font-bold button-shadow"
+                aria-label="Tell me my schedule for today"
+                type="button"
+                onclick="handleQuickAction('schedule')"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
+                </svg>
+                My Schedule
+            </button>
+            <button
+                class="interactive flex items-center gap-3 px-8 py-4 bg-kampung-blue text-white rounded-2xl text-xl font-bold button-shadow"
+                aria-label="Call my emergency contact"
+                type="button"
+                onclick="handleQuickAction('emergency')"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                </svg>
+                Call Family
+            </button>
+            <button
+                class="interactive flex items-center gap-3 px-8 py-4 bg-kampung-yellow text-kampung-dark rounded-2xl text-xl font-bold button-shadow"
+                aria-label="Tell me a story or sing a song"
+                type="button"
+                onclick="handleQuickAction('entertain')"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                </svg>
+                Play Music
+            </button>
+        </div>
+
+        <!-- ============================================= -->
+        <!-- AI RESPONSE CARD (Appears after voice input) -->
+        <!-- ============================================= -->
+        <div id="responseCard" class="response-card w-full bg-white rounded-3xl shadow-2xl p-8 animate-slide-up border-4 border-kampung-light-green" role="dialog" aria-label="KampungKonekt response">
+            <!-- Response Header -->
+            <div class="flex items-center gap-4 mb-4">
+                <div class="flex-shrink-0 w-16 h-16 rounded-full bg-kampung-green flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-black text-kampung-dark">Your Kampung Friend</h2>
+                    <p class="text-lg text-kampung-green font-bold">Here's what I heard:</p>
+                </div>
+            </div>
+
+            <!-- Response Content -->
+            <div id="responseContent" class="response-scroll max-h-64 overflow-y-auto pr-2">
+                <p class="text-2xl font-bold text-kampung-dark leading-relaxed" id="responseText">
+                    I hear you! Let me note that down for you. Is there anything else you'd like to share? 😊
+                </p>
+            </div>
+
+            <!-- Response Actions -->
+            <div class="flex flex-wrap gap-4 mt-6 pt-6 border-t-4 border-kampung-warm">
+                <button
+                    class="interactive flex-1 min-h-[72px] flex items-center justify-center gap-2 px-6 py-4 bg-kampung-green text-white rounded-2xl text-xl font-bold"
+                    aria-label="Thank the AI"
+                    type="button"
+                    onclick="handleResponseAction('thank')"
+                >
+                    <span class="text-2xl">🙏</span> Thank You
+                </button>
+                <button
+                    class="interactive flex-1 min-h-[72px] flex items-center justify-center gap-2 px-6 py-4 bg-kampung-orange text-white rounded-2xl text-xl font-bold"
+                    aria-label="I have more to say"
+                    type="button"
+                    onclick="handleResponseAction('continue')"
+                >
+                    <span class="text-2xl">💬</span> More to Say
+                </button>
+                <button
+                    class="interactive flex-1 min-h-[72px] flex items-center justify-center gap-2 px-6 py-4 bg-kampung-blue text-white rounded-2xl text-xl font-bold"
+                    aria-label="End conversation and rest"
+                    type="button"
+                    onclick="handleResponseAction('rest')"
+                >
+                    <span class="text-2xl">😴</span> Rest Now
+                </button>
+            </div>
+        </div>
+
+        <!-- EMPTY STATE (shown before first interaction) -->
+        <div id="emptyState" class="text-center mt-4 animate-fade-in">
+            <p class="text-xl text-kampung-dark opacity-60">
+                Just tap the microphone above to start talking
+            </p>
+            <div class="flex justify-center gap-6 mt-4" aria-hidden="true">
+                <span class="text-4xl animate-wave" style="animation-delay: 0s;">🇸🇬</span>
+                <span class="text-4xl animate-wave" style="animation-delay: 0.3s;">🏘️</span>
+                <span class="text-4xl animate-wave" style="animation-delay: 0.6s;">❤️</span>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ============================================= -->
+    <!-- BOTTOM FOOTER: Reassurance -->
+    <!-- ============================================= -->
+    <footer class="w-full px-6 py-6 text-center bg-white bg-opacity-60 border-t-4 border-kampung-light-green">
+        <p class="text-xl font-bold text-kampung-dark">
+            🤝 You're never alone. KampungKonekt is always here for you.
+        </p>
+        <p class="text-lg text-kampung-dark mt-1 opacity-60">
+            Your data is safe and private. We only share with your family or helper if you want us to.
+        </p>
+    </footer>
+
+    <!-- ============================================= -->
+    <!-- JAVASCRIPT: Interactivity -->
+    <!-- ============================================= -->
+    <script>
+        // --- State Management ---
+        const state = {
+            isListening: false,
+            isProcessing: false,
+            hasInteracted: false,
+            conversationHistory: [],
+        };
+
+        // --- DOM Elements ---
+        const micButton = document.getElementById('micButton');
+        const listeningIndicator = document.getElementById('listeningIndicator');
+        const thinkingIndicator = document.getElementById('thinkingIndicator');
+        const responseCard = document.getElementById('responseCard');
+        const responseText = document.getElementById('responseText');
+        const emptyState = document.getElementById('emptyState');
+        const greeting = document.getElementById('greeting');
+
+        // --- Dynamic Greeting based on time of day ---
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            let greetingText, emoji;
+            
+            if (hour >= 5 && hour < 12) {
+                greetingText = 'Good Morning';
+                emoji = '🌅';
+            } else if (hour >= 12 && hour < 17) {
+                greetingText = 'Good Afternoon';
+                emoji = '☀️';
+            } else if (hour >= 17 && hour < 21) {
+                greetingText = 'Good Evening';
+                emoji = '🌆';
+            } else {
+                greetingText = 'Late Night';
+                emoji = '🌙';
+            }
+            
+            greeting.innerHTML = `${greetingText}! ${emoji} How are you today?`;
+        }
+        updateGreeting();
+
+        // --- Mic Button Handler ---
+        micButton.addEventListener('click', () => {
+            if (state.isProcessing) return;
+            
+            if (!state.isListening) {
+                startListening();
+            }
+        });
+
+        function startListening() {
+            state.isListening = true;
+            state.hasInteracted = true;
+            
+            // Hide empty state
+            emptyState.classList.add('hidden');
+            
+            // Show listening indicator
+            listeningIndicator.classList.add('active');
+            
+            // Update button state
+            micButton.classList.remove('animate-pulse-giant');
+            micButton.style.background = 'linear-gradient(to br, #2D6A4F, #1B4332)';
+            micButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                </svg>
+                <span class="leading-tape">Stop</span>
+                <span class="text-2xl md:text-3xl opacity-90">Hentikan</span>
+                <span class="text-2xl md:text-3xl opacity-90">停止</span>
+            `;
+            micButton.setAttribute('aria-label', 'Stop listening');
+            
+            // Simulate listening for 3 seconds then processing
+            setTimeout(() => {
+                stopListening();
+                startProcessing();
+            }, 3000);
+        }
+
+        function stopListening() {
+            state.isListening = false;
+            listeningIndicator.classList.remove('active');
+        }
+
+        function startProcessing() {
+            state.isProcessing = true;
+            thinkingIndicator.classList.remove('hidden');
+            thinkingIndicator.classList.add('flex');
+            
+            // Simulate AI response after 2 seconds
+            setTimeout(() => {
+                stopProcessing();
+                showResponse();
+            }, 2000);
+        }
+
+        function stopProcessing() {
+            state.isProcessing = false;
+            thinkingIndicator.classList.add('hidden');
+            thinkingIndicator.classList.remove('flex');
+        }
+
+        function showResponse() {
+            // Reset mic button
+            micButton.classList.add('animate-pulse-giant');
+            micButton.style.background = '';
+            micButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                    <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                </svg>
+                <span class="leading-tight">Tap to Talk</span>
+                <span class="text-2xl md:text-3xl opacity-90">Tekan Sini</span>
+                <span class="text-2xl md:text-3xl opacity-90">按这里</span>
+            `;
+            micButton.setAttribute('aria-label', 'Tap to talk. Speak in English, Singlish, Malay, Mandarin, or dialect.');
+            
+            // Show response card
+            responseCard.classList.add('active');
+            
+            // Simulate dynamic response based on time
+            const hour = new Date().getHours();
+            let simulatedResponse = '';
+            
+            if (hour >= 5 && hour < 12) {
+                simulatedResponse = 'I\'ve noted that you mentioned feeling a bit lonely this morning. Would you like me to connect you with someone for a chat? We also have a community lunch at the hawker centre this Friday — would you like me to mark you down? 🍜';
+            } else if (hour >= 12 && hour < 17) {
+                simulatedResponse = 'Thank you for sharing with me! I\'ve recorded that you had lunch today. Good! Remember, if you need anything at all, just tap the microphone. I\'m here every day. 😊';
+            } else {
+                simulatedResponse = 'It\'s getting late. Have you taken your medicine tonight? Let me remind you — it\'s 8 PM time for your pills. Would you like me to tell your daughter you\'ve been chatting with me today? She would be very happy to hear that! 🌙';
+            }
+            
+            responseText.textContent = simulatedResponse;
+        }
+
+        // --- Quick Action Handlers ---
+        function handleQuickAction(action) {
+            if (state.isProcessing) return;
+            
+            state.hasInteracted = true;
+            emptyState.classList.add('hidden');
+            
+            switch(action) {
+                case 'schedule':
+                    showResponseWithContent('📅 <strong>Your Schedule for Today:</strong><br><br>• 9:00 AM — Medicine time ✅<br>• 12:00 PM — Community Lunch at Block 234 Hawker Centre<br>• 3:00 PM — Tai Chi at the void deck<br>• 7:00 PM — Dinner with neighbour Mei Mei<br><br>Nothing too heavy today. Take it easy! 😊');
+                    break;
+                case 'emergency':
+                    showResponseWithContent('📞 <strong>Family Contact:</strong><br><br>I\'ll call your daughter at 9123 XXXX.<br><br>In the meantime, I\'ve also sent a message to your community helper, Sarah.<br><br>You can also dial <strong>995</strong> for emergency services anytime.');
+                    break;
+                case 'entertain':
+                    showResponseWithContent('🎵 <strong>Playing for you...</strong><br><br>Here\'s a classic — "Rosie" by P. Ramlee. A true Malaysian classic!<br><br>Would you like me to play more oldies, or perhaps a story from my collection? I have many stories in Hokkien and Malay too!');
+                    break;
+            }
+        }
+
+        // --- Response Action Handlers ---
+        function handleResponseAction(action) {
+            switch(action) {
+                case 'thank':
+                    responseText.textContent = 'You\'re most welcome! 😊 Whenever you want to chat again, just tap the big orange button. Take care now!';
+                    break;
+                case 'continue':
+                    responseText.textContent = 'Of course! I\'m here to listen. Go ahead, tell me more. What\'s on your mind? 💬';
+                    // Reset to listening
+                    setTimeout(() => startListening(), 1500);
+                    break;
+                case 'rest':
+                    responseText.textContent = 'Rest well! 😴 I\'ll be here tomorrow and every day. Remember to drink warm milk before sleeping. Good night! 🌙';
+                    break;
+            }
+        }
+
+        // --- Helper function for quick action responses ---
+        function showResponseWithContent(htmlContent) {
+            emptyState.classList.add('hidden');
+            responseCard.classList.add('active');
+            responseText.innerHTML = htmlContent;
+        }
+
+        // --- Keyboard Accessibility ---
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                if (document.activeElement === micButton) {
+                    e.preventDefault();
+                    micButton.click();
+                }
+            }
+        });
+
+        // --- Service Worker Registration (for PWA capability) ---
+        // This enables the app to work offline and be installed on tablets
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // In production, register a service worker for offline support
+                // navigator.serviceWorker.register('/sw.js');
+            });
+        }
+    </script>
+</body>
+</html>
