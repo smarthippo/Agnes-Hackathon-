@@ -661,7 +661,6 @@
                 <span class="text-2xl md:text-3xl opacity-90">按这里</span>
             `;
             micButton.setAttribute('aria-label', 'Tap to talk. Speak in English, Singlish, Malay, Mandarin, or dialect.');
-<<<<<<< HEAD
         }
 
         // --- Text Input Fallback ---
@@ -820,35 +819,10 @@
         }
 
         // --- Quick Action Handlers ---
-=======
-
-            const account = getSession();
-            const name = account ? account.name : 'friend';
-            const hour = new Date().getHours();
-            let msg;
-
-            if (hour >= 5 && hour < 12) {
-                msg = `I've noted that you mentioned feeling a bit lonely this morning, ${name}. Would you like me to connect you with someone for a chat? We also have a community lunch this Friday — would you like me to mark you down? 🍜`;
-            } else if (hour >= 12 && hour < 17) {
-                msg = `Thank you for sharing with me, ${name}! I've recorded that you had lunch today. Good! Remember, if you need anything at all, just tap the big orange button. 😊`;
-            } else {
-                msg = `It's getting late, ${name}. Have you taken your medicine tonight? Would you like me to let your family know you've been chatting with me today? They would be very happy! 🌙`;
-            }
-
-            state.lastWelfareMessage = `Hi, this is KampungKonekt. ${name} just spoke with me and mentioned: "${msg.substring(0, 120)}..." Please check in when you can. 💚`;
-            responseCard.classList.add('active');
-            responseText.textContent = msg;
-        }
-
-        // -----------------------------------------------
-        // QUICK ACTIONS
-        // -----------------------------------------------
->>>>>>> source-repo/main
         function handleQuickAction(action) {
             if (state.isProcessing) return;
             state.hasInteracted = true;
             emptyState.classList.add('hidden');
-<<<<<<< HEAD
             switch(action) {
                 case 'schedule':
                     showResponseWithContent(appLang === 'zh'
@@ -871,25 +845,10 @@
                         : appLang === 'ms'
                         ? '🎵 <strong>Memainkan lagu-lagu klasik untuk anda!</strong><br><br>Gunakan pemain di bawah untuk tukar lagu atau berhenti. Selamat menikmati! 🎶'
                         : '🎵 <strong>Playing classic oldies for you!</strong><br><br>Use the player below to skip or pause. Enjoy! 🎶');
-=======
-
-            if (action === 'emergency') {
-                openCallModal();
-                return;
-            }
-
-            switch (action) {
-                case 'schedule':
-                    showResponseWithContent('📅 <strong>Your Schedule for Today:</strong><br><br>• 9:00 AM — Medicine time ✅<br>• 12:00 PM — Community Lunch at Block 234 Hawker Centre<br>• 3:00 PM — Tai Chi at the void deck<br>• 7:00 PM — Dinner with neighbour Mei Mei<br><br>Nothing too heavy today. Take it easy! 😊');
-                    break;
-                case 'entertain':
-                    showResponseWithContent('🎵 <strong>Playing for you...</strong><br><br>Here\'s a classic — "Rosie" by P. Ramlee. A true Malaysian classic!<br><br>Would you like more oldies, or a story in Hokkien or Malay?');
->>>>>>> source-repo/main
                     break;
             }
         }
 
-<<<<<<< HEAD
         // --- Response Action Handlers ---
         function handleResponseAction(action) {
             switch(action) {
@@ -914,22 +873,6 @@
                         : appLang === 'ms'
                         ? 'Rehat yang baik! 😴 Saya akan ada di sini esok. Ingat minum susu suam sebelum tidur. Selamat malam! 🌙'
                         : 'Rest well! 😴 I\'ll be here tomorrow and every day. Remember to drink warm milk before sleeping. Good night! 🌙';
-=======
-        // -----------------------------------------------
-        // RESPONSE ACTIONS
-        // -----------------------------------------------
-        function handleResponseAction(action) {
-            switch (action) {
-                case 'thank':
-                    responseText.textContent = 'You\'re most welcome! 😊 Whenever you want to chat again, just tap the big orange button. Take care now!';
-                    break;
-                case 'continue':
-                    responseText.textContent = 'Of course! I\'m here to listen. Go ahead, tell me more. What\'s on your mind? 💬';
-                    setTimeout(() => startListening(), 1500);
-                    break;
-                case 'rest':
-                    responseText.textContent = 'Rest well! 😴 I\'ll be here tomorrow and every day. Remember to drink warm milk before sleeping. Good night! 🌙';
->>>>>>> source-repo/main
                     break;
             }
         }
@@ -940,7 +883,6 @@
             responseText.innerHTML = htmlContent;
         }
 
-<<<<<<< HEAD
         // --- Music Player ---
         const playlist = [
             { file: 'ai_piah.mp3',    title: '爱拼才会赢',      artist: '叶启田' },
@@ -1022,41 +964,12 @@
         }
 
         // --- Keyboard Accessibility ---
-=======
-        // -----------------------------------------------
-        // KEYBOARD ACCESSIBILITY
-        // -----------------------------------------------
->>>>>>> source-repo/main
         document.addEventListener('keydown', (e) => {
             if ((e.key === 'Enter' || e.key === ' ') && document.activeElement === micButton) {
                 e.preventDefault();
                 micButton.click();
             }
-<<<<<<< HEAD
         });
     </script>
 </body>
 </html>
-=======
-            if (e.key === 'Escape') {
-                closeProfileModal();
-                closeCallModal();
-            }
-        });
-
-        // -----------------------------------------------
-        // BOOT
-        // -----------------------------------------------
-        (function init() {
-            const session = getSession();
-            if (session) {
-                onLoggedIn(session);
-            } else {
-                updateGreeting(null);
-                showAuthModal();
-            }
-        })();
-    </script>
-</body>
-</html>
->>>>>>> source-repo/main

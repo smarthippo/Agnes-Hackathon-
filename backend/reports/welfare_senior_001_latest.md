@@ -1,6 +1,6 @@
 # Welfare Report — KampungKonekt
 
-**Report Generated:** 2026-06-15 14:36 SGT
+**Report Generated:** 2026-06-15 16:20 SGT
 **Report Period:** 2026-05-16 to 2026-06-15
 **Senior ID:** `senior_001`
 **Senior Name:** Grandma Lim
@@ -11,19 +11,103 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Interactions | 61 |
-| Positive Sentiment | 5 |
-| Neutral Sentiment | 28 |
-| Negative Sentiment | 28 |
+| Total Interactions | 74 |
+| Positive Sentiment | 9 |
+| Neutral Sentiment | 31 |
+| Negative Sentiment | 34 |
 
 ### Sentiment Breakdown
 
-- **😊 Positive:** 5/61 (8%)
-- **😐 Neutral:** 28/61 (46%)
-- **😟 Negative:** 28/61 (46%)
+- **😊 Positive:** 9/74 (12%)
+- **😐 Neutral:** 31/74 (42%)
+- **😟 Negative:** 34/74 (46%)
 
 ## 🚩 Welfare Flags
 
+- 🟡 **[YELLOW]** Loneliness mentioned 20 time(s) in the past 7 days
+  - Triggered: 2026-06-15 16:20
+  - 👋 CONCERN: Senior senior_001 has expressed loneliness 20 times in the past week. Volunteer visit or phone companion recommended.
+- 🔴 **[RED]** 6 consecutive day(s) with negative sentiment (threshold: 3)
+  - Triggered: 2026-06-15 16:20
+  - ⚠️ ALERT: Senior senior_001 has shown negative sentiment for 6 consecutive days. Immediate welfare check recommended.
+- 🟡 **[YELLOW]** Loneliness mentioned 20 time(s) in the past 7 days
+  - Triggered: 2026-06-15 16:20
+  - 👋 CONCERN: Senior senior_001 has expressed loneliness 20 times in the past week. Volunteer visit or phone companion recommended.
+- 🔴 **[RED]** 6 consecutive day(s) with negative sentiment (threshold: 3)
+  - Triggered: 2026-06-15 16:20
+  - ⚠️ ALERT: Senior senior_001 has shown negative sentiment for 6 consecutive days. Immediate welfare check recommended.
+- 🟡 **[YELLOW]** Loneliness mentioned 20 time(s) in the past 7 days
+  - Triggered: 2026-06-15 16:19
+  - 👋 CONCERN: Senior senior_001 has expressed loneliness 20 times in the past week. Volunteer visit or phone companion recommended.
+- 🔴 **[RED]** 6 consecutive day(s) with negative sentiment (threshold: 3)
+  - Triggered: 2026-06-15 16:19
+  - ⚠️ ALERT: Senior senior_001 has shown negative sentiment for 6 consecutive days. Immediate welfare check recommended.
+- 🟡 **[YELLOW]** Loneliness mentioned 20 time(s) in the past 7 days
+  - Triggered: 2026-06-15 16:18
+  - 👋 CONCERN: Senior senior_001 has expressed loneliness 20 times in the past week. Volunteer visit or phone companion recommended.
+- 🔴 **[RED]** 6 consecutive day(s) with negative sentiment (threshold: 3)
+  - Triggered: 2026-06-15 16:18
+  - ⚠️ ALERT: Senior senior_001 has shown negative sentiment for 6 consecutive days. Immediate welfare check recommended.
+- 🟡 **[YELLOW]** Loneliness mentioned 20 time(s) in the past 7 days
+  - Triggered: 2026-06-15 16:18
+  - 👋 CONCERN: Senior senior_001 has expressed loneliness 20 times in the past week. Volunteer visit or phone companion recommended.
+- 🔴 **[RED]** 6 consecutive day(s) with negative sentiment (threshold: 3)
+  - Triggered: 2026-06-15 16:18
+  - ⚠️ ALERT: Senior senior_001 has shown negative sentiment for 6 consecutive days. Immediate welfare check recommended.
+- 🟡 **[YELLOW]** Loneliness mentioned 20 time(s) in the past 7 days
+  - Triggered: 2026-06-15 16:17
+  - 👋 CONCERN: Senior senior_001 has expressed loneliness 20 times in the past week. Volunteer visit or phone companion recommended.
+- 🔴 **[RED]** 6 consecutive day(s) with negative sentiment (threshold: 3)
+  - Triggered: 2026-06-15 16:17
+  - ⚠️ ALERT: Senior senior_001 has shown negative sentiment for 6 consecutive days. Immediate welfare check recommended.
+- 🟡 **[YELLOW]** Loneliness mentioned 20 time(s) in the past 7 days
+  - Triggered: 2026-06-15 16:09
+  - 👋 CONCERN: Senior senior_001 has expressed loneliness 20 times in the past week. Volunteer visit or phone companion recommended.
+- 🔴 **[RED]** 6 consecutive day(s) with negative sentiment (threshold: 3)
+  - Triggered: 2026-06-15 16:09
+  - ⚠️ ALERT: Senior senior_001 has shown negative sentiment for 6 consecutive days. Immediate welfare check recommended.
+- 🟡 **[YELLOW]** Loneliness mentioned 20 time(s) in the past 7 days
+  - Triggered: 2026-06-15 16:09
+  - 👋 CONCERN: Senior senior_001 has expressed loneliness 20 times in the past week. Volunteer visit or phone companion recommended.
+- 🔴 **[RED]** 6 consecutive day(s) with negative sentiment (threshold: 3)
+  - Triggered: 2026-06-15 16:09
+  - ⚠️ ALERT: Senior senior_001 has shown negative sentiment for 6 consecutive days. Immediate welfare check recommended.
+- 🟡 **[YELLOW]** Loneliness mentioned 19 time(s) in the past 7 days
+  - Triggered: 2026-06-15 16:09
+  - 👋 CONCERN: Senior senior_001 has expressed loneliness 19 times in the past week. Volunteer visit or phone companion recommended.
+- 🔴 **[RED]** 6 consecutive day(s) with negative sentiment (threshold: 3)
+  - Triggered: 2026-06-15 16:09
+  - ⚠️ ALERT: Senior senior_001 has shown negative sentiment for 6 consecutive days. Immediate welfare check recommended.
+- 🟡 **[YELLOW]** Loneliness mentioned 19 time(s) in the past 7 days
+  - Triggered: 2026-06-15 16:09
+  - 👋 CONCERN: Senior senior_001 has expressed loneliness 19 times in the past week. Volunteer visit or phone companion recommended.
+- 🔴 **[RED]** 6 consecutive day(s) with negative sentiment (threshold: 3)
+  - Triggered: 2026-06-15 16:09
+  - ⚠️ ALERT: Senior senior_001 has shown negative sentiment for 6 consecutive days. Immediate welfare check recommended.
+- 🟡 **[YELLOW]** Loneliness mentioned 18 time(s) in the past 7 days
+  - Triggered: 2026-06-15 16:08
+  - 👋 CONCERN: Senior senior_001 has expressed loneliness 18 times in the past week. Volunteer visit or phone companion recommended.
+- 🔴 **[RED]** 6 consecutive day(s) with negative sentiment (threshold: 3)
+  - Triggered: 2026-06-15 16:08
+  - ⚠️ ALERT: Senior senior_001 has shown negative sentiment for 6 consecutive days. Immediate welfare check recommended.
+- 🟡 **[YELLOW]** Loneliness mentioned 17 time(s) in the past 7 days
+  - Triggered: 2026-06-15 16:08
+  - 👋 CONCERN: Senior senior_001 has expressed loneliness 17 times in the past week. Volunteer visit or phone companion recommended.
+- 🔴 **[RED]** 6 consecutive day(s) with negative sentiment (threshold: 3)
+  - Triggered: 2026-06-15 16:08
+  - ⚠️ ALERT: Senior senior_001 has shown negative sentiment for 6 consecutive days. Immediate welfare check recommended.
+- 🟡 **[YELLOW]** Loneliness mentioned 16 time(s) in the past 7 days
+  - Triggered: 2026-06-15 16:08
+  - 👋 CONCERN: Senior senior_001 has expressed loneliness 16 times in the past week. Volunteer visit or phone companion recommended.
+- 🔴 **[RED]** 6 consecutive day(s) with negative sentiment (threshold: 3)
+  - Triggered: 2026-06-15 16:08
+  - ⚠️ ALERT: Senior senior_001 has shown negative sentiment for 6 consecutive days. Immediate welfare check recommended.
+- 🟡 **[YELLOW]** Loneliness mentioned 16 time(s) in the past 7 days
+  - Triggered: 2026-06-15 16:08
+  - 👋 CONCERN: Senior senior_001 has expressed loneliness 16 times in the past week. Volunteer visit or phone companion recommended.
+- 🔴 **[RED]** 6 consecutive day(s) with negative sentiment (threshold: 3)
+  - Triggered: 2026-06-15 16:08
+  - ⚠️ ALERT: Senior senior_001 has shown negative sentiment for 6 consecutive days. Immediate welfare check recommended.
 - 🟡 **[YELLOW]** Loneliness mentioned 16 time(s) in the past 7 days
   - Triggered: 2026-06-15 14:36
   - 👋 CONCERN: Senior senior_001 has expressed loneliness 16 times in the past week. Volunteer visit or phone companion recommended.
@@ -385,20 +469,27 @@
 |------|----------|--------|
 | 2026-06-10 11:02 | loneliness | Had noodles for lunch alone. The neighbour went to market without me. |
 | 2026-06-10 11:42 | loneliness | Had noodles for lunch alone. The neighbour went to market without me. |
+| 2026-06-10 16:08 | loneliness | Had noodles for lunch alone. The neighbour went to market without me. |
 | 2026-06-11 11:02 | loneliness | Bo lang cai gia. Nobody cooks for me today. My stomach is hungry. |
 | 2026-06-11 11:02 | food_insecurity | Bo lang cai gia. Nobody cooks for me today. My stomach is hungry. |
 | 2026-06-11 11:42 | loneliness | Bo lang cai gia. Nobody cooks for me today. My stomach is hungry. |
 | 2026-06-11 11:42 | food_insecurity | Bo lang cai gia. Nobody cooks for me today. My stomach is hungry. |
+| 2026-06-11 16:08 | loneliness | Bo lang cai gia. Nobody cooks for me today. My stomach is hungry. |
+| 2026-06-11 16:08 | food_insecurity | Bo lang cai gia. Nobody cooks for me today. My stomach is hungry. |
 | 2026-06-12 11:02 | loneliness | Send li sia. Nobody is here. I sit alone in the room all day. |
 | 2026-06-12 11:42 | loneliness | Send li sia. Nobody is here. I sit alone in the room all day. |
+| 2026-06-12 16:08 | loneliness | Send li sia. Nobody is here. I sit alone in the room all day. |
 | 2026-06-13 11:02 | physical_pain | My head hurts so much. Sakit kepala. Cannot sleep well also. |
 | 2026-06-13 11:02 | medication_issues | My head hurts so much. Sakit kepala. Cannot sleep well also. |
 | 2026-06-13 11:42 | physical_pain | My head hurts so much. Sakit kepala. Cannot sleep well also. |
 | 2026-06-13 11:42 | medication_issues | My head hurts so much. Sakit kepala. Cannot sleep well also. |
+| 2026-06-13 16:09 | physical_pain | My head hurts so much. Sakit kepala. Cannot sleep well also. |
 | 2026-06-14 11:02 | loneliness | Bo u lang tsai. No one visits me. I feel so lonely. Want die already. |
 | 2026-06-14 11:02 | depression_signs | Bo u lang tsai. No one visits me. I feel so lonely. Want die already. |
 | 2026-06-14 11:42 | loneliness | Bo u lang tsai. No one visits me. I feel so lonely. Want die already. |
 | 2026-06-14 11:42 | depression_signs | Bo u lang tsai. No one visits me. I feel so lonely. Want die already. |
+| 2026-06-14 16:09 | loneliness | Bo u lang tsai. No one visits me. I feel so lonely. Want die already. |
+| 2026-06-14 16:09 | depression_signs | Bo u lang tsai. No one visits me. I feel so lonely. Want die already. |
 | 2026-06-15 12:02 | loneliness | Send li sia. Nobody is here. |
 | 2026-06-15 12:03 | loneliness | Send li sia. Nobody is here. |
 | 2026-06-15 12:03 | loneliness | Bo lang cai gia, so lonely lah |
@@ -427,13 +518,28 @@
 | 2026-06-15 14:11 | medication_issues | my knee pain heart pain chest pain fever and have diarrhea right now |
 | 2026-06-15 14:12 | physical_pain | my stomach is hurting and my heart is going to die |
 | 2026-06-15 14:12 | depression_signs | my stomach is hurting and my heart is going to die |
+| 2026-06-15 16:17 | physical_pain | I'm feeling discomfort in my stomach |
 
 ## 🔍 Risk Assessment
 
-57 active red flag(s) requiring immediate attention.
+71 active red flag(s) requiring immediate attention.
 
-- **28** out of **61** interactions showed negative sentiment.
-- **57 red flag(s)** have been triggered in this period.
+- **34** out of **74** interactions showed negative sentiment.
+- **71 red flag(s)** have been triggered in this period.
+  - '6 consecutive day(s) with negative sentiment (threshold: 3)'
+  - '6 consecutive day(s) with negative sentiment (threshold: 3)'
+  - '6 consecutive day(s) with negative sentiment (threshold: 3)'
+  - '6 consecutive day(s) with negative sentiment (threshold: 3)'
+  - '6 consecutive day(s) with negative sentiment (threshold: 3)'
+  - '6 consecutive day(s) with negative sentiment (threshold: 3)'
+  - '6 consecutive day(s) with negative sentiment (threshold: 3)'
+  - '6 consecutive day(s) with negative sentiment (threshold: 3)'
+  - '6 consecutive day(s) with negative sentiment (threshold: 3)'
+  - '6 consecutive day(s) with negative sentiment (threshold: 3)'
+  - '6 consecutive day(s) with negative sentiment (threshold: 3)'
+  - '6 consecutive day(s) with negative sentiment (threshold: 3)'
+  - '6 consecutive day(s) with negative sentiment (threshold: 3)'
+  - '6 consecutive day(s) with negative sentiment (threshold: 3)'
   - '6 consecutive day(s) with negative sentiment (threshold: 3)'
   - '6 consecutive day(s) with negative sentiment (threshold: 3)'
   - '6 consecutive day(s) with negative sentiment (threshold: 3)'

@@ -459,3 +459,120 @@
 2026-06-15 11:58:11,776 [INFO] memory.storage: Memory storage connection closed.
 2026-06-15 11:58:11,776 [INFO] KampungKonekt: Orchestrator shut down cleanly.
 >>>>>>> source-repo/main
+2026-06-15 16:08:40,084 [INFO] memory.storage: Memory storage initialized at C:\agnesAI\nife\Agnes-Hackathon-\backend\data\kampungkonekt.db
+2026-06-15 16:08:42,154 [INFO] KampungKonekt: KampungKonekt initialized for senior: Grandma Lim (senior_001)
+2026-06-15 16:08:42,155 [INFO] KampungKonekt: ============================================================
+2026-06-15 16:08:42,155 [INFO] KampungKonekt: SIMULATING ONE WEEK OF INTERACTIONS
+2026-06-15 16:08:42,155 [INFO] KampungKonekt: ============================================================
+2026-06-15 16:08:42,156 [INFO] KampungKonekt: Day 7 ago: 'Today I went to the market and bought some chicken rice. Ver' [sentiment: positive]
+2026-06-15 16:08:42,156 [INFO] KampungKonekt: Processing voice input for senior_001: 'Today I went to the market and bought some chicken rice. Very nice lah!'
+2026-06-15 16:08:43,409 [INFO] httpx: HTTP Request: POST https://apihub.agnes-ai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-15 16:08:43,413 [INFO] KampungKonekt: Agnes processed: sentiment=positive concerns=[] lang=en
+2026-06-15 16:08:43,420 [INFO] memory.storage: Inserted memory entry #62 for senior_001
+2026-06-15 16:08:43,440 [INFO] analytics.detector: Rule 'Consecutive Negative Sentiment' triggered 1 flag(s) for senior_001
+2026-06-15 16:08:43,469 [INFO] analytics.detector: Rule 'Loneliness Pattern' triggered 1 flag(s) for senior_001
+2026-06-15 16:08:43,547 [INFO] memory.storage: Inserted welfare flag #119 [red] for senior_001
+2026-06-15 16:08:43,550 [INFO] memory.storage: Inserted welfare flag #120 [yellow] for senior_001
+2026-06-15 16:08:43,550 [WARNING] KampungKonekt: 2 welfare flag(s) triggered for senior_001
+2026-06-15 16:08:43,551 [INFO] KampungKonekt: Red flag detected — generating welfare report.
+2026-06-15 16:08:43,633 [INFO] reports.generator: Generated welfare report for senior_001: 62 interactions, risk=red
+2026-06-15 16:08:43,636 [INFO] reports.generator: Welfare report saved to C:\agnesAI\nife\Agnes-Hackathon-\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 16:08:43,636 [INFO] KampungKonekt: Welfare report saved to: C:\agnesAI\nife\Agnes-Hackathon-\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 16:08:43,643 [INFO] KampungKonekt: Day 6 ago: 'My daughter called me today. So happy! She said she will vis' [sentiment: positive]
+2026-06-15 16:08:43,643 [INFO] KampungKonekt: Processing voice input for senior_001: 'My daughter called me today. So happy! She said she will visit next week.'
+2026-06-15 16:08:47,597 [INFO] httpx: HTTP Request: POST https://apihub.agnes-ai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-15 16:08:47,602 [INFO] KampungKonekt: Agnes processed: sentiment=positive concerns=[] lang=en
+2026-06-15 16:08:47,613 [INFO] memory.storage: Inserted memory entry #63 for senior_001
+2026-06-15 16:08:47,631 [INFO] analytics.detector: Rule 'Consecutive Negative Sentiment' triggered 1 flag(s) for senior_001
+2026-06-15 16:08:47,664 [INFO] analytics.detector: Rule 'Loneliness Pattern' triggered 1 flag(s) for senior_001
+2026-06-15 16:08:47,738 [INFO] memory.storage: Inserted welfare flag #121 [red] for senior_001
+2026-06-15 16:08:47,742 [INFO] memory.storage: Inserted welfare flag #122 [yellow] for senior_001
+2026-06-15 16:08:47,743 [WARNING] KampungKonekt: 2 welfare flag(s) triggered for senior_001
+2026-06-15 16:08:47,743 [INFO] KampungKonekt: Red flag detected — generating welfare report.
+2026-06-15 16:08:47,787 [INFO] reports.generator: Generated welfare report for senior_001: 63 interactions, risk=red
+2026-06-15 16:08:47,790 [INFO] reports.generator: Welfare report saved to C:\agnesAI\nife\Agnes-Hackathon-\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 16:08:47,791 [INFO] KampungKonekt: Welfare report saved to: C:\agnesAI\nife\Agnes-Hackathon-\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 16:08:47,796 [INFO] KampungKonekt: Day 5 ago: 'Had noodles for lunch alone. The neighbour went to market wi' [sentiment: neutral]
+2026-06-15 16:08:47,796 [INFO] KampungKonekt: Processing voice input for senior_001: 'Had noodles for lunch alone. The neighbour went to market without me.'
+2026-06-15 16:08:49,497 [INFO] httpx: HTTP Request: POST https://apihub.agnes-ai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-15 16:08:49,498 [INFO] KampungKonekt: Agnes processed: sentiment=negative concerns=['loneliness'] lang=en
+2026-06-15 16:08:49,510 [INFO] memory.storage: Inserted memory entry #64 for senior_001
+2026-06-15 16:08:49,529 [INFO] analytics.detector: Rule 'Consecutive Negative Sentiment' triggered 1 flag(s) for senior_001
+2026-06-15 16:08:49,561 [INFO] analytics.detector: Rule 'Loneliness Pattern' triggered 1 flag(s) for senior_001
+2026-06-15 16:08:49,681 [INFO] memory.storage: Inserted welfare flag #123 [red] for senior_001
+2026-06-15 16:08:49,685 [INFO] memory.storage: Inserted welfare flag #124 [yellow] for senior_001
+2026-06-15 16:08:49,685 [WARNING] KampungKonekt: 2 welfare flag(s) triggered for senior_001
+2026-06-15 16:08:49,685 [INFO] KampungKonekt: Red flag detected — generating welfare report.
+2026-06-15 16:08:49,754 [INFO] reports.generator: Generated welfare report for senior_001: 64 interactions, risk=red
+2026-06-15 16:08:49,761 [INFO] reports.generator: Welfare report saved to C:\agnesAI\nife\Agnes-Hackathon-\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 16:08:49,761 [INFO] KampungKonekt: Welfare report saved to: C:\agnesAI\nife\Agnes-Hackathon-\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 16:08:49,765 [INFO] KampungKonekt: Day 4 ago: 'Bo lang cai gia. Nobody cooks for me today. My stomach is hu' [sentiment: negative]
+2026-06-15 16:08:49,766 [INFO] KampungKonekt: Processing voice input for senior_001: 'Bo lang cai gia. Nobody cooks for me today. My stomach is hungry.'
+2026-06-15 16:08:57,777 [WARNING] api.agnes_client: Agnes API failed (The read operation timed out). Using local fallback.
+2026-06-15 16:08:57,778 [INFO] KampungKonekt: Agnes processed: sentiment=negative concerns=['loneliness', 'food_insecurity'] lang=hak
+2026-06-15 16:08:57,782 [INFO] memory.storage: Inserted memory entry #65 for senior_001
+2026-06-15 16:08:57,794 [INFO] analytics.detector: Rule 'Consecutive Negative Sentiment' triggered 1 flag(s) for senior_001
+2026-06-15 16:08:57,817 [INFO] analytics.detector: Rule 'Loneliness Pattern' triggered 1 flag(s) for senior_001
+2026-06-15 16:08:57,849 [INFO] memory.storage: Inserted welfare flag #125 [red] for senior_001
+2026-06-15 16:08:57,852 [INFO] memory.storage: Inserted welfare flag #126 [yellow] for senior_001
+2026-06-15 16:08:57,853 [WARNING] KampungKonekt: 2 welfare flag(s) triggered for senior_001
+2026-06-15 16:08:57,853 [INFO] KampungKonekt: Red flag detected — generating welfare report.
+2026-06-15 16:08:57,896 [INFO] reports.generator: Generated welfare report for senior_001: 65 interactions, risk=red
+2026-06-15 16:08:57,899 [INFO] reports.generator: Welfare report saved to C:\agnesAI\nife\Agnes-Hackathon-\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 16:08:57,899 [INFO] KampungKonekt: Welfare report saved to: C:\agnesAI\nife\Agnes-Hackathon-\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 16:08:57,903 [INFO] KampungKonekt: Day 3 ago: 'Send li sia. Nobody is here. I sit alone in the room all day' [sentiment: negative]
+2026-06-15 16:08:57,903 [INFO] KampungKonekt: Processing voice input for senior_001: 'Send li sia. Nobody is here. I sit alone in the room all day.'
+2026-06-15 16:09:04,447 [INFO] httpx: HTTP Request: POST https://apihub.agnes-ai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-15 16:09:04,448 [INFO] KampungKonekt: Agnes processed: sentiment=negative concerns=['loneliness'] lang=en
+2026-06-15 16:09:04,496 [INFO] memory.storage: Inserted memory entry #66 for senior_001
+2026-06-15 16:09:04,504 [INFO] analytics.detector: Rule 'Consecutive Negative Sentiment' triggered 1 flag(s) for senior_001
+2026-06-15 16:09:04,527 [INFO] analytics.detector: Rule 'Loneliness Pattern' triggered 1 flag(s) for senior_001
+2026-06-15 16:09:04,556 [INFO] memory.storage: Inserted welfare flag #127 [red] for senior_001
+2026-06-15 16:09:04,560 [INFO] memory.storage: Inserted welfare flag #128 [yellow] for senior_001
+2026-06-15 16:09:04,561 [WARNING] KampungKonekt: 2 welfare flag(s) triggered for senior_001
+2026-06-15 16:09:04,561 [INFO] KampungKonekt: Red flag detected — generating welfare report.
+2026-06-15 16:09:04,615 [INFO] reports.generator: Generated welfare report for senior_001: 66 interactions, risk=red
+2026-06-15 16:09:04,618 [INFO] reports.generator: Welfare report saved to C:\agnesAI\nife\Agnes-Hackathon-\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 16:09:04,618 [INFO] KampungKonekt: Welfare report saved to: C:\agnesAI\nife\Agnes-Hackathon-\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 16:09:04,622 [INFO] KampungKonekt: Day 2 ago: 'My head hurts so much. Sakit kepala. Cannot sleep well also.' [sentiment: negative]
+2026-06-15 16:09:04,623 [INFO] KampungKonekt: Processing voice input for senior_001: 'My head hurts so much. Sakit kepala. Cannot sleep well also.'
+2026-06-15 16:09:06,376 [INFO] httpx: HTTP Request: POST https://apihub.agnes-ai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-15 16:09:06,377 [INFO] KampungKonekt: Agnes processed: sentiment=negative concerns=['physical_pain'] lang=en
+2026-06-15 16:09:06,383 [INFO] memory.storage: Inserted memory entry #67 for senior_001
+2026-06-15 16:09:06,400 [INFO] analytics.detector: Rule 'Consecutive Negative Sentiment' triggered 1 flag(s) for senior_001
+2026-06-15 16:09:06,426 [INFO] analytics.detector: Rule 'Loneliness Pattern' triggered 1 flag(s) for senior_001
+2026-06-15 16:09:06,458 [INFO] memory.storage: Inserted welfare flag #129 [red] for senior_001
+2026-06-15 16:09:06,462 [INFO] memory.storage: Inserted welfare flag #130 [yellow] for senior_001
+2026-06-15 16:09:06,462 [WARNING] KampungKonekt: 2 welfare flag(s) triggered for senior_001
+2026-06-15 16:09:06,462 [INFO] KampungKonekt: Red flag detected — generating welfare report.
+2026-06-15 16:09:06,513 [INFO] reports.generator: Generated welfare report for senior_001: 67 interactions, risk=red
+2026-06-15 16:09:06,516 [INFO] reports.generator: Welfare report saved to C:\agnesAI\nife\Agnes-Hackathon-\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 16:09:06,517 [INFO] KampungKonekt: Welfare report saved to: C:\agnesAI\nife\Agnes-Hackathon-\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 16:09:06,520 [INFO] KampungKonekt: Day 1 ago: 'Bo u lang tsai. No one visits me. I feel so lonely. Want die' [sentiment: negative]
+2026-06-15 16:09:06,521 [INFO] KampungKonekt: Processing voice input for senior_001: 'Bo u lang tsai. No one visits me. I feel so lonely. Want die already.'
+2026-06-15 16:09:08,838 [INFO] httpx: HTTP Request: POST https://apihub.agnes-ai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-15 16:09:08,839 [INFO] KampungKonekt: Agnes processed: sentiment=negative concerns=['loneliness', 'depression_signs'] lang=si
+2026-06-15 16:09:08,842 [INFO] memory.storage: Inserted memory entry #68 for senior_001
+2026-06-15 16:09:08,862 [INFO] analytics.detector: Rule 'Consecutive Negative Sentiment' triggered 1 flag(s) for senior_001
+2026-06-15 16:09:08,893 [INFO] analytics.detector: Rule 'Loneliness Pattern' triggered 1 flag(s) for senior_001
+2026-06-15 16:09:08,925 [INFO] memory.storage: Inserted welfare flag #131 [red] for senior_001
+2026-06-15 16:09:08,929 [INFO] memory.storage: Inserted welfare flag #132 [yellow] for senior_001
+2026-06-15 16:09:08,929 [WARNING] KampungKonekt: 2 welfare flag(s) triggered for senior_001
+2026-06-15 16:09:08,929 [INFO] KampungKonekt: Red flag detected — generating welfare report.
+2026-06-15 16:09:08,970 [INFO] reports.generator: Generated welfare report for senior_001: 68 interactions, risk=red
+2026-06-15 16:09:08,973 [INFO] reports.generator: Welfare report saved to C:\agnesAI\nife\Agnes-Hackathon-\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 16:09:08,973 [INFO] KampungKonekt: Welfare report saved to: C:\agnesAI\nife\Agnes-Hackathon-\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 16:09:08,977 [INFO] KampungKonekt: ============================================================
+2026-06-15 16:09:08,977 [INFO] KampungKonekt: SIMULATION COMPLETE — Running welfare check...
+2026-06-15 16:09:08,977 [INFO] KampungKonekt: ============================================================
+2026-06-15 16:09:08,978 [INFO] KampungKonekt: Running full welfare check for senior_001
+2026-06-15 16:09:08,999 [INFO] analytics.detector: Rule 'Consecutive Negative Sentiment' triggered 1 flag(s) for senior_001
+2026-06-15 16:09:09,035 [INFO] analytics.detector: Rule 'Loneliness Pattern' triggered 1 flag(s) for senior_001
+2026-06-15 16:09:09,078 [INFO] memory.storage: Inserted welfare flag #133 [red] for senior_001
+2026-06-15 16:09:09,081 [INFO] memory.storage: Inserted welfare flag #134 [yellow] for senior_001
+2026-06-15 16:09:09,147 [INFO] reports.generator: Generated welfare report for senior_001: 68 interactions, risk=red
+2026-06-15 16:09:09,168 [INFO] reports.generator: Welfare report saved to C:\agnesAI\nife\Agnes-Hackathon-\backend\reports\welfare_senior_001_20260615.md
+2026-06-15 16:09:09,168 [INFO] KampungKonekt: Welfare check complete: {'senior_id': 'senior_001', 'risk_level': 'red', 'risk_description': '65 active red flag(s) requiring immediate attention.', 'flags_triggered': 2, 'total_flags_all_time': 134, 'recent_interactions': 68, 'report_path': 'C:\\agnesAI\\nife\\Agnes-Hackathon-\\backend\\reports\\welfare_senior_001_20260615.md', 'report_sentiment': {'positive': 7, 'neutral': 28, 'negative': 33}}
+2026-06-15 16:09:09,169 [INFO] KampungKonekt: Welfare check result: {'senior_id': 'senior_001', 'risk_level': 'red', 'risk_description': '65 active red flag(s) requiring immediate attention.', 'flags_triggered': 2, 'total_flags_all_time': 134, 'recent_interactions': 68, 'report_path': 'C:\\agnesAI\\nife\\Agnes-Hackathon-\\backend\\reports\\welfare_senior_001_20260615.md', 'report_sentiment': {'positive': 7, 'neutral': 28, 'negative': 33}}
+2026-06-15 16:09:09,179 [INFO] memory.storage: Memory storage connection closed.
+2026-06-15 16:09:09,179 [INFO] KampungKonekt: Orchestrator shut down cleanly.
