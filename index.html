@@ -66,7 +66,6 @@
         }
     </script>
     <style>
-<<<<<<< HEAD
         /* Accessibility: Ensure minimum touch targets of 96px */
         .touch-target-min {
             min-height: 96px;
@@ -94,15 +93,6 @@
         .sound-wave-bar {
             width: 8px;
             border-radius: 4px;
-=======
-        .touch-target-min { min-height: 96px; min-width: 96px; }
-        *:focus-visible { outline: 4px solid #FFD60A; outline-offset: 4px; }
-        .interactive { transition: all 0.3s ease; }
-        .interactive:hover { transform: scale(1.02); }
-        .interactive:active { transform: scale(0.98); }
-        .sound-wave-bar {
-            width: 8px; border-radius: 4px;
->>>>>>> source-repo/main
             background: linear-gradient(to top, #FF6B35, #FFD60A);
             animation: soundWave 0.8s ease-in-out infinite;
         }
@@ -111,15 +101,11 @@
         .sound-wave-bar:nth-child(3) { animation-delay: 0.2s; height: 50px; }
         .sound-wave-bar:nth-child(4) { animation-delay: 0.3s; height: 35px; }
         .sound-wave-bar:nth-child(5) { animation-delay: 0.4s; height: 20px; }
-<<<<<<< HEAD
 
-=======
->>>>>>> source-repo/main
         @keyframes soundWave {
             0%, 100% { transform: scaleY(0.5); }
             50% { transform: scaleY(1.2); }
         }
-<<<<<<< HEAD
 
         /* Hidden by default, shown when listening */
         .listening-indicator {
@@ -161,28 +147,11 @@
 
         /* Background pattern for warmth */
         .bg-pattern {
-            background-image: 
-=======
-        .listening-indicator { display: none; }
-        .listening-indicator.active { display: flex; }
-        .response-card { display: none; }
-        .response-card.active { display: block; }
-        body {
-            -webkit-user-select: none; -moz-user-select: none;
-            -ms-user-select: none; user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .response-scroll::-webkit-scrollbar { width: 12px; }
-        .response-scroll::-webkit-scrollbar-track { background: #FFF8F0; border-radius: 6px; }
-        .response-scroll::-webkit-scrollbar-thumb { background: #2D6A4F; border-radius: 6px; }
-        .bg-pattern {
             background-image:
->>>>>>> source-repo/main
                 radial-gradient(circle at 20% 80%, rgba(82, 183, 136, 0.08) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(255, 214, 10, 0.08) 0%, transparent 50%),
                 radial-gradient(circle at 50% 50%, rgba(255, 107, 53, 0.05) 0%, transparent 60%);
         }
-<<<<<<< HEAD
 
         /* Large button shadow depth for tactile feel */
         .button-shadow {
@@ -191,38 +160,18 @@
         .button-shadow:active {
             box-shadow: 0 2px 0 #CC5500, 0 5px 15px rgba(0,0,0,0.15);
             transform: translateY(6px);
-=======
-        .button-shadow { box-shadow: 0 8px 0 #CC5500, 0 15px 30px rgba(0,0,0,0.15); }
-        .button-shadow:active { box-shadow: 0 2px 0 #CC5500, 0 5px 15px rgba(0,0,0,0.15); transform: translateY(6px); }
+        }
         .green-shadow { box-shadow: 0 8px 0 #1B4332, 0 15px 30px rgba(0,0,0,0.15); }
         .green-shadow:active { box-shadow: 0 2px 0 #1B4332, 0 5px 15px rgba(0,0,0,0.15); transform: translateY(6px); }
         .blue-shadow { box-shadow: 0 8px 0 #005580, 0 15px 30px rgba(0,0,0,0.15); }
         .blue-shadow:active { box-shadow: 0 2px 0 #005580, 0 5px 15px rgba(0,0,0,0.15); transform: translateY(6px); }
         .yellow-shadow { box-shadow: 0 8px 0 #B89800, 0 15px 30px rgba(0,0,0,0.15); }
         .yellow-shadow:active { box-shadow: 0 2px 0 #B89800, 0 5px 15px rgba(0,0,0,0.15); transform: translateY(6px); }
-
-        /* Modal overlay */
-        .modal-overlay {
-            position: fixed; inset: 0;
-            background: rgba(26, 26, 46, 0.7);
-            z-index: 50;
-            display: flex; align-items: center; justify-content: center;
-            padding: 24px;
-        }
-        .modal-overlay.hidden { display: none; }
-
-        /* Form inputs */
-        .form-input {
-            -webkit-user-select: text; -moz-user-select: text;
-            -ms-user-select: text; user-select: text;
->>>>>>> source-repo/main
-        }
     </style>
 </head>
 <body class="font-kampung bg-kampung-warm bg-pattern min-h-screen flex flex-col items-center justify-between overflow-x-hidden">
 
     <!-- ============================================= -->
-<<<<<<< HEAD
     <!-- LANGUAGE PICKER (shown on first load) -->
     <!-- ============================================= -->
     <div id="langPicker" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-kampung-warm bg-pattern px-8">
@@ -252,78 +201,10 @@
             >
                 🇲🇾 Bahasa Melayu
             </button>
-=======
-    <!-- AUTH MODAL: Sign Up / Log In                  -->
-    <!-- ============================================= -->
-    <div id="authModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8 animate-slide-up">
-
-            <!-- Logo inside modal -->
-            <div class="flex items-center justify-center gap-3 mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-kampung-green" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                </svg>
-                <span class="text-3xl font-black text-kampung-green">KampungKonekt</span>
-            </div>
-
-            <!-- Tab switcher -->
-            <div class="flex rounded-2xl bg-kampung-warm p-1 mb-6">
-                <button id="tabSignup" onclick="switchTab('signup')"
-                    class="flex-1 py-3 rounded-xl text-xl font-bold transition-all bg-kampung-green text-white">
-                    New User
-                </button>
-                <button id="tabLogin" onclick="switchTab('login')"
-                    class="flex-1 py-3 rounded-xl text-xl font-bold transition-all text-kampung-dark">
-                    I'm Back
-                </button>
-            </div>
-
-            <!-- Sign Up Form -->
-            <form id="signupForm" onsubmit="handleSignup(event)" class="space-y-5">
-                <div>
-                    <label class="block text-xl font-bold text-kampung-dark mb-2">Your Name</label>
-                    <input id="signupName" type="text" placeholder="E.g. Grandma Lim"
-                        class="form-input w-full border-4 border-kampung-light-green rounded-2xl px-5 py-4 text-xl font-bold text-kampung-dark focus:outline-none focus:border-kampung-green"
-                        required>
-                </div>
-                <div>
-                    <label class="block text-xl font-bold text-kampung-dark mb-2">Emergency Contact Name</label>
-                    <input id="signupContactName" type="text" placeholder="E.g. Daughter Sarah"
-                        class="form-input w-full border-4 border-kampung-light-green rounded-2xl px-5 py-4 text-xl font-bold text-kampung-dark focus:outline-none focus:border-kampung-green"
-                        required>
-                </div>
-                <div>
-                    <label class="block text-xl font-bold text-kampung-dark mb-2">Emergency Contact Number</label>
-                    <input id="signupContactNumber" type="tel" placeholder="E.g. 91234567"
-                        class="form-input w-full border-4 border-kampung-light-green rounded-2xl px-5 py-4 text-xl font-bold text-kampung-dark focus:outline-none focus:border-kampung-green"
-                        required>
-                </div>
-                <button type="submit"
-                    class="interactive w-full py-5 bg-kampung-orange text-white rounded-2xl text-2xl font-black button-shadow mt-2">
-                    Start Using KampungKonekt 🏡
-                </button>
-            </form>
-
-            <!-- Log In Form -->
-            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5 hidden">
-                <div>
-                    <label class="block text-xl font-bold text-kampung-dark mb-2">Your Name</label>
-                    <input id="loginName" type="text" placeholder="E.g. Grandma Lim"
-                        class="form-input w-full border-4 border-kampung-light-green rounded-2xl px-5 py-4 text-xl font-bold text-kampung-dark focus:outline-none focus:border-kampung-green"
-                        required>
-                </div>
-                <p id="loginError" class="text-red-500 text-lg font-bold hidden">Name not found. Please sign up first.</p>
-                <button type="submit"
-                    class="interactive w-full py-5 bg-kampung-green text-white rounded-2xl text-2xl font-black green-shadow mt-2">
-                    Welcome Back! 👋
-                </button>
-            </form>
->>>>>>> source-repo/main
         </div>
     </div>
 
     <!-- ============================================= -->
-<<<<<<< HEAD
     <!-- TOP HEADER: App Name & Greeting -->
     <!-- ============================================= -->
     <header class="w-full px-6 pt-8 pb-4 text-center animate-fade-in">
@@ -335,115 +216,6 @@
             <h1 class="text-4xl md:text-5xl font-black text-kampung-green tracking-tight">
                 KampungKonekt
             </h1>
-=======
-    <!-- PROFILE MODAL: Edit / Delete Account          -->
-    <!-- ============================================= -->
-    <div id="profileModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8 animate-slide-up">
-            <h2 id="profileTitle" class="text-3xl font-black text-kampung-dark mb-6 text-center">Your Profile</h2>
-            <form id="profileForm" onsubmit="handleProfileSave(event)" class="space-y-5">
-                <div>
-                    <label class="block text-xl font-bold text-kampung-dark mb-2">Your Name</label>
-                    <input id="profileName" type="text"
-                        class="form-input w-full border-4 border-kampung-light-green rounded-2xl px-5 py-4 text-xl font-bold text-kampung-dark focus:outline-none focus:border-kampung-green"
-                        required>
-                </div>
-                <div>
-                    <label class="block text-xl font-bold text-kampung-dark mb-2">Emergency Contact Name</label>
-                    <input id="profileContactName" type="text"
-                        class="form-input w-full border-4 border-kampung-light-green rounded-2xl px-5 py-4 text-xl font-bold text-kampung-dark focus:outline-none focus:border-kampung-green"
-                        required>
-                </div>
-                <div>
-                    <label class="block text-xl font-bold text-kampung-dark mb-2">Emergency Contact Number</label>
-                    <input id="profileContactNumber" type="tel"
-                        class="form-input w-full border-4 border-kampung-light-green rounded-2xl px-5 py-4 text-xl font-bold text-kampung-dark focus:outline-none focus:border-kampung-green"
-                        required>
-                </div>
-                <div class="flex gap-4 pt-2">
-                    <button type="button" onclick="closeProfileModal()"
-                        class="interactive flex-1 py-4 border-4 border-kampung-dark text-kampung-dark rounded-2xl text-xl font-bold">
-                        Cancel
-                    </button>
-                    <button type="submit"
-                        class="interactive flex-1 py-4 bg-kampung-green text-white rounded-2xl text-xl font-bold green-shadow">
-                        Save Changes
-                    </button>
-                </div>
-                <button type="button" onclick="handleDeleteAccount()"
-                    class="interactive w-full py-4 bg-red-500 text-white rounded-2xl text-xl font-bold">
-                    Delete My Account
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- ============================================= -->
-    <!-- CALL FAMILY MODAL                             -->
-    <!-- ============================================= -->
-    <div id="callModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="callTitle">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8 animate-slide-up">
-            <div class="flex items-center gap-4 mb-6">
-                <div class="w-16 h-16 rounded-full bg-kampung-blue flex items-center justify-center flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                    </svg>
-                </div>
-                <div>
-                    <h2 id="callTitle" class="text-2xl font-black text-kampung-dark">Call Family</h2>
-                    <p id="callContactLabel" class="text-lg text-kampung-blue font-bold"></p>
-                </div>
-            </div>
-
-            <!-- Welfare message preview -->
-            <div class="bg-kampung-warm rounded-2xl p-5 mb-6 border-4 border-kampung-light-green">
-                <p class="text-lg font-bold text-kampung-dark mb-2">Message that will be sent:</p>
-                <p id="callWelfareMessage" class="text-xl text-kampung-dark leading-relaxed"></p>
-            </div>
-
-            <div class="flex gap-4">
-                <button type="button" onclick="closeCallModal()"
-                    class="interactive flex-1 py-4 border-4 border-kampung-dark text-kampung-dark rounded-2xl text-xl font-bold">
-                    Cancel
-                </button>
-                <button type="button" onclick="confirmCallFamily()"
-                    class="interactive flex-1 py-4 bg-kampung-blue text-white rounded-2xl text-xl font-bold blue-shadow">
-                    📞 Notify Now
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================= -->
-    <!-- TOP HEADER: App Name & Greeting               -->
-    <!-- ============================================= -->
-    <header class="w-full px-6 pt-8 pb-4 text-center animate-fade-in">
-        <div class="flex items-center justify-between mb-3">
-            <div class="w-12"></div>
-            <div class="flex items-center justify-center gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-kampung-green" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                </svg>
-                <h1 class="text-4xl md:text-5xl font-black text-kampung-green tracking-tight">KampungKonekt</h1>
-            </div>
-            <!-- Profile + Logout buttons -->
-            <div id="userButtons" class="flex gap-2 hidden">
-                <button onclick="openProfileModal()"
-                    class="interactive w-12 h-12 rounded-full bg-kampung-green flex items-center justify-center"
-                    aria-label="Edit profile">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
-                    </svg>
-                </button>
-                <button onclick="handleLogout()"
-                    class="interactive w-12 h-12 rounded-full bg-red-400 flex items-center justify-center"
-                    aria-label="Log out">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
-                    </svg>
-                </button>
-            </div>
->>>>>>> source-repo/main
         </div>
         <p id="greeting" class="text-2xl md:text-3xl font-bold text-kampung-dark mt-2" role="status" aria-live="polite">
             Good Morning! 👋 How are you today?
@@ -451,7 +223,6 @@
     </header>
 
     <!-- ============================================= -->
-<<<<<<< HEAD
     <!-- MAIN CONTENT: Voice Button Area -->
     <!-- ============================================= -->
     <main class="flex-1 w-full max-w-2xl px-6 flex flex-col items-center justify-center py-8">
@@ -459,14 +230,6 @@
         <!-- LISTENING INDICATOR (shown when mic is active) -->
         <div id="listeningIndicator" class="listening-indicator flex-col items-center mb-8" role="status" aria-label="Listening...">
             <!-- Sound Wave Visualizer -->
-=======
-    <!-- MAIN CONTENT: Voice Button Area               -->
-    <!-- ============================================= -->
-    <main class="flex-1 w-full max-w-2xl px-6 flex flex-col items-center justify-center py-8">
-
-        <!-- LISTENING INDICATOR -->
-        <div id="listeningIndicator" class="listening-indicator flex-col items-center mb-8" role="status" aria-label="Listening...">
->>>>>>> source-repo/main
             <div class="flex items-center gap-2 mb-6 h-16" aria-hidden="true">
                 <div class="sound-wave-bar"></div>
                 <div class="sound-wave-bar"></div>
@@ -474,7 +237,6 @@
                 <div class="sound-wave-bar"></div>
                 <div class="sound-wave-bar"></div>
             </div>
-<<<<<<< HEAD
             <p class="text-2xl font-bold text-kampung-orange animate-bounce-soft">
                 I'm listening... 🎤
             </p>
@@ -485,19 +247,11 @@
         </div>
 
         <!-- THINKING INDICATOR (shown when processing) -->
-=======
-            <p class="text-2xl font-bold text-kampung-orange animate-bounce-soft">I'm listening... 🎤</p>
-            <p class="text-xl text-kampung-dark mt-2 opacity-75">You can speak in English, 中文, Melayu, or dialect</p>
-        </div>
-
-        <!-- THINKING INDICATOR -->
->>>>>>> source-repo/main
         <div id="thinkingIndicator" class="flex-col items-center mb-8 hidden" role="status" aria-label="Thinking...">
             <svg class="animate-spin h-16 w-16 text-kampung-blue mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-<<<<<<< HEAD
             <p class="text-2xl font-bold text-kampung-blue">
                 Thinking... 💭
             </p>
@@ -506,59 +260,36 @@
         <!-- THE GIANT "TAP TO TALK" BUTTON -->
         <div class="relative flex items-center justify-center mb-8">
             <!-- Pulsing ring effect -->
-=======
-            <p class="text-2xl font-bold text-kampung-blue">Thinking... 💭</p>
-        </div>
-
-        <!-- GIANT TAP TO TALK BUTTON -->
-        <div class="relative flex items-center justify-center mb-8">
->>>>>>> source-repo/main
             <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div class="w-64 h-64 rounded-full bg-kampung-orange opacity-20 animate-pulse-ring"></div>
             </div>
             <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div class="w-72 h-72 rounded-full bg-kampung-yellow opacity-10 animate-pulse-ring" style="animation-delay: 0.5s;"></div>
             </div>
-<<<<<<< HEAD
 
             <!-- Main Button -->
-=======
->>>>>>> source-repo/main
             <button
                 id="micButton"
                 class="relative interactive touch-target-min w-64 h-64 md:w-72 md:h-72 rounded-full bg-gradient-to-br from-kampung-orange to-orange-600 text-white font-black text-3xl md:text-4xl button-shadow flex flex-col items-center justify-center gap-3 animate-pulse-giant z-10"
                 aria-label="Tap to talk. Speak in English, Singlish, Malay, Mandarin, or dialect."
                 type="button"
             >
-<<<<<<< HEAD
                 <!-- Microphone Icon -->
-=======
->>>>>>> source-repo/main
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
                     <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
                 </svg>
-<<<<<<< HEAD
                 <!-- Trilingual Label -->
-=======
->>>>>>> source-repo/main
                 <span class="leading-tight">Tap to Talk</span>
                 <span class="text-2xl md:text-3xl opacity-90">Tekan Sini</span>
                 <span class="text-2xl md:text-3xl opacity-90">按这里</span>
             </button>
         </div>
 
-<<<<<<< HEAD
         <!-- QUICK ACTION PILLS (Secondary options) -->
         <div class="flex flex-wrap justify-center gap-4 mb-8" role="group" aria-label="Quick actions">
             <button
                 class="interactive flex items-center gap-3 px-8 py-4 bg-kampung-green text-white rounded-2xl text-xl font-bold button-shadow"
-=======
-        <!-- QUICK ACTION PILLS -->
-        <div class="flex flex-wrap justify-center gap-4 mb-8" role="group" aria-label="Quick actions">
-            <button
-                class="interactive flex items-center gap-3 px-8 py-4 bg-kampung-green text-white rounded-2xl text-xl font-bold green-shadow"
->>>>>>> source-repo/main
                 aria-label="Tell me my schedule for today"
                 type="button"
                 onclick="handleQuickAction('schedule')"
@@ -569,12 +300,7 @@
                 My Schedule
             </button>
             <button
-<<<<<<< HEAD
                 class="interactive flex items-center gap-3 px-8 py-4 bg-kampung-blue text-white rounded-2xl text-xl font-bold button-shadow"
-=======
-                id="callFamilyBtn"
-                class="interactive flex items-center gap-3 px-8 py-4 bg-kampung-blue text-white rounded-2xl text-xl font-bold blue-shadow"
->>>>>>> source-repo/main
                 aria-label="Call my emergency contact"
                 type="button"
                 onclick="handleQuickAction('emergency')"
@@ -585,11 +311,7 @@
                 Call Family
             </button>
             <button
-<<<<<<< HEAD
                 class="interactive flex items-center gap-3 px-8 py-4 bg-kampung-yellow text-kampung-dark rounded-2xl text-xl font-bold button-shadow"
-=======
-                class="interactive flex items-center gap-3 px-8 py-4 bg-kampung-yellow text-kampung-dark rounded-2xl text-xl font-bold yellow-shadow"
->>>>>>> source-repo/main
                 aria-label="Tell me a story or sing a song"
                 type="button"
                 onclick="handleQuickAction('entertain')"
@@ -601,16 +323,11 @@
             </button>
         </div>
 
-<<<<<<< HEAD
         <!-- ============================================= -->
         <!-- AI RESPONSE CARD (Appears after voice input) -->
         <!-- ============================================= -->
         <div id="responseCard" class="response-card w-full bg-white rounded-3xl shadow-2xl p-8 animate-slide-up border-4 border-kampung-light-green" role="dialog" aria-label="KampungKonekt response">
             <!-- Response Header -->
-=======
-        <!-- AI RESPONSE CARD -->
-        <div id="responseCard" class="response-card w-full bg-white rounded-3xl shadow-2xl p-8 animate-slide-up border-4 border-kampung-light-green" role="dialog" aria-label="KampungKonekt response">
->>>>>>> source-repo/main
             <div class="flex items-center gap-4 mb-4">
                 <div class="flex-shrink-0 w-16 h-16 rounded-full bg-kampung-green flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -622,17 +339,13 @@
                     <p class="text-lg text-kampung-green font-bold">Here's what I heard:</p>
                 </div>
             </div>
-<<<<<<< HEAD
 
             <!-- Response Content -->
-=======
->>>>>>> source-repo/main
             <div id="responseContent" class="response-scroll max-h-64 overflow-y-auto pr-2">
                 <p class="text-2xl font-bold text-kampung-dark leading-relaxed" id="responseText">
                     I hear you! Let me note that down for you. Is there anything else you'd like to share? 😊
                 </p>
             </div>
-<<<<<<< HEAD
 
             <!-- Response Actions -->
             <div class="flex flex-wrap gap-4 mt-6 pt-6 border-t-4 border-kampung-warm">
@@ -642,52 +355,32 @@
                     type="button"
                     onclick="handleResponseAction('thank')"
                 >
-=======
-            <div class="flex flex-wrap gap-4 mt-6 pt-6 border-t-4 border-kampung-warm">
-                <button
-                    class="interactive flex-1 min-h-[72px] flex items-center justify-center gap-2 px-6 py-4 bg-kampung-green text-white rounded-2xl text-xl font-bold"
-                    type="button" onclick="handleResponseAction('thank')">
->>>>>>> source-repo/main
                     <span class="text-2xl">🙏</span> Thank You
                 </button>
                 <button
                     class="interactive flex-1 min-h-[72px] flex items-center justify-center gap-2 px-6 py-4 bg-kampung-orange text-white rounded-2xl text-xl font-bold"
-<<<<<<< HEAD
                     aria-label="I have more to say"
                     type="button"
                     onclick="handleResponseAction('continue')"
                 >
-=======
-                    type="button" onclick="handleResponseAction('continue')">
->>>>>>> source-repo/main
                     <span class="text-2xl">💬</span> More to Say
                 </button>
                 <button
                     class="interactive flex-1 min-h-[72px] flex items-center justify-center gap-2 px-6 py-4 bg-kampung-blue text-white rounded-2xl text-xl font-bold"
-<<<<<<< HEAD
                     aria-label="End conversation and rest"
                     type="button"
                     onclick="handleResponseAction('rest')"
                 >
-=======
-                    type="button" onclick="handleResponseAction('rest')">
->>>>>>> source-repo/main
                     <span class="text-2xl">😴</span> Rest Now
                 </button>
             </div>
         </div>
 
-<<<<<<< HEAD
         <!-- EMPTY STATE (shown before first interaction) -->
         <div id="emptyState" class="text-center mt-4 animate-fade-in">
             <p class="text-xl text-kampung-dark opacity-60">
                 Just tap the microphone above to start talking
             </p>
-=======
-        <!-- EMPTY STATE -->
-        <div id="emptyState" class="text-center mt-4 animate-fade-in">
-            <p class="text-xl text-kampung-dark opacity-60">Just tap the microphone above to start talking</p>
->>>>>>> source-repo/main
             <div class="flex justify-center gap-6 mt-4" aria-hidden="true">
                 <span class="text-4xl animate-wave" style="animation-delay: 0s;">🇸🇬</span>
                 <span class="text-4xl animate-wave" style="animation-delay: 0.3s;">🏘️</span>
@@ -698,7 +391,6 @@
     </main>
 
     <!-- ============================================= -->
-<<<<<<< HEAD
     <!-- MINI MUSIC PLAYER (hidden until Play Music tapped) -->
     <!-- ============================================= -->
     <div id="miniPlayer" style="display:none;" class="w-full max-w-2xl px-6 pb-4 animate-slide-up">
@@ -842,37 +534,15 @@
         }
 
         // --- State Management ---
-=======
-    <!-- BOTTOM FOOTER                                 -->
-    <!-- ============================================= -->
-    <footer class="w-full px-6 py-6 text-center bg-white bg-opacity-60 border-t-4 border-kampung-light-green">
-        <p class="text-xl font-bold text-kampung-dark">🤝 You're never alone. KampungKonekt is always here for you.</p>
-        <p class="text-lg text-kampung-dark mt-1 opacity-60">Your data is safe and private. We only share with your family or helper if you want us to.</p>
-    </footer>
-
-    <!-- ============================================= -->
-    <!-- JAVASCRIPT                                    -->
-    <!-- ============================================= -->
-    <script>
-        // --- State ---
->>>>>>> source-repo/main
         const state = {
             isListening: false,
             isProcessing: false,
             hasInteracted: false,
-<<<<<<< HEAD
             recognition: null,
             lastTranscript: '',
         };
 
         // --- DOM Elements ---
-=======
-            conversationHistory: [],
-            lastWelfareMessage: '',
-        };
-
-        // --- DOM ---
->>>>>>> source-repo/main
         const micButton = document.getElementById('micButton');
         const listeningIndicator = document.getElementById('listeningIndicator');
         const thinkingIndicator = document.getElementById('thinkingIndicator');
@@ -880,7 +550,6 @@
         const responseText = document.getElementById('responseText');
         const emptyState = document.getElementById('emptyState');
         const greeting = document.getElementById('greeting');
-<<<<<<< HEAD
 
         // --- Dynamic Greeting ---
         function updateGreeting() {
@@ -930,226 +599,11 @@
 
             const langSeq = appLang === 'zh' ? LANG_SEQUENCE_ZH : appLang === 'ms' ? LANG_SEQUENCE_MS : LANG_SEQUENCE_EN;
             const t = UI_TEXT[appLang];
-
-=======
-        const userButtons = document.getElementById('userButtons');
-
-        // -----------------------------------------------
-        // CONFIG
-        // -----------------------------------------------
-        const API = 'http://localhost:8000';
-        const SESSION_KEY = 'kk_session';
-
-        function setSession(account) {
-            localStorage.setItem(SESSION_KEY, JSON.stringify(account));
-        }
-
-        function getSession() {
-            return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
-        }
-
-        function clearSession() {
-            localStorage.removeItem(SESSION_KEY);
-        }
-
-        // -----------------------------------------------
-        // AUTH MODAL
-        // -----------------------------------------------
-        function showAuthModal() {
-            document.getElementById('authModal').classList.remove('hidden');
-        }
-
-        function hideAuthModal() {
-            document.getElementById('authModal').classList.add('hidden');
-        }
-
-        function switchTab(tab) {
-            const isSignup = tab === 'signup';
-            document.getElementById('signupForm').classList.toggle('hidden', !isSignup);
-            document.getElementById('loginForm').classList.toggle('hidden', isSignup);
-            document.getElementById('tabSignup').className = `flex-1 py-3 rounded-xl text-xl font-bold transition-all ${isSignup ? 'bg-kampung-green text-white' : 'text-kampung-dark'}`;
-            document.getElementById('tabLogin').className = `flex-1 py-3 rounded-xl text-xl font-bold transition-all ${!isSignup ? 'bg-kampung-green text-white' : 'text-kampung-dark'}`;
-            document.getElementById('loginError').classList.add('hidden');
-        }
-
-        async function handleSignup(e) {
-            e.preventDefault();
-            const name = document.getElementById('signupName').value.trim();
-            const contact_name = document.getElementById('signupContactName').value.trim();
-            const contact_number = document.getElementById('signupContactNumber').value.trim();
-            const res = await fetch(`${API}/users`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, contact_name, contact_number }),
-            });
-            if (!res.ok) {
-                const err = await res.json();
-                alert(err.detail || 'Sign up failed. Please try again.');
-                return;
-            }
-            const account = await res.json();
-            setSession(account);
-            hideAuthModal();
-            onLoggedIn(account);
-        }
-
-        async function handleLogin(e) {
-            e.preventDefault();
-            const name = document.getElementById('loginName').value.trim();
-            const res = await fetch(`${API}/users/${encodeURIComponent(name)}`);
-            if (!res.ok) {
-                document.getElementById('loginError').classList.remove('hidden');
-                return;
-            }
-            document.getElementById('loginError').classList.add('hidden');
-            const account = await res.json();
-            setSession(account);
-            hideAuthModal();
-            onLoggedIn(account);
-        }
-
-        // -----------------------------------------------
-        // PROFILE MODAL
-        // -----------------------------------------------
-        function openProfileModal() {
-            const account = getSession();
-            if (!account) return;
-            document.getElementById('profileName').value = account.name;
-            document.getElementById('profileContactName').value = account.contact_name;
-            document.getElementById('profileContactNumber').value = account.contact_number;
-            document.getElementById('profileModal').classList.remove('hidden');
-        }
-
-        function closeProfileModal() {
-            document.getElementById('profileModal').classList.add('hidden');
-        }
-
-        async function handleProfileSave(e) {
-            e.preventDefault();
-            const oldAccount = getSession();
-            const name = document.getElementById('profileName').value.trim();
-            const contact_name = document.getElementById('profileContactName').value.trim();
-            const contact_number = document.getElementById('profileContactNumber').value.trim();
-            const res = await fetch(`${API}/users/${encodeURIComponent(oldAccount.name)}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, contact_name, contact_number }),
-            });
-            if (!res.ok) {
-                const err = await res.json();
-                alert(err.detail || 'Save failed. Please try again.');
-                return;
-            }
-            const updated = await res.json();
-            setSession(updated);
-            closeProfileModal();
-            onLoggedIn(updated);
-        }
-
-        async function handleDeleteAccount() {
-            const account = getSession();
-            if (!account) return;
-            if (!confirm(`Delete account for ${account.name}? This cannot be undone.`)) return;
-            await fetch(`${API}/users/${encodeURIComponent(account.name)}`, { method: 'DELETE' });
-            clearSession();
-            closeProfileModal();
-            onLoggedOut();
-        }
-
-        // -----------------------------------------------
-        // CALL FAMILY MODAL
-        // -----------------------------------------------
-        function openCallModal() {
-            const account = getSession();
-            if (!account) { showAuthModal(); return; }
-
-            const now = new Date();
-            const time = now.toLocaleTimeString('en-SG', { hour: '2-digit', minute: '2-digit' });
-            const date = now.toLocaleDateString('en-SG', { weekday: 'long', day: 'numeric', month: 'long' });
-            const welfareMsg = state.lastWelfareMessage ||
-                `🚨 *KampungKonekt Alert*\n\nHi ${account.contact_name},\n\nThis is an automated message from KampungKonekt on behalf of *${account.name}*.\n\n` +
-                `📅 Date: ${date}\n🕐 Time: ${time}\n\n` +
-                `${account.name} has pressed the *Call Family* button and needs you to check in on them as soon as possible.\n\n` +
-                `Please call or visit them when you can. If there is no response, please contact the relevant emergency services.\n\n` +
-                `📞 Emergency Services: 995\n🏥 Silver Ribbon (Mental Health): 1800-274-4732\n\n` +
-                `— KampungKonekt Welfare System`;
-
-            document.getElementById('callContactLabel').textContent =
-                `${account.contact_name} · ${account.contact_number}`;
-            document.getElementById('callWelfareMessage').textContent = welfareMsg;
-            document.getElementById('callModal').classList.remove('hidden');
-        }
-
-        function closeCallModal() {
-            document.getElementById('callModal').classList.add('hidden');
-        }
-
-        function confirmCallFamily() {
-            const account = getSession();
-            const message = document.getElementById('callWelfareMessage').textContent;
-            const number = account.contact_number.replace(/\D/g, '');
-            const waUrl = `https://wa.me/65${number}?text=${encodeURIComponent(message)}`;
-            closeCallModal();
-            window.open(waUrl, '_blank');
-            showResponseWithContent(
-                `📱 <strong>WhatsApp opened for ${account.contact_name}!</strong><br><br>` +
-                `Just tap <strong>Send</strong> in WhatsApp to notify them. 💚`
-            );
-        }
-
-        // -----------------------------------------------
-        // SESSION LIFECYCLE
-        // -----------------------------------------------
-        function onLoggedIn(account) {
-            userButtons.classList.remove('hidden');
-            updateGreeting(account.name);
-        }
-
-        function onLoggedOut() {
-            userButtons.classList.add('hidden');
-            updateGreeting(null);
-            showAuthModal();
-        }
-
-        function handleLogout() {
-            clearSession();
-            onLoggedOut();
-        }
-
-        // -----------------------------------------------
-        // GREETING
-        // -----------------------------------------------
-        function updateGreeting(name) {
-            const hour = new Date().getHours();
-            let greetingText, emoji;
-            if (hour >= 5 && hour < 12)       { greetingText = 'Good Morning';   emoji = '🌅'; }
-            else if (hour >= 12 && hour < 17) { greetingText = 'Good Afternoon'; emoji = '☀️'; }
-            else if (hour >= 17 && hour < 21) { greetingText = 'Good Evening';   emoji = '🌆'; }
-            else                               { greetingText = 'Late Night';     emoji = '🌙'; }
-
-            if (name) {
-                greeting.innerHTML = `${greetingText}, <strong>${name}</strong>! ${emoji}`;
-            } else {
-                greeting.innerHTML = `${greetingText}! ${emoji} How are you today?`;
-            }
-        }
-
-        // -----------------------------------------------
-        // MIC BUTTON
-        // -----------------------------------------------
-        micButton.addEventListener('click', () => {
-            if (state.isProcessing) return;
-            if (!state.isListening) startListening();
-        });
-
-        function startListening() {
->>>>>>> source-repo/main
             state.isListening = true;
             state.hasInteracted = true;
             emptyState.classList.add('hidden');
             listeningIndicator.classList.add('active');
             micButton.classList.remove('animate-pulse-giant');
-<<<<<<< HEAD
             micButton.style.background = 'linear-gradient(135deg, #2D6A4F, #1B4332)';
             micButton.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -1199,44 +653,6 @@
             micButton.style.background = '';
             micButton.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-=======
-            micButton.style.background = 'linear-gradient(to bottom right, #2D6A4F, #1B4332)';
-            micButton.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                </svg>
-                <span>Stop</span>
-                <span class="text-2xl opacity-90">Hentikan</span>
-                <span class="text-2xl opacity-90">停止</span>
-            `;
-            micButton.setAttribute('aria-label', 'Stop listening');
-            setTimeout(() => { stopListening(); startProcessing(); }, 3000);
-        }
-
-        function stopListening() {
-            state.isListening = false;
-            listeningIndicator.classList.remove('active');
-        }
-
-        function startProcessing() {
-            state.isProcessing = true;
-            thinkingIndicator.classList.remove('hidden');
-            thinkingIndicator.classList.add('flex');
-            setTimeout(() => { stopProcessing(); showResponse(); }, 2000);
-        }
-
-        function stopProcessing() {
-            state.isProcessing = false;
-            thinkingIndicator.classList.add('hidden');
-            thinkingIndicator.classList.remove('flex');
-        }
-
-        function showResponse() {
-            micButton.classList.add('animate-pulse-giant');
-            micButton.style.background = '';
-            micButton.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20" viewBox="0 0 24 24" fill="currentColor">
->>>>>>> source-repo/main
                     <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
                     <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
                 </svg>

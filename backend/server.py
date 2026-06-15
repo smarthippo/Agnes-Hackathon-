@@ -1,23 +1,15 @@
 """
-<<<<<<< HEAD
 KampungKonekt FastAPI Server
 Exposes the backend pipeline as HTTP endpoints for the frontend.
 
 Run:
     cd backend
-=======
-KampungKonekt API Server
-FastAPI server exposing user CRUD and welfare pipeline endpoints.
-
-Run with:
->>>>>>> source-repo/main
     uvicorn server:app --reload --port 8000
 """
 
 from __future__ import annotations
 
 import sys
-<<<<<<< HEAD
 import logging
 from pathlib import Path
 from typing import Optional
@@ -44,20 +36,6 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
 logger = logging.getLogger("KampungKonekt.Server")
-
-=======
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).parent))
-
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-
-from memory.storage import MemoryStorage
-from config.settings import settings
-
->>>>>>> source-repo/main
 app = FastAPI(title="KampungKonekt API", version="1.0.0")
 
 app.add_middleware(
@@ -67,7 +45,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-<<<<<<< HEAD
 # Shared instances (initialized on startup)
 _storage: Optional[MemoryStorage] = None
 _agnes: Optional[AgnesClient] = None
@@ -121,6 +98,18 @@ class StatusResponse(BaseModel):
     risk_description: str
     recent_interactions: int
     sentiment_summary: dict
+
+
+class UserCreate(BaseModel):
+    name: str
+    contact_name: str
+    contact_number: str
+
+
+class UserUpdate(BaseModel):
+    name: str
+    contact_name: str
+    contact_number: str
 
 
 # ---------------------------------------------------------------------------
@@ -219,43 +208,7 @@ def get_default_status():
 
 
 # ---------------------------------------------------------------------------
-# Serve frontend
-# ---------------------------------------------------------------------------
-
-_FRONTEND = _BACKEND_DIR.parent / "index.html"
-_MUSIC_DIR = _BACKEND_DIR.parent / "music"
-
-# Serve music files as static
-if _MUSIC_DIR.exists():
-    app.mount("/music", StaticFiles(directory=str(_MUSIC_DIR)), name="music")
-
-@app.get("/")
-def serve_frontend():
-    if _FRONTEND.exists():
-        return FileResponse(str(_FRONTEND))
-    raise HTTPException(status_code=404, detail="Frontend not found")
-=======
-_storage = MemoryStorage(db_path=settings.DB_PATH)
-
-
-# ---------------------------------------------------------------------------
-# Schemas
-# ---------------------------------------------------------------------------
-
-class UserCreate(BaseModel):
-    name: str
-    contact_name: str
-    contact_number: str
-
-
-class UserUpdate(BaseModel):
-    name: str
-    contact_name: str
-    contact_number: str
-
-
-# ---------------------------------------------------------------------------
-# User routes
+# User routes (CRUD)
 # ---------------------------------------------------------------------------
 
 @app.post("/users", status_code=201)
@@ -291,4 +244,21 @@ def delete_user(name: str):
     deleted = _storage.delete_user(name)
     if not deleted:
         raise HTTPException(status_code=404, detail="User not found.")
->>>>>>> source-repo/main
+
+
+# ---------------------------------------------------------------------------
+# Serve frontend
+# ---------------------------------------------------------------------------
+
+_FRONTEND = _BACKEND_DIR.parent / "index.html"
+_MUSIC_DIR = _BACKEND_DIR.parent / "music"
+
+# Serve music files as static
+if _MUSIC_DIR.exists():
+    app.mount("/music", StaticFiles(directory=str(_MUSIC_DIR)), name="music")
+
+@app.get("/")
+def serve_frontend():
+    if _FRONTEND.exists():
+        return FileResponse(str(_FRONTEND))
+    raise HTTPException(status_code=404, detail="Frontend not found")

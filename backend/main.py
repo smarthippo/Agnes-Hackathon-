@@ -426,21 +426,6 @@ def main() -> None:
 
         elif args.report:
             # Generate report only
-<<<<<<< HEAD
-            with orch._storage, orch._detector:
-                report = orch._reporter.generate_welfare_report(
-                    senior_id=args.report, days=30, force_red_flag=True
-                )
-                if report:
-                    output_path = _BACKEND_DIR / "reports" / f"welfare_{args.report}_{datetime.now().strftime('%Y%m%d')}.md"
-                    orch._reporter.save_report(report, str(output_path))
-                    print(f"\nReport saved to: {output_path}")
-                    print("\n--- Report Preview ---\n")
-                    print(report.raw_markdown[:1000])
-                    print("\n...")
-                else:
-                    print("No report generated (no flags triggered).")
-=======
             report = orch._reporter.generate_welfare_report(
                 senior_id=args.report, days=30, force_red_flag=True
             )
@@ -453,7 +438,6 @@ def main() -> None:
                 print("\n...")
             else:
                 print("No report generated (no flags triggered).")
->>>>>>> source-repo/main
 
         else:
             # No arguments — show help

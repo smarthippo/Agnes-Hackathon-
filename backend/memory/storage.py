@@ -48,8 +48,6 @@ CREATE TABLE IF NOT EXISTS welfare_flags (
 
 CREATE INDEX IF NOT EXISTS idx_flags_senior
     ON welfare_flags(senior_id, triggered_at);
-<<<<<<< HEAD
-=======
 
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -58,7 +56,6 @@ CREATE TABLE IF NOT EXISTS users (
     contact_number TEXT NOT NULL,
     created_at TEXT NOT NULL
 );
->>>>>>> source-repo/main
 """
 
 
@@ -480,8 +477,6 @@ class MemoryStorage:
 
         return "Recent conversation history:\n" + "\n".join(parts)
 
-<<<<<<< HEAD
-=======
     # ------------------------------------------------------------------
     # User CRUD
     # ------------------------------------------------------------------
@@ -529,7 +524,6 @@ class MemoryStorage:
         self._conn.commit()
         return cursor.rowcount > 0
 
->>>>>>> source-repo/main
     def close(self) -> None:
         """Close the database connection."""
         self._conn.close()

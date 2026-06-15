@@ -30,12 +30,10 @@ def _get_int(key: str, default: int = 0) -> int:
 class Settings:
     """Centralized settings for KampungKonekt backend."""
 
-<<<<<<< HEAD
     # --- Gemini (STT + dialect understanding) ---
     GEMINI_API_KEY: str = _get_env("GEMINI_API_KEY")
 
-=======
->>>>>>> source-repo/main
+
     # --- Agnes API ---
     AGNES_API_KEY: str = _get_env("AGNES_API_KEY")
     AGNES_API_BASE_URL: str = _get_env(

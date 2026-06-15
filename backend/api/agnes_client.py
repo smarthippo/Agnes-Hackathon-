@@ -1,38 +1,18 @@
 """
-<<<<<<< HEAD
 Agnes AI Client
 Handles communication with Agnes AI (https://apihub.agnes-ai.com/v1)
 for dialect-aware text understanding, sentiment analysis, and welfare concern extraction.
 
 Falls back to local keyword processing if the API is unavailable.
-=======
-Agnes Text API Client
-Handles all communication with the Agnes backend for:
-  - Dialect-aware translation (Hokkien, Teochew, Singlish, Malay, Mandarin)
-  - Sentiment analysis
-  - Welfare concern extraction
-  - Suggested conversational responses
-
-This module supports both a real API call (via HTTP) and a graceful
-fallback mock mode so the pipeline can be tested offline.
->>>>>>> source-repo/main
 """
 
 from __future__ import annotations
 
 import json
 import logging
-<<<<<<< HEAD
 from typing import Optional
 
 import httpx
-=======
-from pathlib import Path
-from typing import Optional
-
-import httpx
-from pydantic import ValidationError as PydanticValidationError
->>>>>>> source-repo/main
 
 from config.settings import settings
 from models.schemas import (
@@ -45,16 +25,9 @@ from models.schemas import (
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
-<<<<<<< HEAD
 # Local dialect lexicon for fallback processing
 # ---------------------------------------------------------------------------
 
-=======
-# Local dialect lexicon for fallback / hybrid processing
-# ---------------------------------------------------------------------------
-
-# Hokrien -> English mappings (common phrases)
->>>>>>> source-repo/main
 _HOKKIEN_PHRASES: dict[str, str] = {
     "bo lang cai gia": "Nobody cooks for me today",
     "bo liao cai gia": "Nobody has cooked for me",
@@ -68,10 +41,6 @@ _HOKKIEN_PHRASES: dict[str, str] = {
     "seng kiu bo lei tsai": "Living here, no one stays with me",
 }
 
-<<<<<<< HEAD
-=======
-# Teochew -> English mappings (common phrases)
->>>>>>> source-repo/main
 _TEOTREW_PHRASES: dict[str, str] = {
     "bo ing ua a": "Nobody's around",
     "gua buee su": "I'm very tired",
@@ -80,10 +49,6 @@ _TEOTREW_PHRASES: dict[str, str] = {
     "gua ia su a": "I need help",
 }
 
-<<<<<<< HEAD
-=======
-# Malay welfare-relevant phrases
->>>>>>> source-repo/main
 _MALAY_PHRASES: dict[str, str] = {
     "sakit hati": "Heartache / deep sadness",
     "sakit kepala": "Headache",
@@ -96,10 +61,6 @@ _MALAY_PHRASES: dict[str, str] = {
     "nak balik rumah": "Want to go home",
 }
 
-<<<<<<< HEAD
-=======
-# Mandarin welfare-relevant phrases
->>>>>>> source-repo/main
 _MANDARIN_PHRASES: dict[str, str] = {
     "我一个人": "I am alone",
     "没有人陪我": "No one keeps me company",
@@ -113,7 +74,6 @@ _MANDARIN_PHRASES: dict[str, str] = {
     "没人在乎我": "Nobody cares about me",
 }
 
-<<<<<<< HEAD
 # ---------------------------------------------------------------------------
 # System prompt for Agnes
 # ---------------------------------------------------------------------------
@@ -190,35 +150,10 @@ class AgnesClient:
             timeout=8.0,
             headers={
                 "Authorization": f"Bearer {self._api_key}",
-=======
-
-class AgnesClientError(Exception):
-    """Raised when the Agnes API returns an unrecoverable error."""
-
-
-class AgnesClient:
-    """
-    Client for the Agnes Text API.
-
-    Usage:
-        client = AgnesClient()
-        response = await client.ingest(raw_text="Bo lang cai gia", senior_id="s1")
-    """
-
-    def __init__(self, api_key: Optional[str] = None, base_url: Optional[str] = None) -> None:
-        self._api_key = api_key or settings.AGNES_API_KEY
-        self._base_url = (base_url or settings.AGNES_API_BASE_URL).rstrip("/")
-        self._http = httpx.Client(
-            base_url=self._base_url,
-            timeout=15.0,
-            headers={
-                "Authorization": f"Bearer {self._api_key}" if self._api_key else "",
->>>>>>> source-repo/main
                 "Content-Type": "application/json",
             },
         )
 
-<<<<<<< HEAD
     def ingest(self, request: AgnesIngestionRequest) -> AgnesIngestionResponse:
         """Send text to Agnes for welfare analysis. Falls back to local processing on error."""
         try:
@@ -267,50 +202,11 @@ class AgnesClient:
                 concerns.append(ConcernCategory(c))
             except ValueError:
                 pass
-=======
-    # ------------------------------------------------------------------
-    # Public API
-    # ------------------------------------------------------------------
-
-    def ingest(self, request: AgnesIngestionRequest) -> AgnesIngestionResponse:
-        """
-        Send raw text to Agnes for contextual processing.
-
-        Falls back to local dialect lexicon + keyword analysis if the API
-        is unavailable (mock mode).
-        """
-        try:
-            return self._call_agnes_api(request)
-        except httpx.HTTPError as exc:
-            logger.warning(
-                "Agnes API call failed (%s). Falling back to local processing.", exc
-            )
-            return self._local_fallback(request)
-        except PydanticValidationError as exc:
-            logger.warning("Agnes API validation error (%s). Falling back.", exc)
-            return self._local_fallback(request)
-
-    # ------------------------------------------------------------------
-    # Real API call
-    # ------------------------------------------------------------------
-
-    def _call_agnes_api(
-        self, request: AgnesIngestionRequest
-    ) -> AgnesIngestionResponse:
-        payload = request.model_dump(exclude_none=True)
-        response = self._http.post("/ingest", json=payload)
-        response.raise_for_status()
-        data = response.json()
-
-        # Parse language hint from Agnes response
-        detected_lang = data.get("detected_language", request.language_hint or "en")
->>>>>>> source-repo/main
 
         return AgnesIngestionResponse(
             translated_text=data.get("translated_text", request.raw_text),
             sentiment=SentimentLabel(data.get("sentiment", "neutral")),
             sentiment_score=float(data.get("sentiment_score", 0.5)),
-<<<<<<< HEAD
             concerns=concerns,
             concern_details=data.get("concern_details", []),
             wellness_notes=data.get("wellness_notes", ""),
@@ -330,52 +226,6 @@ class AgnesClient:
         concerns, details = self._extract_concerns(raw, request)
         wellness_notes = self._generate_wellness_notes(sentiment, concerns, details)
         suggested = self._generate_suggested_response(sentiment, concerns, lang=request.language_hint or "en")
-=======
-            concerns=[
-                ConcernCategory(c) for c in data.get("concerns", [])
-            ],
-            concern_details=data.get("concern_details", []),
-            wellness_notes=data.get("wellness_notes", ""),
-            suggested_response=data.get("suggested_response", ""),
-            detected_language=detected_lang,
-        )
-
-    # ------------------------------------------------------------------
-    # Local Fallback — dialect lexicon + keyword analysis
-    # ------------------------------------------------------------------
-
-    def _local_fallback(
-        self, request: AgnesIngestionRequest
-    ) -> AgnesIngestionResponse:
-        """
-        Fallback processing when the real Agnes API is unavailable.
-        Uses local lexicons and keyword matching to simulate Agnes output.
-        """
-        raw = request.raw_text.lower().strip()
-
-        # --- Step 1: Try dialect lexicon match ---
-        translated = self._match_dialect(raw)
-        detected_lang = self._detect_language(raw)
-
-        # --- Step 2: Sentiment analysis (keyword-based) ---
-        sentiment, score = self._analyze_sentiment(raw)
-
-        # --- Step 3: Welfare concern extraction ---
-        concerns, details = self._extract_concerns(raw, request)
-
-        # --- Step 4: Wellness notes ---
-        wellness_notes = self._generate_wellness_notes(sentiment, concerns, details)
-
-        # --- Step 5: Suggested response ---
-        suggested = self._generate_suggested_response(sentiment, concerns)
-
-        logger.info(
-            "Local fallback: sentiment=%s concerns=%s lang=%s",
-            sentiment.value,
-            [c.value for c in concerns],
-            detected_lang,
-        )
->>>>>>> source-repo/main
 
         return AgnesIngestionResponse(
             translated_text=translated,
@@ -388,7 +238,6 @@ class AgnesClient:
             detected_language=detected_lang,
         )
 
-<<<<<<< HEAD
     def _match_dialect(self, raw: str) -> str:
         for phrase, translation in _HOKKIEN_PHRASES.items():
             if phrase in raw:
@@ -701,4 +550,3 @@ class AgnesClient:
             return "Thank you for sharing how you feel. Your feelings are valid. Let me inform your helper so they can check on you soon. 💚"
 
         return "Thank you for telling me. I've noted everything down. Is there anything else on your mind? 💬"
->>>>>>> source-repo/main
