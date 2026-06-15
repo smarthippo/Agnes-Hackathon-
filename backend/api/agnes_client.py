@@ -393,7 +393,7 @@ class AgnesClient:
             if ConcernCategory.DEPRESSION_SIGNS in concerns:
                 return "Thank you for sharing. Your feelings are valid. Let me inform your helper so they can check on you soon. 💚"
             return "Thank you for telling me. I've noted everything down. Is there anything else on your mind? 💬"
-=======
+
     # ------------------------------------------------------------------
     # Dialect matching helpers
     # ------------------------------------------------------------------
