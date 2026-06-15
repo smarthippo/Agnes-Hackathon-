@@ -78,6 +78,12 @@ class ProcessRequest(BaseModel):
     senior_id: Optional[str] = None
 
 
+class VoiceProcessRequest(BaseModel):
+    raw_text: str
+    language_hint: str = "en"
+    senior_id: Optional[str] = None
+
+
 class ProcessResponse(BaseModel):
     translated_text: str
     sentiment: str
@@ -183,6 +189,12 @@ def process_voice(req: ProcessRequest):
         risk_level=risk_level.value,
         alert_message=alert_message,
     )
+
+
+@app.post("/api/voice/process", response_model=ProcessResponse)
+def process_voice_frontend(req: VoiceProcessRequest):
+    """Alias for the frontend which sends raw_text/language_hint."""
+    return process_voice(ProcessRequest(text=req.raw_text, language=req.language_hint, senior_id=req.senior_id))
 
 
 @app.get("/api/status/{senior_id}", response_model=StatusResponse)

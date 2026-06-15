@@ -167,9 +167,78 @@
         .blue-shadow:active { box-shadow: 0 2px 0 #005580, 0 5px 15px rgba(0,0,0,0.15); transform: translateY(6px); }
         .yellow-shadow { box-shadow: 0 8px 0 #B89800, 0 15px 30px rgba(0,0,0,0.15); }
         .yellow-shadow:active { box-shadow: 0 2px 0 #B89800, 0 5px 15px rgba(0,0,0,0.15); transform: translateY(6px); }
+
+        /* Modal overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body class="font-kampung bg-kampung-warm bg-pattern min-h-screen flex flex-col items-center justify-between overflow-x-hidden">
+
+    <!-- ============================================= -->
+    <!-- AUTH MODAL (shown if not logged in) -->
+    <!-- ============================================= -->
+    <div id="authModal" class="modal-overlay">
+        <div class="modal-content text-center">
+            <h2 class="text-2xl font-black text-kampung-green mb-4">Welcome to KampungKonekt! 👋</h2>
+            <p class="text-lg text-kampung-dark mb-6">Sign in to get started</p>
+            <div class="space-y-4">
+                <input id="authName" type="text" placeholder="Your name" class="w-full px-4 py-3 text-xl rounded-xl border-4 border-kampung-light-green focus:outline-none focus:border-kampung-orange" style="-webkit-user-select: text; user-select: text;">
+                <button onclick="doLogin()" class="w-full py-4 bg-kampung-orange text-white rounded-2xl text-xl font-black button-shadow">Sign In</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROFILE MODAL -->
+    <div id="profileModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 rounded-full bg-kampung-green flex items-center justify-center text-white text-xl font-black" id="profileAvatar">👤</div>
+                <div>
+                    <h3 class="text-xl font-black text-kampung-dark" id="profileName">Friend</h3>
+                    <p class="text-sm text-kampung-green">KampungKonekt Member</p>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <p class="text-base text-kampung-dark"><strong>Emergency Contact:</strong> 9123 XXXX</p>
+                <p class="text-base text-kampung-dark"><strong>Language:</strong> <span id="profileLang">English</span></p>
+                <p class="text-base text-kampung-dark"><strong>Member since:</strong> Today</p>
+                <button onclick="closeProfileModal()" class="w-full py-3 bg-kampung-green text-white rounded-xl text-lg font-bold">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CALL MODAL -->
+    <div id="callModal" class="modal-overlay">
+        <div class="modal-content text-center">
+            <h3 class="text-xl font-black text-kampung-dark mb-4">Call Family</h3>
+            <div class="space-y-3">
+                <button onclick="makeCall('daughter')" class="w-full py-4 bg-kampung-green text-white rounded-xl text-lg font-bold button-shadow">👩 Call Daughter</button>
+                <button onclick="makeCall('son')" class="w-full py-4 bg-kampung-blue text-white rounded-xl text-lg font-bold button-shadow">👨 Call Son</button>
+                <button onclick="openWhatsApp()" class="w-full py-4 bg-green-600 text-white rounded-xl text-lg font-bold button-shadow">💬 Open WhatsApp</button>
+                <button onclick="closeCallModal()" class="w-full py-3 bg-gray-200 rounded-xl text-lg font-bold">Cancel</button>
+            </div>
+        </div>
+    </div>
 
     <!-- ============================================= -->
     <!-- LANGUAGE PICKER (shown on first load) -->
@@ -183,24 +252,9 @@
         </div>
         <p class="text-2xl font-bold text-kampung-dark mb-10 text-center">Choose your language<br>请选择语言</p>
         <div class="flex flex-col gap-6 w-full max-w-sm">
-            <button
-                onclick="selectLanguage('en')"
-                class="interactive w-full py-8 bg-kampung-orange text-white rounded-3xl text-3xl font-black button-shadow"
-            >
-                🇸🇬 English
-            </button>
-            <button
-                onclick="selectLanguage('zh')"
-                class="interactive w-full py-8 bg-kampung-green text-white rounded-3xl text-3xl font-black button-shadow"
-            >
-                🇨🇳 中文
-            </button>
-            <button
-                onclick="selectLanguage('ms')"
-                class="interactive w-full py-8 bg-kampung-blue text-white rounded-3xl text-3xl font-black button-shadow"
-            >
-                🇲🇾 Bahasa Melayu
-            </button>
+            <button onclick="selectLanguage('en')" class="interactive w-full py-8 bg-kampung-orange text-white rounded-3xl text-3xl font-black button-shadow">🇸🇬 English</button>
+            <button onclick="selectLanguage('zh')" class="interactive w-full py-8 bg-kampung-green text-white rounded-3xl text-3xl font-black button-shadow">🇨🇳 中文</button>
+            <button onclick="selectLanguage('ms')" class="interactive w-full py-8 bg-kampung-blue text-white rounded-3xl text-3xl font-black button-shadow">🇲🇾 Bahasa Melayu</button>
         </div>
     </div>
 
@@ -208,18 +262,13 @@
     <!-- TOP HEADER: App Name & Greeting -->
     <!-- ============================================= -->
     <header class="w-full px-6 pt-8 pb-4 text-center animate-fade-in">
-        <!-- Logo / Brand -->
         <div class="flex items-center justify-center gap-3 mb-3">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-kampung-green" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
             </svg>
-            <h1 class="text-4xl md:text-5xl font-black text-kampung-green tracking-tight">
-                KampungKonekt
-            </h1>
+            <h1 class="text-4xl md:text-5xl font-black text-kampung-green tracking-tight">KampungKonekt</h1>
         </div>
-        <p id="greeting" class="text-2xl md:text-3xl font-bold text-kampung-dark mt-2" role="status" aria-live="polite">
-            Good Morning! 👋 How are you today?
-        </p>
+        <p id="greeting" class="text-2xl md:text-3xl font-bold text-kampung-dark mt-2" role="status" aria-live="polite">Good Morning! 👋 How are you today?</p>
     </header>
 
     <!-- ============================================= -->
@@ -227,9 +276,8 @@
     <!-- ============================================= -->
     <main class="flex-1 w-full max-w-2xl px-6 flex flex-col items-center justify-center py-8">
 
-        <!-- LISTENING INDICATOR (shown when mic is active) -->
+        <!-- LISTENING INDICATOR -->
         <div id="listeningIndicator" class="listening-indicator flex-col items-center mb-8" role="status" aria-label="Listening...">
-            <!-- Sound Wave Visualizer -->
             <div class="flex items-center gap-2 mb-6 h-16" aria-hidden="true">
                 <div class="sound-wave-bar"></div>
                 <div class="sound-wave-bar"></div>
@@ -237,162 +285,97 @@
                 <div class="sound-wave-bar"></div>
                 <div class="sound-wave-bar"></div>
             </div>
-            <p class="text-2xl font-bold text-kampung-orange animate-bounce-soft">
-                I'm listening... 🎤
-            </p>
-            <p class="text-xl text-kampung-dark mt-2 opacity-75">
-                You can speak in English, 中文, Melayu, or dialect
-            </p>
-            <!-- overridden by applyUILanguage -->
+            <p class="text-2xl font-bold text-kampung-orange animate-bounce-soft">I'm listening... 🎤</p>
+            <p class="text-xl text-kampung-dark mt-2 opacity-75">You can speak in English, 中文, Melayu, or dialect</p>
         </div>
 
-        <!-- THINKING INDICATOR (shown when processing) -->
+        <!-- THINKING INDICATOR -->
         <div id="thinkingIndicator" class="flex-col items-center mb-8 hidden" role="status" aria-label="Thinking...">
             <svg class="animate-spin h-16 w-16 text-kampung-blue mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            <p class="text-2xl font-bold text-kampung-blue">
-                Thinking... 💭
-            </p>
+            <p class="text-2xl font-bold text-kampung-blue">Thinking... 💭</p>
         </div>
 
         <!-- THE GIANT "TAP TO TALK" BUTTON -->
         <div class="relative flex items-center justify-center mb-8">
-            <!-- Pulsing ring effect -->
             <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div class="w-64 h-64 rounded-full bg-kampung-orange opacity-20 animate-pulse-ring"></div>
             </div>
             <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div class="w-72 h-72 rounded-full bg-kampung-yellow opacity-10 animate-pulse-ring" style="animation-delay: 0.5s;"></div>
             </div>
-
-            <!-- Main Button -->
-            <button
-                id="micButton"
-                class="relative interactive touch-target-min w-64 h-64 md:w-72 md:h-72 rounded-full bg-gradient-to-br from-kampung-orange to-orange-600 text-white font-black text-3xl md:text-4xl button-shadow flex flex-col items-center justify-center gap-3 animate-pulse-giant z-10"
-                aria-label="Tap to talk. Speak in English, Singlish, Malay, Mandarin, or dialect."
-                type="button"
-            >
-                <!-- Microphone Icon -->
+            <button id="micButton" class="relative interactive touch-target-min w-64 h-64 md:w-72 md:h-72 rounded-full bg-gradient-to-br from-kampung-orange to-orange-600 text-white font-black text-3xl md:text-4xl button-shadow flex flex-col items-center justify-center gap-3 animate-pulse-giant z-10" aria-label="Tap to talk. Speak in English, Singlish, Malay, Mandarin, or dialect." type="button">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
                     <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
                 </svg>
-                <!-- Trilingual Label -->
                 <span class="leading-tight">Tap to Talk</span>
                 <span class="text-2xl md:text-3xl opacity-90">Tekan Sini</span>
                 <span class="text-2xl md:text-3xl opacity-90">按这里</span>
             </button>
         </div>
 
-        <!-- QUICK ACTION PILLS (Secondary options) -->
+        <!-- QUICK ACTION PILLS -->
         <div class="flex flex-wrap justify-center gap-4 mb-8" role="group" aria-label="Quick actions">
-            <button
-                class="interactive flex items-center gap-3 px-8 py-4 bg-kampung-green text-white rounded-2xl text-xl font-bold button-shadow"
-                aria-label="Tell me my schedule for today"
-                type="button"
-                onclick="handleQuickAction('schedule')"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
-                </svg>
+            <button class="interactive flex items-center gap-3 px-8 py-4 bg-kampung-green text-white rounded-2xl text-xl font-bold button-shadow" aria-label="Tell me my schedule for today" type="button" onclick="handleQuickAction('schedule')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
                 My Schedule
             </button>
-            <button
-                class="interactive flex items-center gap-3 px-8 py-4 bg-kampung-blue text-white rounded-2xl text-xl font-bold button-shadow"
-                aria-label="Call my emergency contact"
-                type="button"
-                onclick="handleQuickAction('emergency')"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                </svg>
+            <button class="interactive flex items-center gap-3 px-8 py-4 bg-kampung-blue text-white rounded-2xl text-xl font-bold button-shadow" aria-label="Call my emergency contact" type="button" onclick="handleQuickAction('emergency')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
                 Call Family
             </button>
-            <button
-                class="interactive flex items-center gap-3 px-8 py-4 bg-kampung-yellow text-kampung-dark rounded-2xl text-xl font-bold button-shadow"
-                aria-label="Tell me a story or sing a song"
-                type="button"
-                onclick="handleQuickAction('entertain')"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-                </svg>
+            <button class="interactive flex items-center gap-3 px-8 py-4 bg-kampung-yellow text-kampung-dark rounded-2xl text-xl font-bold button-shadow" aria-label="Tell me a story or sing a song" type="button" onclick="handleQuickAction('entertain')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
                 Play Music
+            </button>
+            <button class="interactive flex items-center gap-3 px-8 py-4 bg-kampung-orange text-white rounded-2xl text-xl font-bold button-shadow" aria-label="Open profile" type="button" onclick="openProfileModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                Profile
             </button>
         </div>
 
-        <!-- ============================================= -->
-        <!-- AI RESPONSE CARD (Appears after voice input) -->
-        <!-- ============================================= -->
+        <!-- AI RESPONSE CARD -->
         <div id="responseCard" class="response-card w-full bg-white rounded-3xl shadow-2xl p-8 animate-slide-up border-4 border-kampung-light-green" role="dialog" aria-label="KampungKonekt response">
-            <!-- Response Header -->
             <div class="flex items-center gap-4 mb-4">
                 <div class="flex-shrink-0 w-16 h-16 rounded-full bg-kampung-green flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                 </div>
                 <div>
                     <h2 class="text-2xl font-black text-kampung-dark">Your Kampung Friend</h2>
                     <p class="text-lg text-kampung-green font-bold">Here's what I heard:</p>
                 </div>
             </div>
-
-            <!-- Response Content -->
             <div id="responseContent" class="response-scroll max-h-64 overflow-y-auto pr-2">
-                <p class="text-2xl font-bold text-kampung-dark leading-relaxed" id="responseText">
-                    I hear you! Let me note that down for you. Is there anything else you'd like to share? 😊
-                </p>
+                <p class="text-2xl font-bold text-kampung-dark leading-relaxed" id="responseText">I hear you! Let me note that down for you. Is there anything else you'd like to share? 😊</p>
             </div>
-
-            <!-- Response Actions -->
             <div class="flex flex-wrap gap-4 mt-6 pt-6 border-t-4 border-kampung-warm">
-                <button
-                    class="interactive flex-1 min-h-[72px] flex items-center justify-center gap-2 px-6 py-4 bg-kampung-green text-white rounded-2xl text-xl font-bold"
-                    aria-label="Thank the AI"
-                    type="button"
-                    onclick="handleResponseAction('thank')"
-                >
+                <button class="interactive flex-1 min-h-[72px] flex items-center justify-center gap-2 px-6 py-4 bg-kampung-green text-white rounded-2xl text-xl font-bold" aria-label="Thank the AI" type="button" onclick="handleResponseAction('thank')">
                     <span class="text-2xl">🙏</span> Thank You
                 </button>
-                <button
-                    class="interactive flex-1 min-h-[72px] flex items-center justify-center gap-2 px-6 py-4 bg-kampung-orange text-white rounded-2xl text-xl font-bold"
-                    aria-label="I have more to say"
-                    type="button"
-                    onclick="handleResponseAction('continue')"
-                >
+                <button class="interactive flex-1 min-h-[72px] flex items-center justify-center gap-2 px-6 py-4 bg-kampung-orange text-white rounded-2xl text-xl font-bold" aria-label="I have more to say" type="button" onclick="handleResponseAction('continue')">
                     <span class="text-2xl">💬</span> More to Say
                 </button>
-                <button
-                    class="interactive flex-1 min-h-[72px] flex items-center justify-center gap-2 px-6 py-4 bg-kampung-blue text-white rounded-2xl text-xl font-bold"
-                    aria-label="End conversation and rest"
-                    type="button"
-                    onclick="handleResponseAction('rest')"
-                >
+                <button class="interactive flex-1 min-h-[72px] flex items-center justify-center gap-2 px-6 py-4 bg-kampung-blue text-white rounded-2xl text-xl font-bold" aria-label="End conversation and rest" type="button" onclick="handleResponseAction('rest')">
                     <span class="text-2xl">😴</span> Rest Now
                 </button>
             </div>
         </div>
 
-        <!-- EMPTY STATE (shown before first interaction) -->
+        <!-- EMPTY STATE -->
         <div id="emptyState" class="text-center mt-4 animate-fade-in">
-            <p class="text-xl text-kampung-dark opacity-60">
-                Just tap the microphone above to start talking
-            </p>
+            <p class="text-xl text-kampung-dark opacity-60">Just tap the microphone above to start talking</p>
             <div class="flex justify-center gap-6 mt-4" aria-hidden="true">
                 <span class="text-4xl animate-wave" style="animation-delay: 0s;">🇸🇬</span>
                 <span class="text-4xl animate-wave" style="animation-delay: 0.3s;">🏘️</span>
                 <span class="text-4xl animate-wave" style="animation-delay: 0.6s;">❤️</span>
             </div>
         </div>
-
     </main>
 
-    <!-- ============================================= -->
-    <!-- MINI MUSIC PLAYER (hidden until Play Music tapped) -->
-    <!-- ============================================= -->
+    <!-- MINI MUSIC PLAYER -->
     <div id="miniPlayer" style="display:none;" class="w-full max-w-2xl px-6 pb-4 animate-slide-up">
         <div class="bg-white rounded-3xl shadow-xl border-4 border-kampung-yellow p-5">
             <div class="flex items-center gap-3 mb-3">
@@ -412,26 +395,20 @@
         </div>
     </div>
 
-    <!-- ============================================= -->
-    <!-- BOTTOM FOOTER: Reassurance -->
-    <!-- ============================================= -->
+    <!-- BOTTOM FOOTER -->
     <footer class="w-full px-6 py-6 text-center bg-white bg-opacity-60 border-t-4 border-kampung-light-green">
-        <p class="text-xl font-bold text-kampung-dark">
-            🤝 You're never alone. KampungKonekt is always here for you.
-        </p>
-        <p class="text-lg text-kampung-dark mt-1 opacity-60">
-            Your data is safe and private. We only share with your family or helper if you want us to.
-        </p>
+        <p class="text-xl font-bold text-kampung-dark">🤝 You're never alone. KampungKonekt is always here for you.</p>
+        <p class="text-lg text-kampung-dark mt-1 opacity-60">Your data is safe and private. We only share with your family or helper if you want us to.</p>
     </footer>
 
     <!-- ============================================= -->
-    <!-- JAVASCRIPT: Interactivity -->
+    <!-- JAVASCRIPT -->
     <!-- ============================================= -->
     <script>
         const API_BASE = 'http://localhost:8000';
 
         // --- Language Mode ---
-        let appLang = 'en'; // 'en' or 'zh'
+        let appLang = 'en';
 
         const UI_TEXT = {
             ms: {
@@ -502,33 +479,19 @@
 
         function applyUILanguage(lang) {
             const t = UI_TEXT[lang];
-
-            // Mic button
             document.querySelector('#micButton span.leading-tight').textContent = t.tap;
-
-            // Listening hint
             document.querySelector('#listeningIndicator p.text-xl').textContent = t.listening_hint;
-
-            // Response header
             document.querySelector('#responseCard h2').textContent = t.friend;
             document.querySelector('#responseCard p.text-kampung-green').textContent = t.heard;
-
-            // Response action buttons
             const respBtns = document.querySelectorAll('#responseCard .flex.flex-wrap button');
             if (respBtns[0]) respBtns[0].innerHTML = `<span class="text-2xl">🙏</span> ${t.thank}`;
             if (respBtns[1]) respBtns[1].innerHTML = `<span class="text-2xl">💬</span> ${t.more}`;
             if (respBtns[2]) respBtns[2].innerHTML = `<span class="text-2xl">😴</span> ${t.rest}`;
-
-            // Quick action buttons
             const qBtns = document.querySelectorAll('[role="group"] button');
             if (qBtns[0]) qBtns[0].innerHTML = qBtns[0].innerHTML.replace(/My Schedule|我的日程/, t.schedule);
             if (qBtns[1]) qBtns[1].innerHTML = qBtns[1].innerHTML.replace(/Call Family|联系家人/, t.call);
             if (qBtns[2]) qBtns[2].innerHTML = qBtns[2].innerHTML.replace(/Play Music|播放音乐/, t.music);
-
-            // Footer
             document.querySelector('footer p.font-bold').textContent = t.footer;
-
-            // Empty state
             const emptyP = document.querySelector('#emptyState p');
             if (emptyP) emptyP.textContent = lang === 'zh' ? '点击上方的麦克风开始说话' : 'Just tap the microphone above to start talking';
         }
@@ -552,7 +515,7 @@
         const greeting = document.getElementById('greeting');
 
         // --- Dynamic Greeting ---
-        function updateGreeting() {
+        function updateGreeting(account) {
             const hour = new Date().getHours();
             const t = UI_TEXT[appLang];
             let key;
@@ -560,12 +523,58 @@
             else if (hour >= 12 && hour < 17) key = 'greeting_afternoon';
             else if (hour >= 17 && hour < 21) key = 'greeting_evening';
             else key = 'greeting_night';
-            greeting.innerHTML = t[key];
+            const name = account ? account.name : '';
+            greeting.innerHTML = name ? `${t[key]} ${name}!` : t[key];
         }
-        // Greeting updates after language is selected
+
+        // --- Auth helpers ---
+        function getSession() {
+            try { return JSON.parse(localStorage.getItem('kk_session')); } catch { return null; }
+        }
+        function setSession(obj) { localStorage.setItem('kk_session', JSON.stringify(obj)); }
+
+        function showAuthModal() { document.getElementById('authModal').classList.add('active'); }
+        function closeAuthModal() { document.getElementById('authModal').classList.remove('active'); }
+
+        function doLogin() {
+            const name = document.getElementById('authName').value.trim() || 'Friend';
+            const acc = { name, joined: new Date().toISOString() };
+            setSession(acc);
+            closeAuthModal();
+            onLoggedIn(acc);
+        }
+
+        function onLoggedIn(account) {
+            updateGreeting(account);
+            document.getElementById('profileName').textContent = account.name;
+            document.getElementById('profileLang').textContent = appLang === 'zh' ? '中文' : appLang === 'ms' ? 'Bahasa Melayu' : 'English';
+        }
+
+        // --- Profile Modal ---
+        function openProfileModal() {
+            document.getElementById('profileModal').classList.add('active');
+        }
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('active');
+        }
+
+        // --- Call Modal ---
+        function openCallModal() {
+            document.getElementById('callModal').classList.add('active');
+        }
+        function closeCallModal() {
+            document.getElementById('callModal').classList.remove('active');
+        }
+        function makeCall(who) {
+            showResponseWithContent(`📞 Calling your ${who} now...<br><br>If no answer, we will try the next contact.<br><br>You can also dial <strong>995</strong> for emergency services anytime.`);
+            closeCallModal();
+        }
+        function openWhatsApp() {
+            window.open('https://wa.me/?text=Hi%20from%20KampungKonekt!', '_blank');
+            closeCallModal();
+        }
 
         // --- Web Speech API Setup ---
-        // Language sequence based on user's choice at landing screen
         const LANG_SEQUENCE_EN = ['en-SG'];
         const LANG_SEQUENCE_ZH = ['zh-CN', 'zh-TW'];
         const LANG_SEQUENCE_MS = ['ms-MY', 'ms'];
@@ -592,11 +601,7 @@
         });
 
         function startListening(langIndex = 0) {
-            if (!hasSpeech) {
-                showTextInputFallback();
-                return;
-            }
-
+            if (!hasSpeech) { showTextInputFallback(); return; }
             const langSeq = appLang === 'zh' ? LANG_SEQUENCE_ZH : appLang === 'ms' ? LANG_SEQUENCE_MS : LANG_SEQUENCE_EN;
             const t = UI_TEXT[appLang];
             state.isListening = true;
@@ -606,23 +611,17 @@
             micButton.classList.remove('animate-pulse-giant');
             micButton.style.background = 'linear-gradient(135deg, #2D6A4F, #1B4332)';
             micButton.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                </svg>
-                <span class="leading-tight">${t.stop}</span>
-            `;
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                <span class="leading-tight">${t.stop}</span>`;
             micButton.setAttribute('aria-label', 'Stop listening');
-
             const lang = langSeq[langIndex] || (appLang === 'zh' ? 'zh-CN' : appLang === 'ms' ? 'ms-MY' : 'en-SG');
             state.recognition = buildRecognition(lang);
-
             state.recognition.onresult = (event) => {
                 const transcript = event.results[0][0].transcript;
                 state.lastTranscript = transcript;
                 stopListeningUI();
                 sendToBackend(transcript);
             };
-
             state.recognition.onerror = (event) => {
                 console.warn('Speech error:', event.error, 'lang:', lang);
                 if (event.error === 'no-speech' && langIndex + 1 < langSeq.length) {
@@ -633,11 +632,7 @@
                 stopListeningUI();
                 showTextInputFallback();
             };
-
-            state.recognition.onend = () => {
-                if (state.isListening) stopListeningUI();
-            };
-
+            state.recognition.onend = () => { if (state.isListening) stopListeningUI(); };
             try { state.recognition.start(); }
             catch(e) { stopListeningUI(); showTextInputFallback(); }
         }
@@ -652,50 +647,29 @@
             micButton.classList.add('animate-pulse-giant');
             micButton.style.background = '';
             micButton.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                    <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
                 <span class="leading-tight">Tap to Talk</span>
                 <span class="text-2xl md:text-3xl opacity-90">Tekan Sini</span>
-                <span class="text-2xl md:text-3xl opacity-90">按这里</span>
-            `;
+                <span class="text-2xl md:text-3xl opacity-90">按这里</span>`;
             micButton.setAttribute('aria-label', 'Tap to talk. Speak in English, Singlish, Malay, Mandarin, or dialect.');
         }
 
         // --- Text Input Fallback ---
         function showTextInputFallback() {
-            // Remove existing fallback if any
             const existing = document.getElementById('textFallback');
             if (existing) { existing.remove(); }
-
             const container = document.createElement('div');
             container.id = 'textFallback';
             container.className = 'w-full mt-4 animate-fade-in';
             container.innerHTML = `
                 <p class="text-lg text-kampung-dark text-center mb-3 opacity-70">Or type your message here:</p>
                 <div class="flex gap-3">
-                    <input
-                        id="textInput"
-                        type="text"
-                        placeholder="Type what you'd like to say..."
-                        class="flex-1 px-5 py-4 text-xl rounded-2xl border-4 border-kampung-light-green focus:outline-none focus:border-kampung-orange bg-white"
-                        style="-webkit-user-select: text; user-select: text;"
-                    />
-                    <button
-                        onclick="submitTextInput()"
-                        class="interactive px-6 py-4 bg-kampung-orange text-white rounded-2xl text-xl font-bold button-shadow"
-                    >Send</button>
-                </div>
-            `;
-
-            const main = document.querySelector('main');
-            main.appendChild(container);
+                    <input id="textInput" type="text" placeholder="Type what you'd like to say..." class="flex-1 px-5 py-4 text-xl rounded-2xl border-4 border-kampung-light-green focus:outline-none focus:border-kampung-orange bg-white" style="-webkit-user-select: text; user-select: text;">
+                    <button onclick="submitTextInput()" class="interactive px-6 py-4 bg-kampung-orange text-white rounded-2xl text-xl font-bold button-shadow">Send</button>
+                </div>`;
+            document.querySelector('main').appendChild(container);
             document.getElementById('textInput').focus();
-
-            document.getElementById('textInput').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') submitTextInput();
-            });
+            document.getElementById('textInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') submitTextInput(); });
         }
 
         function submitTextInput() {
@@ -714,26 +688,18 @@
             emptyState.classList.add('hidden');
             thinkingIndicator.classList.remove('hidden');
             thinkingIndicator.classList.add('flex');
-
             try {
-                const response = await fetch(`${API_BASE}/api/process`, {
+                const response = await fetch(`${API_BASE}/api/voice/process`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ text, language: appLang }),
+                    body: JSON.stringify({ raw_text: text, language_hint: appLang === 'zh' ? 'zh' : appLang === 'ms' ? 'ms' : 'en' }),
                 });
-
                 if (!response.ok) throw new Error(`Server error: ${response.status}`);
                 const data = await response.json();
                 showBackendResponse(text, data);
-
             } catch (err) {
                 console.error('Backend error:', err);
-                showResponseWithContent(
-                    `<strong>Could not reach the backend.</strong><br><br>` +
-                    `Make sure the server is running:<br>` +
-                    `<code style="font-size:0.85em; background:#f0f0f0; padding:4px 8px; border-radius:6px;">` +
-                    `cd backend &amp;&amp; uvicorn server:app --reload</code>`
-                );
+                showResponseWithContent(`<strong>Could not reach the backend.</strong><br><br>Make sure the server is running:<br><code style="font-size:0.85em; background:#f0f0f0; padding:4px 8px; border-radius:6px;">cd backend && uvicorn app:app --reload</code>`);
             } finally {
                 state.isProcessing = false;
                 thinkingIndicator.classList.add('hidden');
@@ -744,77 +710,29 @@
         function showBackendResponse(inputText, data) {
             const sentimentEmoji = { positive: '😊', neutral: '😐', negative: '😟' }[data.sentiment] || '💬';
             const riskEmoji = { green: '🟢', yellow: '🟡', red: '🔴' }[data.risk_level] || '⚪';
-
             const isZh = appLang === 'zh';
             const isMs = appLang === 'ms';
             const labels = isZh ? {
-                you_said: '您说：',
-                translation: '翻译：',
-                mood: '心情：',
-                concerns: '关怀事项：',
-                status: '状态：',
-                none: '无',
+                you_said: '您说：', translation: '翻译：', mood: '心情：', concerns: '关怀事项：', status: '状态：', none: '无',
                 flags: (n) => `⚠️ 触发了 ${n} 个福利警报`,
             } : isMs ? {
-                you_said: 'Anda berkata:',
-                translation: 'Terjemahan:',
-                mood: 'Suasana hati:',
-                concerns: 'Kebimbangan:',
-                status: 'Status:',
-                none: 'Tiada dikesan',
+                you_said: 'Anda berkata:', translation: 'Terjemahan:', mood: 'Suasana hati:', concerns: 'Kebimbangan:', status: 'Status:', none: 'Tiada dikesan',
                 flags: (n) => `⚠️ ${n} bendera kebajikan dicetuskan`,
             } : {
-                you_said: 'You said:',
-                translation: 'Translation:',
-                mood: 'Mood:',
-                concerns: 'Concerns:',
-                status: 'Status:',
-                none: 'None detected',
+                you_said: 'You said:', translation: 'Translation:', mood: 'Mood:', concerns: 'Concerns:', status: 'Status:', none: 'None detected',
                 flags: (n) => `⚠️ ${n} welfare flag(s) triggered`,
             };
-
-            const concernsText = data.concerns.length
-                ? data.concerns.map(c => c.replace(/_/g, ' ')).join(', ')
-                : labels.none;
-
+            const concernsText = data.concerns?.length ? data.concerns.map(c => c.replace(/_/g, ' ')).join(', ') : labels.none;
             let html = `
-                <p class="text-2xl font-bold text-kampung-dark leading-relaxed mb-4">
-                    ${data.suggested_response}
-                </p>
+                <p class="text-2xl font-bold text-kampung-dark leading-relaxed mb-4">${data.suggested_response || data.response || 'Thank you for sharing!'}</p>
                 <div class="bg-kampung-warm rounded-2xl p-4 text-lg text-kampung-dark space-y-2">
                     <p><strong>${labels.you_said}</strong> "${inputText}"</p>
-                    ${data.translated_text && !data.translated_text.startsWith('[Direct]')
-                        ? `<p><strong>${labels.translation}</strong> ${data.translated_text}</p>`
-                        : ''}
-                    <p><strong>${labels.mood}</strong> ${sentimentEmoji} ${data.sentiment}</p>
+                    ${data.translated_text ? `<p><strong>${labels.translation}</strong> ${data.translated_text}</p>` : ''}
+                    <p><strong>${labels.mood}</strong> ${sentimentEmoji} ${data.sentiment || 'N/A'}</p>
                     <p><strong>${labels.concerns}</strong> ${concernsText}</p>
-                    <p><strong>${labels.status}</strong> ${riskEmoji} ${data.risk_level.toUpperCase()}</p>
-                    ${data.flags_triggered > 0
-                        ? `<p class="text-red-600 font-bold">${labels.flags(data.flags_triggered)}</p>`
-                        : ''}
-                </div>
-                ${data.risk_level === 'red' || data.flags_triggered > 0 ? `
-                <div class="mt-4 p-4 bg-red-50 border-2 border-red-400 rounded-2xl">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="text-2xl">🚨</span>
-                        <p class="text-lg font-black text-red-700">
-                            ${isZh ? '护理员通知已发送' : isMs ? 'Amaran Penjaga Dihantar' : 'Caregiver Alert Sent'}
-                        </p>
-                    </div>
-                    ${data.alert_message ? `
-                    <div class="bg-white rounded-xl p-3 border border-red-200 mb-3">
-                        <p class="text-sm font-bold text-red-500 mb-1">${isZh ? '📋 通知内容预览：' : isMs ? '📋 Pratonton mesej amaran:' : '📋 Alert message preview:'}</p>
-                        <p class="text-base text-gray-700 italic">"${data.alert_message}"</p>
-                    </div>` : ''}
-                    <p class="text-base font-bold text-red-700">
-                        ${isZh
-                            ? '您的紧急联系人已收到通知，将尽快来看望您。请放心，您不是一个人。'
-                            : isMs
-                            ? 'Kenalan kecemasan anda telah dimaklumkan dan akan menjenguk anda tidak lama lagi. Anda tidak keseorangan.'
-                            : 'Your emergency contact has been notified and will check on you shortly. You are not alone.'}
-                    </p>
-                </div>` : ''}
-            `;
+                    <p><strong>${labels.status}</strong> ${riskEmoji} ${String(data.risk_level || 'unknown').toUpperCase()}</p>
+                    ${data.flags_triggered > 0 ? `<p class="text-red-600 font-bold">${labels.flags(data.flags_triggered)}</p>` : ''}
+                </div>`;
             showResponseWithContent(html);
         }
 
@@ -891,7 +809,6 @@
             { file: 'moon_ktv.mp3',   title: '月亮代表我的心',  artist: '邓丽君' },
             { file: 'pengyou.mp3',    title: '朋友',            artist: '周华健' },
         ];
-
         let currentSongIndex = 0;
         let musicPlaying = false;
         const bgMusic = document.getElementById('bgMusic');
@@ -946,7 +863,6 @@
             currentSongIndex = 0;
             loadAndPlay(0);
             document.getElementById('miniPlayer').style.display = 'block';
-            // Update player button labels based on language
             document.getElementById('prevLabel').textContent = appLang === 'zh' ? '上一首' : appLang === 'ms' ? 'Prev' : 'Prev';
             document.getElementById('nextLabel').textContent = appLang === 'zh' ? '下一首' : appLang === 'ms' ? 'Seterusnya' : 'Next';
         }
