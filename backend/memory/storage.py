@@ -48,6 +48,14 @@ CREATE TABLE IF NOT EXISTS welfare_flags (
 
 CREATE INDEX IF NOT EXISTS idx_flags_senior
     ON welfare_flags(senior_id, triggered_at);
+
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE,
+    contact_name TEXT NOT NULL,
+    contact_number TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
 """
 
 
@@ -72,7 +80,7 @@ class MemoryStorage:
         self._db_path.parent.mkdir(parents=True, exist_ok=True)
 
         # Initialize the database
-        self._conn = sqlite3.connect(str(self._db_path))
+        self._conn = sqlite3.connect(str(self._db_path), check_same_thread=False)
         self._conn.execute("PRAGMA journal_mode=WAL;")
         self._conn.executescript(_CREATE_TABLES_SQL)
         self._conn.commit()
@@ -468,6 +476,53 @@ class MemoryStorage:
             )
 
         return "Recent conversation history:\n" + "\n".join(parts)
+
+    # ------------------------------------------------------------------
+    # User CRUD
+    # ------------------------------------------------------------------
+
+    def create_user(self, name: str, contact_name: str, contact_number: str) -> dict:
+        """Create a new user. Raises ValueError if name already exists."""
+        try:
+            self._conn.execute(
+                "INSERT INTO users (name, contact_name, contact_number, created_at) VALUES (?, ?, ?, ?)",
+                (name, contact_name, contact_number, datetime.now().isoformat()),
+            )
+            self._conn.commit()
+        except sqlite3.IntegrityError:
+            raise ValueError(f"User '{name}' already exists.")
+        return self.get_user(name)
+
+    def get_user(self, name: str) -> Optional[dict]:
+        """Fetch a user by name. Returns None if not found."""
+        row = self._conn.execute(
+            "SELECT id, name, contact_name, contact_number, created_at FROM users WHERE name = ? COLLATE NOCASE",
+            (name,),
+        ).fetchone()
+        if not row:
+            return None
+        return {"id": row[0], "name": row[1], "contact_name": row[2], "contact_number": row[3], "created_at": row[4]}
+
+    def update_user(self, current_name: str, name: str, contact_name: str, contact_number: str) -> Optional[dict]:
+        """Update a user's profile. Returns updated user or None if not found."""
+        existing = self.get_user(current_name)
+        if not existing:
+            return None
+        try:
+            self._conn.execute(
+                "UPDATE users SET name = ?, contact_name = ?, contact_number = ? WHERE name = ? COLLATE NOCASE",
+                (name, contact_name, contact_number, current_name),
+            )
+            self._conn.commit()
+        except sqlite3.IntegrityError:
+            raise ValueError(f"User '{name}' already exists.")
+        return self.get_user(name)
+
+    def delete_user(self, name: str) -> bool:
+        """Delete a user by name. Returns True if deleted, False if not found."""
+        cursor = self._conn.execute("DELETE FROM users WHERE name = ? COLLATE NOCASE", (name,))
+        self._conn.commit()
+        return cursor.rowcount > 0
 
     def close(self) -> None:
         """Close the database connection."""
