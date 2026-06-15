@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+env/ 
+__pycache__/ 
+.env 
+=======
 # Python
 __pycache__/
 *.py[cod]
@@ -60,3 +65,4 @@ data/
 # Environment variables
 .env
 !.env.example
+>>>>>>> source-repo/main

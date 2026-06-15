@@ -13,6 +13,14 @@ python-dotenv>=1.0.0
 # Optional: Email sending (production)
 # sendgrid>=6.10.0
 
+<<<<<<< HEAD
+# API server
+uvicorn>=0.29.0
+fastapi>=0.110.0
+
+# Multipart form uploads (audio)
+python-multipart>=0.0.9
+=======
 # Optional: Production WSGI server (if deploying as API)
 # uvicorn>=0.29.0
 # fastapi>=0.110.0
@@ -20,3 +28,4 @@ python-dotenv>=1.0.0
 # API Server (FastAPI + Uvicorn) — now included
 fastapi>=0.110.0
 uvicorn[standard]>=0.29.0
+>>>>>>> source-repo/main
