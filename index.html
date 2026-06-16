@@ -205,6 +205,44 @@
     </div>
 
     <!-- ============================================= -->
+    <!-- LOGIN / REGISTER SCREEN -->
+    <!-- ============================================= -->
+    <div id="authScreen" class="fixed inset-0 z-40 flex flex-col items-center justify-center bg-kampung-warm bg-pattern px-8" style="display:none!important">
+        <div class="flex items-center justify-center gap-3 mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-kampung-green" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            <h1 class="text-4xl font-black text-kampung-green">KampungKonekt</h1>
+        </div>
+
+        <!-- LOGIN PANEL -->
+        <div id="loginPanel" class="w-full max-w-sm">
+            <p id="authTitle" class="text-2xl font-bold text-kampung-dark mb-6 text-center">Who are you?</p>
+            <input
+                id="loginName"
+                type="text"
+                placeholder="Your name"
+                class="w-full px-6 py-5 rounded-2xl border-4 border-kampung-green text-2xl font-bold text-kampung-dark mb-4 outline-none focus:border-kampung-orange bg-white"
+                style="-webkit-user-select:text;user-select:text;"
+            />
+            <p id="authError" class="text-red-500 text-lg font-bold text-center mb-3 hidden"></p>
+            <button onclick="handleLogin()" class="interactive w-full py-5 bg-kampung-orange text-white rounded-2xl text-2xl font-black button-shadow mb-4" id="loginBtn">Login</button>
+            <button onclick="showRegister()" class="interactive w-full py-5 bg-kampung-green text-white rounded-2xl text-2xl font-black button-shadow" id="newUserBtn">I'm new here</button>
+        </div>
+
+        <!-- REGISTER PANEL -->
+        <div id="registerPanel" class="w-full max-w-sm hidden">
+            <p id="regTitle" class="text-2xl font-bold text-kampung-dark mb-6 text-center">Create your profile</p>
+            <input id="regName" type="text" placeholder="Your name" class="w-full px-6 py-5 rounded-2xl border-4 border-kampung-green text-2xl font-bold text-kampung-dark mb-4 outline-none focus:border-kampung-orange bg-white" style="-webkit-user-select:text;user-select:text;" />
+            <input id="regContactName" type="text" placeholder="Family contact name" class="w-full px-6 py-5 rounded-2xl border-4 border-kampung-green text-2xl font-bold text-kampung-dark mb-4 outline-none focus:border-kampung-orange bg-white" style="-webkit-user-select:text;user-select:text;" />
+            <input id="regContactNumber" type="tel" placeholder="Contact number (e.g. 91234567)" class="w-full px-6 py-5 rounded-2xl border-4 border-kampung-green text-2xl font-bold text-kampung-dark mb-4 outline-none focus:border-kampung-orange bg-white" style="-webkit-user-select:text;user-select:text;" />
+            <p id="regError" class="text-red-500 text-lg font-bold text-center mb-3 hidden"></p>
+            <button onclick="handleRegister()" class="interactive w-full py-5 bg-kampung-orange text-white rounded-2xl text-2xl font-black button-shadow mb-4" id="regBtn">Register</button>
+            <button onclick="showLogin()" class="interactive w-full py-5 bg-kampung-green text-white rounded-2xl text-2xl font-black button-shadow" id="backBtn">Back</button>
+        </div>
+    </div>
+
+    <!-- ============================================= -->
     <!-- TOP HEADER: App Name & Greeting -->
     <!-- ============================================= -->
     <header class="w-full px-6 pt-8 pb-4 text-center animate-fade-in">
@@ -493,11 +531,147 @@
             }
         };
 
+        // --- Logged-in user ---
+        let currentUser = null;
+
+        // Auth screen text per language
+        const AUTH_TEXT = {
+            en: {
+                title: "Who are you?",
+                login: "Login",
+                newUser: "I'm new here",
+                regTitle: "Create your profile",
+                namePlaceholder: "Your name",
+                contactNamePlaceholder: "Family contact name",
+                contactNumPlaceholder: "Contact number (e.g. 91234567)",
+                register: "Register",
+                back: "Back",
+                notFound: "Name not found. Please register first.",
+                alreadyExists: "This name is already registered.",
+                fillAll: "Please fill in all fields.",
+            },
+            zh: {
+                title: "您是谁？",
+                login: "登录",
+                newUser: "我是新用户",
+                regTitle: "创建您的档案",
+                namePlaceholder: "您的姓名",
+                contactNamePlaceholder: "家人联系人姓名",
+                contactNumPlaceholder: "联系电话（如 91234567）",
+                register: "注册",
+                back: "返回",
+                notFound: "找不到此姓名，请先注册。",
+                alreadyExists: "此姓名已注册。",
+                fillAll: "请填写所有栏位。",
+            },
+            ms: {
+                title: "Siapa anda?",
+                login: "Log Masuk",
+                newUser: "Saya baru di sini",
+                regTitle: "Cipta profil anda",
+                namePlaceholder: "Nama anda",
+                contactNamePlaceholder: "Nama kenalan keluarga",
+                contactNumPlaceholder: "Nombor telefon (cth. 91234567)",
+                register: "Daftar",
+                back: "Kembali",
+                notFound: "Nama tidak dijumpai. Sila daftar dahulu.",
+                alreadyExists: "Nama ini sudah didaftarkan.",
+                fillAll: "Sila isi semua ruangan.",
+            },
+        };
+
         function selectLanguage(lang) {
             appLang = lang;
             document.getElementById('langPicker').style.display = 'none';
             applyUILanguage(lang);
             updateGreeting();
+            showAuthScreen(lang);
+        }
+
+        function showAuthScreen(lang) {
+            const t = AUTH_TEXT[lang];
+            const screen = document.getElementById('authScreen');
+            screen.style.display = 'flex';
+            screen.style.setProperty('display', 'flex', 'important');
+
+            // Apply language text
+            document.getElementById('authTitle').textContent = t.title;
+            document.getElementById('loginName').placeholder = t.namePlaceholder;
+            document.getElementById('loginBtn').textContent = t.login;
+            document.getElementById('newUserBtn').textContent = t.newUser;
+            document.getElementById('regTitle').textContent = t.regTitle;
+            document.getElementById('regName').placeholder = t.namePlaceholder;
+            document.getElementById('regContactName').placeholder = t.contactNamePlaceholder;
+            document.getElementById('regContactNumber').placeholder = t.contactNumPlaceholder;
+            document.getElementById('regBtn').textContent = t.register;
+            document.getElementById('backBtn').textContent = t.back;
+        }
+
+        function showLogin() {
+            document.getElementById('loginPanel').classList.remove('hidden');
+            document.getElementById('registerPanel').classList.add('hidden');
+            document.getElementById('authError').classList.add('hidden');
+        }
+
+        function showRegister() {
+            document.getElementById('loginPanel').classList.add('hidden');
+            document.getElementById('registerPanel').classList.remove('hidden');
+            document.getElementById('regError').classList.add('hidden');
+        }
+
+        async function handleLogin() {
+            const name = document.getElementById('loginName').value.trim();
+            const t = AUTH_TEXT[appLang];
+            const errEl = document.getElementById('authError');
+            if (!name) { errEl.textContent = t.fillAll; errEl.classList.remove('hidden'); return; }
+
+            try {
+                const res = await fetch(`${API_BASE}/api/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name }),
+                });
+                if (res.ok) {
+                    currentUser = await res.json();
+                    document.getElementById('authScreen').style.setProperty('display', 'none', 'important');
+                } else {
+                    errEl.textContent = t.notFound;
+                    errEl.classList.remove('hidden');
+                }
+            } catch (e) {
+                errEl.textContent = 'Server not reachable.';
+                errEl.classList.remove('hidden');
+            }
+        }
+
+        async function handleRegister() {
+            const name = document.getElementById('regName').value.trim();
+            const contactName = document.getElementById('regContactName').value.trim();
+            const contactNumber = document.getElementById('regContactNumber').value.trim();
+            const t = AUTH_TEXT[appLang];
+            const errEl = document.getElementById('regError');
+
+            if (!name || !contactName || !contactNumber) {
+                errEl.textContent = t.fillAll; errEl.classList.remove('hidden'); return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/users`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, contact_name: contactName, contact_number: contactNumber }),
+                });
+                if (res.status === 201) {
+                    currentUser = await res.json();
+                    document.getElementById('authScreen').style.setProperty('display', 'none', 'important');
+                } else if (res.status === 409) {
+                    errEl.textContent = t.alreadyExists; errEl.classList.remove('hidden');
+                } else {
+                    errEl.textContent = 'Registration failed.'; errEl.classList.remove('hidden');
+                }
+            } catch (e) {
+                errEl.textContent = 'Server not reachable.'; errEl.classList.remove('hidden');
+            }
         }
 
         function applyUILanguage(lang) {
@@ -803,173 +977,4 @@
                     </div>
                     ${data.alert_message ? `
                     <div class="bg-white rounded-xl p-3 border border-red-200 mb-3">
-                        <p class="text-sm font-bold text-red-500 mb-1">${isZh ? '📋 通知内容预览：' : isMs ? '📋 Pratonton mesej amaran:' : '📋 Alert message preview:'}</p>
-                        <p class="text-base text-gray-700 italic">"${data.alert_message}"</p>
-                    </div>` : ''}
-                    <p class="text-base font-bold text-red-700">
-                        ${isZh
-                            ? '您的紧急联系人已收到通知，将尽快来看望您。请放心，您不是一个人。'
-                            : isMs
-                            ? 'Kenalan kecemasan anda telah dimaklumkan dan akan menjenguk anda tidak lama lagi. Anda tidak keseorangan.'
-                            : 'Your emergency contact has been notified and will check on you shortly. You are not alone.'}
-                    </p>
-                </div>` : ''}
-            `;
-            showResponseWithContent(html);
-        }
-
-        // --- Quick Action Handlers ---
-        function handleQuickAction(action) {
-            if (state.isProcessing) return;
-            state.hasInteracted = true;
-            emptyState.classList.add('hidden');
-            switch(action) {
-                case 'schedule':
-                    showResponseWithContent(appLang === 'zh'
-                        ? '📅 <strong>今天的日程：</strong><br><br>• 早上9点 — 吃药时间 ✅<br>• 中午12点 — 在第234座巴刹共进午餐<br>• 下午3点 — 在组屋底层打太极<br>• 晚上7点 — 和邻居美美共进晚餐<br><br>今天轻松一点，好好休息！😊'
-                        : appLang === 'ms'
-                        ? '📅 <strong>Jadual Anda Hari Ini:</strong><br><br>• 9:00 PG — Masa makan ubat ✅<br>• 12:00 TG — Makan tengah hari di Pusat Penjaja Blok 234<br>• 3:00 PTG — Tai Chi di bawah blok<br>• 7:00 MLM — Makan malam bersama jiran, Mei Mei<br><br>Hari ini tidak terlalu sibuk. Rehat yang baik! 😊'
-                        : '📅 <strong>Your Schedule for Today:</strong><br><br>• 9:00 AM — Medicine time ✅<br>• 12:00 PM — Community Lunch at Block 234 Hawker Centre<br>• 3:00 PM — Tai Chi at the void deck<br>• 7:00 PM — Dinner with neighbour Mei Mei<br><br>Nothing too heavy today. Take it easy! 😊');
-                    break;
-                case 'emergency':
-                    showResponseWithContent(appLang === 'zh'
-                        ? '📞 <strong>联系家人：</strong><br><br>我会帮您拨打女儿的电话 9123 XXXX。<br><br>同时，我也已通知您的社区助理Sarah。<br><br>如有紧急情况，您也可以随时拨打 <strong>995</strong>。'
-                        : appLang === 'ms'
-                        ? '📞 <strong>Hubungi Keluarga:</strong><br><br>Saya akan menghubungi anak perempuan anda di 9123 XXXX.<br><br>Saya juga telah menghantar mesej kepada pembantu komuniti anda, Sarah.<br><br>Anda juga boleh menghubungi <strong>995</strong> pada bila-bila masa kecemasan.'
-                        : '📞 <strong>Family Contact:</strong><br><br>I\'ll call your daughter at 9123 XXXX.<br><br>In the meantime, I\'ve also sent a message to your community helper, Sarah.<br><br>You can also dial <strong>995</strong> for emergency services anytime.');
-                    break;
-                case 'entertain':
-                    playYouTubeMusic();
-                    showResponseWithContent(appLang === 'zh'
-                        ? '🎵 <strong>为您播放经典老歌！</strong><br><br>使用下方播放器切换歌曲或暂停。祝您欣赏愉快！🎶'
-                        : appLang === 'ms'
-                        ? '🎵 <strong>Memainkan lagu-lagu klasik untuk anda!</strong><br><br>Gunakan pemain di bawah untuk tukar lagu atau berhenti. Selamat menikmati! 🎶'
-                        : '🎵 <strong>Playing classic oldies for you!</strong><br><br>Use the player below to skip or pause. Enjoy! 🎶');
-                    break;
-            }
-        }
-
-        // --- Response Action Handlers ---
-        function handleResponseAction(action) {
-            switch(action) {
-                case 'thank':
-                    responseText.textContent = appLang === 'zh'
-                        ? '不客气！😊 随时想聊天，就按那个大橙色按钮。保重！'
-                        : appLang === 'ms'
-                        ? 'Sama-sama! 😊 Bila-bila masa nak berbual, tekan butang oren besar tu. Jaga diri!'
-                        : 'You\'re most welcome! 😊 Whenever you want to chat again, just tap the big orange button. Take care now!';
-                    break;
-                case 'continue':
-                    responseText.textContent = appLang === 'zh'
-                        ? '当然！我在这里听您说。请继续，您想说什么都可以。💬'
-                        : appLang === 'ms'
-                        ? 'Tentu! Saya di sini untuk mendengar. Teruskan, cerita apa sahaja. 💬'
-                        : 'Of course! I\'m here to listen. Go ahead, tell me more. What\'s on your mind? 💬';
-                    setTimeout(() => startListening(), 1500);
-                    break;
-                case 'rest':
-                    responseText.textContent = appLang === 'zh'
-                        ? '好好休息！😴 我明天还在这里陪您。睡前记得喝杯热牛奶。晚安！🌙'
-                        : appLang === 'ms'
-                        ? 'Rehat yang baik! 😴 Saya akan ada di sini esok. Ingat minum susu suam sebelum tidur. Selamat malam! 🌙'
-                        : 'Rest well! 😴 I\'ll be here tomorrow and every day. Remember to drink warm milk before sleeping. Good night! 🌙';
-                    break;
-            }
-        }
-
-        function showResponseWithContent(htmlContent) {
-            emptyState.classList.add('hidden');
-            responseCard.classList.add('active');
-            responseText.innerHTML = htmlContent;
-        }
-
-        // --- Music Player ---
-        const playlist = [
-            { file: 'ai_piah.mp3',    title: '爱拼才会赢',      artist: '叶启田' },
-            { file: 'richie_jen.mp3', title: '太委屈',          artist: '任贤齐' },
-            { file: 'song_1985.mp3',  title: '1985',            artist: '经典老歌' },
-            { file: 'moon_ktv.mp3',   title: '月亮代表我的心',  artist: '邓丽君' },
-            { file: 'pengyou.mp3',    title: '朋友',            artist: '周华健' },
-        ];
-
-        let currentSongIndex = 0;
-        let musicPlaying = false;
-        const bgMusic = document.getElementById('bgMusic');
-
-        function shufflePlaylist() {
-            for (let i = playlist.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [playlist[i], playlist[j]] = [playlist[j], playlist[i]];
-            }
-        }
-
-        function loadAndPlay(index) {
-            const song = playlist[index];
-            bgMusic.src = `/music/${song.file}`;
-            document.getElementById('songTitle').textContent = song.title;
-            document.getElementById('songArtist').textContent = song.artist;
-            bgMusic.play().catch(e => console.warn('Autoplay blocked:', e));
-            musicPlaying = true;
-            updatePauseBtn();
-        }
-
-        function updatePauseBtn() {
-            const btn = document.getElementById('pauseBtn');
-            const label = document.getElementById('pauseLabel');
-            if (bgMusic.paused) {
-                btn.innerHTML = `▶ <span>${appLang === 'zh' ? '继续' : appLang === 'ms' ? 'Main' : 'Play'}</span>`;
-            } else {
-                btn.innerHTML = `⏸ <span>${appLang === 'zh' ? '暂停' : appLang === 'ms' ? 'Jeda' : 'Pause'}</span>`;
-            }
-        }
-
-        function togglePause() {
-            if (bgMusic.paused) { bgMusic.play(); }
-            else { bgMusic.pause(); }
-            updatePauseBtn();
-        }
-
-        function nextSong() {
-            currentSongIndex = (currentSongIndex + 1) % playlist.length;
-            loadAndPlay(currentSongIndex);
-        }
-
-        function prevSong() {
-            currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
-            loadAndPlay(currentSongIndex);
-        }
-
-        bgMusic.addEventListener('ended', () => nextSong());
-
-        function playYouTubeMusic() {
-            shufflePlaylist();
-            currentSongIndex = 0;
-            loadAndPlay(0);
-            document.getElementById('miniPlayer').style.display = 'block';
-            // Update player button labels based on language
-            document.getElementById('prevLabel').textContent = appLang === 'zh' ? '上一首' : appLang === 'ms' ? 'Prev' : 'Prev';
-            document.getElementById('nextLabel').textContent = appLang === 'zh' ? '下一首' : appLang === 'ms' ? 'Seterusnya' : 'Next';
-        }
-
-        function stopMusic() {
-            bgMusic.pause();
-            bgMusic.src = '';
-            document.getElementById('miniPlayer').style.display = 'none';
-            musicPlaying = false;
-            showResponseWithContent(appLang === 'zh'
-                ? '⏹ <strong>音乐已停止。</strong><br><br>随时按"播放音乐"再次收听。🎵'
-                : appLang === 'ms'
-                ? '⏹ <strong>Muzik dihentikan.</strong><br><br>Tekan "Mainkan Muzik" bila-bila masa anda mahu mendengar semula. 🎵'
-                : '⏹ <strong>Music stopped.</strong><br><br>Tap "Play Music" again whenever you\'d like to listen. 🎵');
-        }
-
-        // --- Keyboard Accessibility ---
-        document.addEventListener('keydown', (e) => {
-            if ((e.key === 'Enter' || e.key === ' ') && document.activeElement === micButton) {
-                e.preventDefault();
-                micButton.click();
-            }
-        });
-    </script>
-</body>
-</html>
+                        <p class="text-sm font-bold text-red-500 mb-1">${isZh ? '📋 通知内容预览：' : isMs ? '📋 Pratonton mesej amaran:' : '📋 Alert message prev
