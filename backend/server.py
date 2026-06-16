@@ -112,6 +112,30 @@ class UserUpdate(BaseModel):
     contact_number: str
 
 
+class CallFamilyRequest(BaseModel):
+    language: str = "en"
+    user_name: Optional[str] = None
+
+
+class CallFamilyResponse(BaseModel):
+    success: bool
+    message_sent: str
+    contact_number: str
+    whatsapp_url: str
+
+
+class LoginRequest(BaseModel):
+    name: str
+
+
+class LoginResponse(BaseModel):
+    id: int
+    name: str
+    contact_name: str
+    contact_number: str
+    created_at: str
+
+
 # ---------------------------------------------------------------------------
 # Endpoints
 # ---------------------------------------------------------------------------
@@ -160,9 +184,20 @@ def process_voice(req: ProcessRequest):
 
     risk_level, _ = _detector.get_risk_level(target_id)
 
-    # Draft caregiver alert if any flags triggered
+    # Immediate risk override: escalate based on THIS message's concerns,
+    # regardless of historical DB state (so first-time mentions still trigger alerts).
+    from models.schemas import AlertSeverity, ConcernCategory
+    IMMEDIATE_RED    = {ConcernCategory.DEPRESSION_SIGNS}
+    IMMEDIATE_YELLOW = {ConcernCategory.PHYSICAL_PAIN, ConcernCategory.MEDICATION_ISSUES}
+    current_concerns = set(agnes_resp.concerns)
+    if current_concerns & IMMEDIATE_RED:
+        risk_level = AlertSeverity.RED
+    elif (current_concerns & IMMEDIATE_YELLOW) and risk_level.value == "green":
+        risk_level = AlertSeverity.YELLOW
+
+    # Draft caregiver alert if any flags triggered OR immediate concerns detected
     alert_message = None
-    if flags:
+    if flags or current_concerns:
         alert_message = _agnes.draft_caregiver_alert(
             senior_name=settings.SENIOR_NAME,
             raw_text=req.text,
@@ -179,7 +214,7 @@ def process_voice(req: ProcessRequest):
         wellness_notes=agnes_resp.wellness_notes,
         suggested_response=agnes_resp.suggested_response,
         detected_language=agnes_resp.detected_language,
-        flags_triggered=len(flags),
+        flags_triggered=len(flags) or len(current_concerns),
         risk_level=risk_level.value,
         alert_message=alert_message,
     )
@@ -208,8 +243,26 @@ def get_default_status():
 
 
 # ---------------------------------------------------------------------------
+# Auth — Login
+# ---------------------------------------------------------------------------
+
+@app.post("/api/login", response_model=LoginResponse)
+def login(req: LoginRequest):
+    """Look up a user by name. Returns profile if found, 404 if not registered."""
+    user = _storage.get_user(req.name.strip())
+    if not user:
+        raise HTTPException(status_code=404, detail="No profile found. Please register first.")
+    return user
+
+
+# ---------------------------------------------------------------------------
 # User routes (CRUD)
 # ---------------------------------------------------------------------------
+
+@app.get("/users")
+def list_users():
+    return _storage.get_all_users()
+
 
 @app.post("/users", status_code=201)
 def create_user(body: UserCreate):
@@ -244,6 +297,60 @@ def delete_user(name: str):
     deleted = _storage.delete_user(name)
     if not deleted:
         raise HTTPException(status_code=404, detail="User not found.")
+
+
+# ---------------------------------------------------------------------------
+# Call Family — WhatsApp deep link
+# ---------------------------------------------------------------------------
+
+@app.post("/api/call-family", response_model=CallFamilyResponse)
+def call_family(req: CallFamilyRequest):
+    """Compose a pre-filled WhatsApp message to the user's emergency contact."""
+    import datetime
+    import urllib.parse
+
+    # Pull profile from DB if a user_name was provided, else fall back to settings
+    profile = _storage.get_user(req.user_name) if req.user_name else None
+    senior_name = profile["name"] if profile else settings.SENIOR_NAME
+    contact = profile["contact_number"] if profile else getattr(settings, "EMERGENCY_CONTACT", "")
+    now = datetime.datetime.now().strftime("%d %b %Y, %I:%M %p")
+
+    if req.language == "zh":
+        message = (
+            f"【KampungKonekt 通知】{now}\n\n"
+            f"{senior_name} 刚刚通过 KampungKonekt 应用联系了您。"
+            f"请尽快致电或探访，确认她的情况。\n\n"
+            f"如有紧急情况，请拨打 995。"
+        )
+    elif req.language == "ms":
+        message = (
+            f"[KampungKonekt] {now}\n\n"
+            f"{senior_name} baru sahaja menghubungi anda melalui aplikasi KampungKonekt. "
+            f"Sila hubungi atau lawati beliau secepat mungkin.\n\n"
+            f"Hubungi 995 sekiranya kecemasan."
+        )
+    else:
+        message = (
+            f"[KampungKonekt] {now}\n\n"
+            f"{senior_name} has reached out via the KampungKonekt app. "
+            f"Please call or visit her as soon as possible to check she is okay.\n\n"
+            f"Call 995 for emergencies."
+        )
+
+    # Build wa.me link — Singapore numbers: prepend 65
+    phone = contact.lstrip("+").lstrip("0")
+    if not phone.startswith("65"):
+        phone = "65" + phone
+
+    whatsapp_url = f"https://wa.me/{phone}?text={urllib.parse.quote(message)}"
+    logger.info("WhatsApp link generated for %s → %s", senior_name, phone)
+
+    return CallFamilyResponse(
+        success=True,
+        message_sent=message,
+        contact_number=contact,
+        whatsapp_url=whatsapp_url,
+    )
 
 
 # ---------------------------------------------------------------------------

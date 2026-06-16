@@ -493,6 +493,13 @@ class MemoryStorage:
             raise ValueError(f"User '{name}' already exists.")
         return self.get_user(name)
 
+    def get_all_users(self) -> list[dict]:
+        """Fetch all users ordered by creation date."""
+        rows = self._conn.execute(
+            "SELECT id, name, contact_name, contact_number, created_at FROM users ORDER BY created_at DESC"
+        ).fetchall()
+        return [{"id": r[0], "name": r[1], "contact_name": r[2], "contact_number": r[3], "created_at": r[4]} for r in rows]
+
     def get_user(self, name: str) -> Optional[dict]:
         """Fetch a user by name. Returns None if not found."""
         row = self._conn.execute(

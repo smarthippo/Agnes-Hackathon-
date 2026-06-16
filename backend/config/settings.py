@@ -74,22 +74,30 @@ class Settings:
         "loneliness": [
             "alone", "lonely", "no one", "nobody", "send li", "want family",
             "bo lang cai gia", "bo liao cai gia", "nobody home", "by myself",
+            "no company", "no friend", "no family",
         ],
         "food_insecurity": [
-            "no food", "don't eat", "hungry", "bo lang cai gia", "can't cook",
-            "nobody cook", "nothing to eat", "skip meal", "missed lunch",
+            "no food", "don't eat", "didn't eat", "haven't eaten", "hungry",
+            "bo lang cai gia", "can't cook", "nobody cook", "nothing to eat",
+            "skip meal", "missed lunch", "no appetite", "cannot eat",
         ],
         "physical_pain": [
-            "pain", "hurt", "aches", "sakit", "sioh", "头昏", "脚痛", "心痛",
-            "dizzy", "cannot walk", "fall", "跌",
+            "pain", "hurt", "hurting", "aches", "aching", "sakit", "sioh",
+            "头昏", "脚痛", "心痛", "dizzy", "cannot walk", "fall", "跌",
+            "diarrhea", "diarrhoea", "vomit", "nausea", "fever", "sick",
+            "not feeling well", "unwell", "headache", "chest pain", "stomach",
+            "not well", "feeling ill", "feeling sick", "flu", "cough", "weak",
         ],
         "medication_issues": [
             "medicine", "pills", "tablet", "medication", "take medicine",
             "sakit", "did not take", "miss pill", "forgot medicine",
         ],
         "depression_signs": [
-            "no point", "want die", "cannot live", "tired", "no energy",
-            "everything useless", "sakit hati", "sad", "cry every day",
+            "no point", "want die", "want to die", "going to die", "die soon",
+            "cannot live", "no reason to live", "give up", "end it",
+            "tired of living", "no energy", "everything useless", "sakit hati",
+            "sad", "cry every day", "hopeless", "worthless", "don't want to live",
+            "dying", "die", "death", "kill myself", "not worth living",
         ],
     }
 
