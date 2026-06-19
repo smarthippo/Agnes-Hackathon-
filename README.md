@@ -1,47 +1,81 @@
-<img width="718" height="1236" alt="image" src="https://github.com/user-attachments/assets/4e0a670d-ff70-4ae1-b21c-905b9bbf6285" />
-<img width="831" height="1273" alt="image" src="https://github.com/user-attachments/assets/6675d655-fa20-4a7d-b222-bef90592e131" />
+# KampungKonekt
 
-# KampungKonekt Backend
+Singapore's AI companion and welfare monitoring system for elderly residents.
 
-Singapore's hyper-local welfare monitoring system for isolated elderly residents.
+A voice-first web app that lets seniors speak naturally in English, Mandarin, or Malay — detecting welfare concerns in real time and alerting caregivers when needed, while talking back in a warm human voice.
+
+<img width="718" height="1236" alt="KampungKonekt main screen" src="https://github.com/user-attachments/assets/4e0a670d-ff70-4ae1-b21c-905b9bbf6285" />
+
+---
+
+## Features
+
+- **Voice input** — tap the mic, speak naturally in English, Mandarin, or Malay
+- **AI companion** — Gemini 2.5 Flash generates warm, personalised responses
+- **Voice output** — the app speaks back using browser TTS (Google voices)
+- **Welfare detection** — keyword-based analysis flags loneliness, pain, food insecurity, depression
+- **Caregiver alerts** — red-risk interactions trigger automatic WhatsApp alerts to family
+- **User accounts** — login/register with linked WhatsApp contact
+- **Language switcher** — switch language at any time from any screen
+- **Welfare reports** — Markdown reports generated per senior
+
+---
 
 ## Architecture
 
 ```
-KampungKonekt Backend
-├── config/          # Settings, environment variables, welfare keywords
-├── models/          # Pydantic data schemas
-├── api/             # Agnes Text API client with dialect fallback
-├── memory/          # SQLite time-series storage
-├── analytics/       # Anomaly detection engine
-├── reports/         # Markdown welfare report generator
-├── main.py          # Orchestrator & CLI entry point
-└── .env             # API keys & configuration
+Agnes-Hackathon/
+├── index.html            # Single-page frontend (voice UI, TTS, Gemini AI)
+├── config.js             # Frontend secrets — gitignored, not committed
+├── config.example.js     # Template for config.js
+├── backend/
+│   ├── server.py         # FastAPI server (process, users, reports)
+│   ├── config/           # Settings and environment variables
+│   ├── models/           # Pydantic data schemas
+│   ├── api/              # Agnes Text API client
+│   ├── memory/           # SQLite time-series storage
+│   ├── analytics/        # Anomaly detection engine
+│   ├── reports/          # Markdown welfare report generator
+│   └── .env              # Backend API keys — gitignored
 ```
+
+---
 
 ## Quick Start
 
-### 1. Install Dependencies
-
-From the repo root:
+### 1. Clone and install dependencies
 
 ```bash
+git clone <repo-url>
+cd Agnes-Hackathon
 pip install -r backend/requirements.txt
 ```
 
-### 2. Configure Environment
+### 2. Configure backend environment
 
-Edit `backend/.env` with your Agnes API key:
+Create `backend/.env`:
 
 ```env
-AGNES_API_KEY=your_real_api_key_here
+AGNES_API_KEY=your_agnes_api_key_here
+AGNES_API_BASE_URL=https://api.agnes.ai
+GEMINI_API_KEY=your_gemini_api_key_here
 SENIOR_ID=senior_001
 SENIOR_NAME=Grandma Lim
 ```
 
-### 3. Start the Server
+### 3. Configure frontend API key
 
-From the repo root:
+Copy `config.example.js` to `config.js` and fill in your Gemini key:
+
+```js
+const FRONTEND_CONFIG = {
+    GEMINI_API_KEY: 'your_gemini_api_key_here',
+};
+```
+
+> `config.js` is gitignored and will never be committed.
+
+### 4. Start the server
 
 ```bash
 python backend/server.py
@@ -49,79 +83,42 @@ python backend/server.py
 
 The app will be live at **http://localhost:8000**
 
-The server auto-reloads when you save any backend file — no restart needed.
+---
 
-### 4. Run the Demo (optional)
+## Languages Supported
 
-```bash
-# Simulate a week of declining interactions
-cd backend
-python main.py --simulate
+| Language | Voice |
+|----------|-------|
+| English | Google UK English Female |
+| Mandarin (中文) | Google 普通话（中国大陆） |
+| Malay (Bahasa Melayu) | Google Bahasa Indonesia |
 
-# Process a single voice input
-python main.py --process "Bo lang cai gia"
+Dialect input (Singlish, Hokkien, Teochew, etc.) is understood by the backend keyword engine.
 
-# Run welfare check
-python main.py --check senior_001
+---
 
-# Generate report
-python main.py --report senior_001
-```
+## Welfare Detection
 
-## Dialect Support
+| Concern | Trigger | Alert Level |
+|---------|---------|-------------|
+| Loneliness | 3+ mentions in 7 days | Yellow |
+| Food insecurity | 2+ mentions in 7 days | Yellow |
+| Physical pain | Any mention | Yellow |
+| Depression signs | Any mention | Red |
+| 3+ consecutive negative days | — | Red |
 
-The system handles these languages/dialects out of the box:
+Red alerts trigger a WhatsApp notification to the senior's linked family contact.
 
-| Language | Code | Example Phrase | Translation |
-|----------|------|----------------|-------------|
-| English | `en` | "Nobody cooks for me" | Direct |
-| Singlish | `si` | "Send li sia" | So lonely |
-| Malay | `ms` | "sakit hati" | Heartache |
-| Mandarin | `zh` | "我很孤独" | I am very lonely |
-| Hokkien | `hak` | "bo lang cai gia" | Nobody cooks for me |
-| Teochew | `tdd` | "bo ing ua a" | Nobody's around |
+---
 
-## Welfare Detection Rules
+## Welfare Reports
 
-| Rule | Threshold | Severity |
-|------|-----------|----------|
-| 3+ consecutive negative days | Configurable | Yellow → Red |
-| 2+ food concerns in 7 days | 2 mentions | Yellow |
-| 3+ loneliness mentions in 7 days | 3 mentions | Yellow |
-| Any physical pain mention | 1 mention | Yellow |
-| Any depression indicator | 1 mention | Red |
-| 3+ days silence (active senior) | 3 days | Green (Monitor) |
+Auto-generated Markdown reports are saved to `backend/reports/welfare_<senior_id>_<date>.md`.
 
-## Output
+---
 
-Reports are saved to `backend/reports/welfare_<senior_id>_<date>.md`
+## Security Notes
 
-Example report structure:
-```markdown
-# Welfare Report — KampungKonekt
-**Report Generated:** 2026-06-15 10:30 SGT
-**Senior Name:** Grandma Lim
-
-> 🔴 **HIGH RISK — Immediate attention required**
-
-## Summary Statistics
-| Metric | Value |
-|--------|-------|
-| Total Interactions | 7 |
-| Negative Sentiment | 4 |
-
-## Recommended Actions
-1. 🔴 **URGENT:** Schedule immediate welfare check visit within 24 hours.
-2. 🍜 Arrange community meal delivery
-3. 👋 Assign SMU Student Volunteer
-```
-
-## Production Deployment
-
-For production, uncomment the FastAPI/Uvicorn dependencies and run:
-
-```bash
-uvicorn main:app --host 0.0.0.0 --port 8000
-```
-<img width="1024" height="1536" alt="image" src="https://github.com/user-attachments/assets/24b1fe15-5601-4af7-ba4a-8157ebfcf031" />
-
+- `config.js` (Gemini frontend key) — gitignored, never committed
+- `backend/.env` (Agnes + Gemini backend keys) — gitignored, never committed
+- See `config.example.js` and `backend/.env.example` for templates
