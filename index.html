@@ -1160,9 +1160,8 @@
                 ? 'Reply in Bahasa Melayu.'
                 : 'Reply in English.';
 
-            const alertSent = data.risk_level === 'red' || data.flags_triggered > 0;
             const actionsTaken = [];
-            if (alertSent) actionsTaken.push('a caregiver alert has been sent to their emergency contact');
+            if (data.risk_level === 'red') actionsTaken.push('a caregiver alert has been sent to their emergency contact');
             if (data.concerns.includes('physical_pain')) actionsTaken.push('their helper has been notified about the pain');
             if (data.concerns.includes('loneliness')) actionsTaken.push('a volunteer visit can be arranged');
             if (data.concerns.includes('food_insecurity')) actionsTaken.push('a community meal can be arranged');

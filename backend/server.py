@@ -210,9 +210,9 @@ def process_voice(req: ProcessRequest):
     elif (current_concerns & IMMEDIATE_YELLOW) and risk_level.value == "green":
         risk_level = AlertSeverity.YELLOW
 
-    # Draft caregiver alert if any flags triggered OR immediate concerns detected
+    # Only alert caregiver on RED risk (depression, or 3+ consecutive negative days)
     alert_message = None
-    if flags or current_concerns:
+    if risk_level.value == "red":
         alert_message = _agnes.draft_caregiver_alert(
             senior_name=settings.SENIOR_NAME,
             raw_text=req.text,
@@ -229,7 +229,7 @@ def process_voice(req: ProcessRequest):
         wellness_notes=agnes_resp.wellness_notes,
         suggested_response=agnes_resp.suggested_response,
         detected_language=agnes_resp.detected_language,
-        flags_triggered=len(flags) or len(current_concerns),
+        flags_triggered=len(flags),
         risk_level=risk_level.value,
         alert_message=alert_message,
     )
