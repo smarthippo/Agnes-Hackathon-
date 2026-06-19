@@ -1121,6 +1121,34 @@
         }
 
         // --- Gemini AI Response ---
+        function buildFallbackReply(inputText, data, addressName, lang) {
+            const positive = {
+                en: `${addressName}, it's so nice to hear that! I'm really glad you shared that with me.`,
+                zh: `${addressName}，听到您这样说真好！我很高兴您告诉我。`,
+                ms: `${addressName}, seronok mendengar itu! Saya gembira anda berkongsi dengan saya.`,
+            };
+            const lonely = {
+                en: `${addressName}, I hear you — it can feel very quiet sometimes. You're not alone, I'm always here with you.`,
+                zh: `${addressName}，我听到您了。有时候会感到很孤单，但您并不孤独，我一直在这里陪您。`,
+                ms: `${addressName}, saya faham perasaan anda. Kadang-kadang memang rasa sunyi, tapi anda tidak keseorangan — saya sentiasa ada.`,
+            };
+            const pain = {
+                en: `${addressName}, I'm sorry to hear you're in pain. Please rest and let your family know if it gets worse.`,
+                zh: `${addressName}，听到您不舒服我很担心。请好好休息，如果情况加重请告诉家人。`,
+                ms: `${addressName}, saya sedih dengar anda kesakitan. Sila berehat dan beritahu keluarga jika makin teruk.`,
+            };
+            const neutral = {
+                en: `${addressName}, thank you for sharing that with me. How are you feeling right now?`,
+                zh: `${addressName}，谢谢您告诉我。您现在感觉怎么样？`,
+                ms: `${addressName}, terima kasih kerana berkongsi dengan saya. Bagaimana perasaan anda sekarang?`,
+            };
+            const l = lang || 'en';
+            if (data.sentiment === 'positive') return positive[l] || positive.en;
+            if (data.concerns?.includes('loneliness')) return lonely[l] || lonely.en;
+            if (data.concerns?.includes('physical_pain')) return pain[l] || pain.en;
+            return neutral[l] || neutral.en;
+        }
+
         async function generateAIResponse(inputText, data, lang) {
             const concernsList = data.concerns.length
                 ? data.concerns.map(c => c.replace(/_/g, ' ')).join(', ')
@@ -1198,11 +1226,16 @@ ${langInstruction} Write a warm, caring reply (2-3 sentences) directly to ${addr
                         }),
                     }
                 );
-                if (!res.ok) return null;
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({}));
+                    console.warn('Gemini error', res.status, err?.error?.message);
+                    return buildFallbackReply(inputText, data, addressName, lang);
+                }
                 const result = await res.json();
-                return result.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
-            } catch (_) {
-                return null;
+                return result.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || buildFallbackReply(inputText, data, addressName, lang);
+            } catch (e) {
+                console.warn('Gemini fetch failed:', e);
+                return buildFallbackReply(inputText, data, addressName, lang);
             }
         }
 
@@ -1223,7 +1256,7 @@ ${langInstruction} Write a warm, caring reply (2-3 sentences) directly to ${addr
                 if (!response.ok) throw new Error(`Server error: ${response.status}`);
                 const data = await response.json();
                 const aiReply = await generateAIResponse(text, data, appLang);
-                if (aiReply) data.suggested_response = aiReply;
+                data.suggested_response = aiReply || data.suggested_response;
                 showBackendResponse(text, data);
 
             } catch (err) {
