@@ -75,7 +75,7 @@ const FRONTEND_CONFIG = {
 };
 ```
 
-> `config.js` is gitignored and will never be committed. Get a free key at [aistudio.google.com](https://aistudio.google.com) — or ask the team lead for the shared key.
+> `config.js` is gitignored and will never be committed.
 
 ### 4. Start the server
 
