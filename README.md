@@ -13,9 +13,11 @@ A voice-first web app that lets seniors speak naturally in English, Mandarin, or
 - **Voice input** — tap the mic, speak naturally in English, Mandarin, or Malay
 - **AI companion** — Gemini 2.5 Flash generates warm, personalised responses
 - **Voice output** — the app speaks back using browser TTS (Google voices)
+- **Personalised memory** — AI remembers the last 5 conversations per user and references them naturally
+- **Respectful addressing** — addresses seniors as Uncle/Auntie, 伯伯/阿姨, or Pakcik/Makcik based on gender and language
+- **User profiles** — name, gender, health conditions, family contact, preferred language — all stored per user
 - **Welfare detection** — keyword-based analysis flags loneliness, pain, food insecurity, depression
 - **Caregiver alerts** — red-risk interactions trigger automatic WhatsApp alerts to family
-- **User accounts** — login/register with linked WhatsApp contact
 - **Language switcher** — switch language at any time from any screen
 - **Welfare reports** — Markdown reports generated per senior
 
@@ -73,7 +75,7 @@ const FRONTEND_CONFIG = {
 };
 ```
 
-> `config.js` is gitignored and will never be committed.
+> `config.js` is gitignored and will never be committed. Get a free key at [aistudio.google.com](https://aistudio.google.com) — or ask the team lead for the shared key.
 
 ### 4. Start the server
 
@@ -94,6 +96,22 @@ The app will be live at **http://localhost:8000**
 | Malay (Bahasa Melayu) | Google Bahasa Indonesia |
 
 Dialect input (Singlish, Hokkien, Teochew, etc.) is understood by the backend keyword engine.
+
+---
+
+## Personalisation & Memory
+
+Each user has their own profile and conversation history stored in SQLite, scoped by their unique user ID.
+
+| Profile Field | Description |
+|---|---|
+| Name | Used to address the senior directly |
+| Gender | Determines honorific (Uncle/Auntie, 伯伯/阿姨, Pakcik/Makcik) |
+| Health conditions | e.g. "Diabetic, knee pain" — included in every AI prompt |
+| Preferred language | Saved on login, used for voice and AI response language |
+| Family contact | WhatsApp number for caregiver alerts |
+
+The AI is given the senior's profile and their last 5 conversations on every interaction, so it can say things like *"Uncle Ahmad, you mentioned your knee was hurting yesterday — how is it feeling today?"*
 
 ---
 
