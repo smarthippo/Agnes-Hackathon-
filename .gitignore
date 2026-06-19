@@ -60,3 +60,7 @@ data/
 # Environment variables
 .env
 !.env.example
+
+# Frontend secrets
+config.js
+!config.example.js

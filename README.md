@@ -23,9 +23,10 @@ KampungKonekt Backend
 
 ### 1. Install Dependencies
 
+From the repo root:
+
 ```bash
-cd backend
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 ```
 
 ### 2. Configure Environment
@@ -38,10 +39,23 @@ SENIOR_ID=senior_001
 SENIOR_NAME=Grandma Lim
 ```
 
-### 3. Run the Demo
+### 3. Start the Server
+
+From the repo root:
+
+```bash
+python backend/server.py
+```
+
+The app will be live at **http://localhost:8000**
+
+The server auto-reloads when you save any backend file — no restart needed.
+
+### 4. Run the Demo (optional)
 
 ```bash
 # Simulate a week of declining interactions
+cd backend
 python main.py --simulate
 
 # Process a single voice input

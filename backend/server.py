@@ -124,6 +124,11 @@ class CallFamilyResponse(BaseModel):
     whatsapp_url: str
 
 
+class TTSRequest(BaseModel):
+    text: str
+    language: str = "en"  # "en", "zh", or "ms"
+
+
 class LoginRequest(BaseModel):
     name: str
 
@@ -338,7 +343,7 @@ def call_family(req: CallFamilyRequest):
         )
 
     # Build wa.me link — Singapore numbers: prepend 65
-    phone = contact.lstrip("+").lstrip("0")
+    phone = contact.replace(" ", "").replace("-", "").lstrip("+").lstrip("0")
     if not phone.startswith("65"):
         phone = "65" + phone
 
@@ -354,10 +359,33 @@ def call_family(req: CallFamilyRequest):
 
 
 # ---------------------------------------------------------------------------
+# Text-to-Speech
+# ---------------------------------------------------------------------------
+
+@app.post("/api/tts")
+def text_to_speech(req: TTSRequest):
+    """Convert text to speech audio using gTTS. Returns MP3 audio bytes."""
+    from gtts import gTTS
+    import io
+    from fastapi.responses import StreamingResponse
+
+    lang_map = {"en": "en", "zh": "zh-CN", "ms": "ms"}
+    gtts_lang = lang_map.get(req.language, "en")
+
+    tts = gTTS(text=req.text, lang=gtts_lang, slow=False)
+    audio_buffer = io.BytesIO()
+    tts.write_to_fp(audio_buffer)
+    audio_buffer.seek(0)
+
+    return StreamingResponse(audio_buffer, media_type="audio/mpeg")
+
+
+# ---------------------------------------------------------------------------
 # Serve frontend
 # ---------------------------------------------------------------------------
 
 _FRONTEND = _BACKEND_DIR.parent / "index.html"
+_CONFIG_JS = _BACKEND_DIR.parent / "config.js"
 _MUSIC_DIR = _BACKEND_DIR.parent / "music"
 
 # Serve music files as static
@@ -369,3 +397,16 @@ def serve_frontend():
     if _FRONTEND.exists():
         return FileResponse(str(_FRONTEND))
     raise HTTPException(status_code=404, detail="Frontend not found")
+
+@app.get("/config.js")
+def serve_config():
+    if _CONFIG_JS.exists():
+        return FileResponse(str(_CONFIG_JS), media_type="application/javascript")
+    # Return empty config if file doesn't exist
+    from fastapi.responses import Response
+    return Response(content="const FRONTEND_CONFIG = {};", media_type="application/javascript")
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True)
