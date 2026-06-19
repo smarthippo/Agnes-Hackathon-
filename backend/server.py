@@ -104,12 +104,16 @@ class UserCreate(BaseModel):
     name: str
     contact_name: str
     contact_number: str
+    language: str = "en"
+    health_notes: str = ""
 
 
 class UserUpdate(BaseModel):
     name: str
     contact_name: str
     contact_number: str
+    language: str = "en"
+    health_notes: str = ""
 
 
 class CallFamilyRequest(BaseModel):
@@ -131,6 +135,7 @@ class TTSRequest(BaseModel):
 
 class LoginRequest(BaseModel):
     name: str
+    language: Optional[str] = None
 
 
 class LoginResponse(BaseModel):
@@ -138,6 +143,8 @@ class LoginResponse(BaseModel):
     name: str
     contact_name: str
     contact_number: str
+    language: str
+    health_notes: str
     created_at: str
 
 
@@ -253,11 +260,20 @@ def get_default_status():
 
 @app.post("/api/login", response_model=LoginResponse)
 def login(req: LoginRequest):
-    """Look up a user by name. Returns profile if found, 404 if not registered."""
+    """Look up a user by name. Saves language preference if provided. Returns profile."""
     user = _storage.get_user(req.name.strip())
     if not user:
         raise HTTPException(status_code=404, detail="No profile found. Please register first.")
+    if req.language:
+        _storage.save_user_language(req.name.strip(), req.language)
+        user["language"] = req.language
     return user
+
+
+@app.get("/api/history/{user_name}")
+def get_user_history(user_name: str):
+    """Return the last 5 interactions for the user, formatted for Gemini context."""
+    return {"history": _storage.get_user_history_for_ai(settings.SENIOR_ID, last_n=5)}
 
 
 # ---------------------------------------------------------------------------
@@ -272,7 +288,10 @@ def list_users():
 @app.post("/users", status_code=201)
 def create_user(body: UserCreate):
     try:
-        user = _storage.create_user(body.name.strip(), body.contact_name.strip(), body.contact_number.strip())
+        user = _storage.create_user(
+            body.name.strip(), body.contact_name.strip(), body.contact_number.strip(),
+            body.language, body.health_notes.strip(),
+        )
     except ValueError as e:
         raise HTTPException(status_code=409, detail=str(e))
     return user
@@ -289,7 +308,10 @@ def get_user(name: str):
 @app.put("/users/{name}")
 def update_user(name: str, body: UserUpdate):
     try:
-        user = _storage.update_user(name, body.name.strip(), body.contact_name.strip(), body.contact_number.strip())
+        user = _storage.update_user(
+            name, body.name.strip(), body.contact_name.strip(), body.contact_number.strip(),
+            body.language, body.health_notes.strip(),
+        )
     except ValueError as e:
         raise HTTPException(status_code=409, detail=str(e))
     if not user:

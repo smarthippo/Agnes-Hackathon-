@@ -244,6 +244,7 @@
             <input id="regName" type="text" placeholder="Your name" class="w-full px-6 py-5 rounded-2xl border-4 border-kampung-green text-2xl font-bold text-kampung-dark mb-4 outline-none focus:border-kampung-orange bg-white" style="-webkit-user-select:text;user-select:text;" />
             <input id="regContactName" type="text" placeholder="Family contact name" class="w-full px-6 py-5 rounded-2xl border-4 border-kampung-green text-2xl font-bold text-kampung-dark mb-4 outline-none focus:border-kampung-orange bg-white" style="-webkit-user-select:text;user-select:text;" />
             <input id="regContactNumber" type="tel" placeholder="Contact number (e.g. 91234567)" class="w-full px-6 py-5 rounded-2xl border-4 border-kampung-green text-2xl font-bold text-kampung-dark mb-4 outline-none focus:border-kampung-orange bg-white" style="-webkit-user-select:text;user-select:text;" />
+            <input id="regHealthNotes" type="text" placeholder="Any health conditions? (optional)" class="w-full px-6 py-5 rounded-2xl border-4 border-gray-300 text-xl font-bold text-kampung-dark mb-4 outline-none focus:border-kampung-blue bg-white" style="-webkit-user-select:text;user-select:text;" />
             <p id="regError" class="text-red-500 text-lg font-bold text-center mb-3 hidden"></p>
             <button onclick="handleRegister()" class="interactive w-full py-5 bg-kampung-orange text-white rounded-2xl text-2xl font-black button-shadow mb-4" id="regBtn">Register</button>
             <button onclick="showLogin()" class="interactive w-full py-5 bg-kampung-green text-white rounded-2xl text-2xl font-black button-shadow" id="backBtn">Back</button>
@@ -578,6 +579,7 @@
 
         // --- Logged-in user ---
         let currentUser = null;
+        let userHistory = [];
 
         // Auth screen text per language
         const AUTH_TEXT = {
@@ -589,6 +591,7 @@
                 namePlaceholder: "Your name",
                 contactNamePlaceholder: "Family contact name",
                 contactNumPlaceholder: "Contact number (e.g. 91234567)",
+                healthNotesPlaceholder: "Any health conditions? (optional)",
                 register: "Register",
                 back: "Back",
                 notFound: "Name not found. Please register first.",
@@ -603,6 +606,7 @@
                 namePlaceholder: "您的姓名",
                 contactNamePlaceholder: "家人联系人姓名",
                 contactNumPlaceholder: "联系电话（如 91234567）",
+                healthNotesPlaceholder: "有什么健康状况吗？（选填）",
                 register: "注册",
                 back: "返回",
                 notFound: "找不到此姓名，请先注册。",
@@ -617,6 +621,7 @@
                 namePlaceholder: "Nama anda",
                 contactNamePlaceholder: "Nama kenalan keluarga",
                 contactNumPlaceholder: "Nombor telefon (cth. 91234567)",
+                healthNotesPlaceholder: "Ada masalah kesihatan? (pilihan)",
                 register: "Daftar",
                 back: "Kembali",
                 notFound: "Nama tidak dijumpai. Sila daftar dahulu.",
@@ -633,9 +638,20 @@
             showAuthScreen(lang);
         }
 
+        async function loadUserHistory(userName) {
+            try {
+                const res = await fetch(`${API_BASE}/api/history/${encodeURIComponent(userName)}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    userHistory = data.history || [];
+                }
+            } catch (_) { userHistory = []; }
+        }
+
         function resetToLanguagePicker() {
             stopSpeaking();
             currentUser = null;
+            userHistory = [];
             appLang = 'en';
             // Hide auth screen
             document.getElementById('authScreen').style.setProperty('display', 'none', 'important');
@@ -665,6 +681,7 @@
             document.getElementById('regName').placeholder = t.namePlaceholder;
             document.getElementById('regContactName').placeholder = t.contactNamePlaceholder;
             document.getElementById('regContactNumber').placeholder = t.contactNumPlaceholder;
+            document.getElementById('regHealthNotes').placeholder = t.healthNotesPlaceholder;
             document.getElementById('regBtn').textContent = t.register;
             document.getElementById('backBtn').textContent = t.back;
         }
@@ -691,10 +708,11 @@
                 const res = await fetch(`${API_BASE}/api/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name }),
+                    body: JSON.stringify({ name, language: appLang }),
                 });
                 if (res.ok) {
                     currentUser = await res.json();
+                    await loadUserHistory(name);
                     document.getElementById('authScreen').style.setProperty('display', 'none', 'important');
                 } else {
                     errEl.textContent = t.notFound;
@@ -710,6 +728,7 @@
             const name = document.getElementById('regName').value.trim();
             const contactName = document.getElementById('regContactName').value.trim();
             const contactNumber = document.getElementById('regContactNumber').value.trim();
+            const healthNotes = document.getElementById('regHealthNotes').value.trim();
             const t = AUTH_TEXT[appLang];
             const errEl = document.getElementById('regError');
 
@@ -721,10 +740,11 @@
                 const res = await fetch(`${API_BASE}/users`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, contact_name: contactName, contact_number: contactNumber }),
+                    body: JSON.stringify({ name, contact_name: contactName, contact_number: contactNumber, language: appLang, health_notes: healthNotes }),
                 });
                 if (res.status === 201) {
                     currentUser = await res.json();
+                    userHistory = [];
                     document.getElementById('authScreen').style.setProperty('display', 'none', 'important');
                 } else if (res.status === 409) {
                     errEl.textContent = t.alreadyExists; errEl.classList.remove('hidden');
@@ -1083,16 +1103,30 @@
                 ? `Actions already taken by KampungKonekt: ${actionsTaken.join('; ')}.`
                 : 'No alerts triggered.';
 
+            const userName = currentUser?.name || 'the senior';
+            const healthNotes = currentUser?.health_notes ? `Known health conditions: ${currentUser.health_notes}.` : '';
+            const historyText = userHistory.length
+                ? 'Recent conversation history:\n' + userHistory.map(h =>
+                    `- ${h.date}: Said "${h.said}" (feeling: ${h.sentiment}${h.concerns.length ? ', concerns: ' + h.concerns.join(', ') : ''})`
+                  ).join('\n')
+                : 'No previous conversations on record.';
+
             const prompt = `You are KampungKonekt, a warm AI companion for elderly Singaporean seniors in Singapore.
 
-A senior just said: "${inputText}"
+Senior's name: ${userName}
+${healthNotes}
+${historyText}
+
+${userName} just said: "${inputText}"
 Sentiment detected: ${data.sentiment}
 Welfare concerns: ${concernsList}
 Risk level: ${data.risk_level}
 ${actionsText}
 
-${langInstruction} Write a warm, caring reply (2-3 sentences) directly to the senior.
+${langInstruction} Write a warm, caring reply (2-3 sentences) directly to ${userName}.
+- Address them by name at least once
 - Acknowledge specifically what they said
+- If you know their history, reference it naturally (e.g. "You mentioned yesterday that...")
 - If actions were taken, reassure them naturally (e.g. "I've already let your family know", "help is on the way")
 - Sound like a caring friend, not a robot or a doctor
 - Use simple words suitable for an elderly person

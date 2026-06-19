@@ -54,6 +54,8 @@ CREATE TABLE IF NOT EXISTS users (
     name TEXT NOT NULL UNIQUE,
     contact_name TEXT NOT NULL,
     contact_number TEXT NOT NULL,
+    language TEXT NOT NULL DEFAULT 'en',
+    health_notes TEXT NOT NULL DEFAULT '',
     created_at TEXT NOT NULL
 );
 """
@@ -84,6 +86,13 @@ class MemoryStorage:
         self._conn.execute("PRAGMA journal_mode=WAL;")
         self._conn.executescript(_CREATE_TABLES_SQL)
         self._conn.commit()
+        # Migrate existing users table to add new columns if absent
+        for col, default in [("language", "'en'"), ("health_notes", "''")]:
+            try:
+                self._conn.execute(f"ALTER TABLE users ADD COLUMN {col} TEXT NOT NULL DEFAULT {default}")
+                self._conn.commit()
+            except sqlite3.OperationalError:
+                pass  # Column already exists
         logger.info("Memory storage initialized at %s", self._db_path)
 
     # ------------------------------------------------------------------
@@ -481,12 +490,13 @@ class MemoryStorage:
     # User CRUD
     # ------------------------------------------------------------------
 
-    def create_user(self, name: str, contact_name: str, contact_number: str) -> dict:
+    def create_user(self, name: str, contact_name: str, contact_number: str,
+                    language: str = "en", health_notes: str = "") -> dict:
         """Create a new user. Raises ValueError if name already exists."""
         try:
             self._conn.execute(
-                "INSERT INTO users (name, contact_name, contact_number, created_at) VALUES (?, ?, ?, ?)",
-                (name, contact_name, contact_number, datetime.now().isoformat()),
+                "INSERT INTO users (name, contact_name, contact_number, language, health_notes, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+                (name, contact_name, contact_number, language, health_notes, datetime.now().isoformat()),
             )
             self._conn.commit()
         except sqlite3.IntegrityError:
@@ -496,34 +506,58 @@ class MemoryStorage:
     def get_all_users(self) -> list[dict]:
         """Fetch all users ordered by creation date."""
         rows = self._conn.execute(
-            "SELECT id, name, contact_name, contact_number, created_at FROM users ORDER BY created_at DESC"
+            "SELECT id, name, contact_name, contact_number, language, health_notes, created_at FROM users ORDER BY created_at DESC"
         ).fetchall()
-        return [{"id": r[0], "name": r[1], "contact_name": r[2], "contact_number": r[3], "created_at": r[4]} for r in rows]
+        return [{"id": r[0], "name": r[1], "contact_name": r[2], "contact_number": r[3],
+                 "language": r[4], "health_notes": r[5], "created_at": r[6]} for r in rows]
 
     def get_user(self, name: str) -> Optional[dict]:
         """Fetch a user by name. Returns None if not found."""
         row = self._conn.execute(
-            "SELECT id, name, contact_name, contact_number, created_at FROM users WHERE name = ? COLLATE NOCASE",
+            "SELECT id, name, contact_name, contact_number, language, health_notes, created_at FROM users WHERE name = ? COLLATE NOCASE",
             (name,),
         ).fetchone()
         if not row:
             return None
-        return {"id": row[0], "name": row[1], "contact_name": row[2], "contact_number": row[3], "created_at": row[4]}
+        return {"id": row[0], "name": row[1], "contact_name": row[2], "contact_number": row[3],
+                "language": row[4], "health_notes": row[5], "created_at": row[6]}
 
-    def update_user(self, current_name: str, name: str, contact_name: str, contact_number: str) -> Optional[dict]:
+    def update_user(self, current_name: str, name: str, contact_name: str, contact_number: str,
+                    language: str = "en", health_notes: str = "") -> Optional[dict]:
         """Update a user's profile. Returns updated user or None if not found."""
         existing = self.get_user(current_name)
         if not existing:
             return None
         try:
             self._conn.execute(
-                "UPDATE users SET name = ?, contact_name = ?, contact_number = ? WHERE name = ? COLLATE NOCASE",
-                (name, contact_name, contact_number, current_name),
+                "UPDATE users SET name = ?, contact_name = ?, contact_number = ?, language = ?, health_notes = ? WHERE name = ? COLLATE NOCASE",
+                (name, contact_name, contact_number, language, health_notes, current_name),
             )
             self._conn.commit()
         except sqlite3.IntegrityError:
             raise ValueError(f"User '{name}' already exists.")
         return self.get_user(name)
+
+    def save_user_language(self, name: str, language: str) -> None:
+        """Update just the language preference for a user."""
+        self._conn.execute(
+            "UPDATE users SET language = ? WHERE name = ? COLLATE NOCASE",
+            (language, name),
+        )
+        self._conn.commit()
+
+    def get_user_history_for_ai(self, senior_id: str, last_n: int = 5) -> list[dict]:
+        """Return the last N interactions formatted for passing to Gemini."""
+        entries = self.get_entries(senior_id, limit=last_n)
+        result = []
+        for entry in reversed(entries):
+            result.append({
+                "date": entry.timestamp.strftime("%Y-%m-%d"),
+                "said": entry.raw_text,
+                "sentiment": entry.sentiment.value,
+                "concerns": [c.value for c in entry.concerns],
+            })
+        return result
 
     def delete_user(self, name: str) -> bool:
         """Delete a user by name. Returns True if deleted, False if not found."""
