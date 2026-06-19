@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS users (
     contact_number TEXT NOT NULL,
     language TEXT NOT NULL DEFAULT 'en',
     health_notes TEXT NOT NULL DEFAULT '',
+    gender TEXT NOT NULL DEFAULT '',
     created_at TEXT NOT NULL
 );
 """
@@ -87,7 +88,7 @@ class MemoryStorage:
         self._conn.executescript(_CREATE_TABLES_SQL)
         self._conn.commit()
         # Migrate existing users table to add new columns if absent
-        for col, default in [("language", "'en'"), ("health_notes", "''")]:
+        for col, default in [("language", "'en'"), ("health_notes", "''"), ("gender", "''")]:
             try:
                 self._conn.execute(f"ALTER TABLE users ADD COLUMN {col} TEXT NOT NULL DEFAULT {default}")
                 self._conn.commit()
@@ -491,12 +492,12 @@ class MemoryStorage:
     # ------------------------------------------------------------------
 
     def create_user(self, name: str, contact_name: str, contact_number: str,
-                    language: str = "en", health_notes: str = "") -> dict:
+                    language: str = "en", health_notes: str = "", gender: str = "") -> dict:
         """Create a new user. Raises ValueError if name already exists."""
         try:
             self._conn.execute(
-                "INSERT INTO users (name, contact_name, contact_number, language, health_notes, created_at) VALUES (?, ?, ?, ?, ?, ?)",
-                (name, contact_name, contact_number, language, health_notes, datetime.now().isoformat()),
+                "INSERT INTO users (name, contact_name, contact_number, language, health_notes, gender, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (name, contact_name, contact_number, language, health_notes, gender, datetime.now().isoformat()),
             )
             self._conn.commit()
         except sqlite3.IntegrityError:
@@ -506,32 +507,32 @@ class MemoryStorage:
     def get_all_users(self) -> list[dict]:
         """Fetch all users ordered by creation date."""
         rows = self._conn.execute(
-            "SELECT id, name, contact_name, contact_number, language, health_notes, created_at FROM users ORDER BY created_at DESC"
+            "SELECT id, name, contact_name, contact_number, language, health_notes, gender, created_at FROM users ORDER BY created_at DESC"
         ).fetchall()
         return [{"id": r[0], "name": r[1], "contact_name": r[2], "contact_number": r[3],
-                 "language": r[4], "health_notes": r[5], "created_at": r[6]} for r in rows]
+                 "language": r[4], "health_notes": r[5], "gender": r[6], "created_at": r[7]} for r in rows]
 
     def get_user(self, name: str) -> Optional[dict]:
         """Fetch a user by name. Returns None if not found."""
         row = self._conn.execute(
-            "SELECT id, name, contact_name, contact_number, language, health_notes, created_at FROM users WHERE name = ? COLLATE NOCASE",
+            "SELECT id, name, contact_name, contact_number, language, health_notes, gender, created_at FROM users WHERE name = ? COLLATE NOCASE",
             (name,),
         ).fetchone()
         if not row:
             return None
         return {"id": row[0], "name": row[1], "contact_name": row[2], "contact_number": row[3],
-                "language": row[4], "health_notes": row[5], "created_at": row[6]}
+                "language": row[4], "health_notes": row[5], "gender": row[6], "created_at": row[7]}
 
     def update_user(self, current_name: str, name: str, contact_name: str, contact_number: str,
-                    language: str = "en", health_notes: str = "") -> Optional[dict]:
+                    language: str = "en", health_notes: str = "", gender: str = "") -> Optional[dict]:
         """Update a user's profile. Returns updated user or None if not found."""
         existing = self.get_user(current_name)
         if not existing:
             return None
         try:
             self._conn.execute(
-                "UPDATE users SET name = ?, contact_name = ?, contact_number = ?, language = ?, health_notes = ? WHERE name = ? COLLATE NOCASE",
-                (name, contact_name, contact_number, language, health_notes, current_name),
+                "UPDATE users SET name = ?, contact_name = ?, contact_number = ?, language = ?, health_notes = ?, gender = ? WHERE name = ? COLLATE NOCASE",
+                (name, contact_name, contact_number, language, health_notes, gender, current_name),
             )
             self._conn.commit()
         except sqlite3.IntegrityError:

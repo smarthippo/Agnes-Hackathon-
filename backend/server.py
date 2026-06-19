@@ -106,6 +106,7 @@ class UserCreate(BaseModel):
     contact_number: str
     language: str = "en"
     health_notes: str = ""
+    gender: str = ""
 
 
 class UserUpdate(BaseModel):
@@ -114,6 +115,7 @@ class UserUpdate(BaseModel):
     contact_number: str
     language: str = "en"
     health_notes: str = ""
+    gender: str = ""
 
 
 class CallFamilyRequest(BaseModel):
@@ -145,6 +147,7 @@ class LoginResponse(BaseModel):
     contact_number: str
     language: str
     health_notes: str
+    gender: str
     created_at: str
 
 
@@ -290,7 +293,7 @@ def create_user(body: UserCreate):
     try:
         user = _storage.create_user(
             body.name.strip(), body.contact_name.strip(), body.contact_number.strip(),
-            body.language, body.health_notes.strip(),
+            body.language, body.health_notes.strip(), body.gender,
         )
     except ValueError as e:
         raise HTTPException(status_code=409, detail=str(e))
@@ -310,7 +313,7 @@ def update_user(name: str, body: UserUpdate):
     try:
         user = _storage.update_user(
             name, body.name.strip(), body.contact_name.strip(), body.contact_number.strip(),
-            body.language, body.health_notes.strip(),
+            body.language, body.health_notes.strip(), body.gender,
         )
     except ValueError as e:
         raise HTTPException(status_code=409, detail=str(e))

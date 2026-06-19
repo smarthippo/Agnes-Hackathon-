@@ -245,6 +245,16 @@
             <input id="regContactName" type="text" placeholder="Family contact name" class="w-full px-6 py-5 rounded-2xl border-4 border-kampung-green text-2xl font-bold text-kampung-dark mb-4 outline-none focus:border-kampung-orange bg-white" style="-webkit-user-select:text;user-select:text;" />
             <input id="regContactNumber" type="tel" placeholder="Contact number (e.g. 91234567)" class="w-full px-6 py-5 rounded-2xl border-4 border-kampung-green text-2xl font-bold text-kampung-dark mb-4 outline-none focus:border-kampung-orange bg-white" style="-webkit-user-select:text;user-select:text;" />
             <input id="regHealthNotes" type="text" placeholder="Any health conditions? (optional)" class="w-full px-6 py-5 rounded-2xl border-4 border-gray-300 text-xl font-bold text-kampung-dark mb-4 outline-none focus:border-kampung-blue bg-white" style="-webkit-user-select:text;user-select:text;" />
+            <div id="genderPicker" class="flex gap-3 mb-4 w-full">
+                <button type="button" onclick="selectGender('male')" id="genderMale"
+                    class="flex-1 py-4 rounded-2xl border-4 border-gray-300 text-xl font-bold text-kampung-dark bg-white transition-all">
+                    👴 <span id="genderMaleLabel">Male</span>
+                </button>
+                <button type="button" onclick="selectGender('female')" id="genderFemale"
+                    class="flex-1 py-4 rounded-2xl border-4 border-gray-300 text-xl font-bold text-kampung-dark bg-white transition-all">
+                    👵 <span id="genderFemaleLabel">Female</span>
+                </button>
+            </div>
             <p id="regError" class="text-red-500 text-lg font-bold text-center mb-3 hidden"></p>
             <button onclick="handleRegister()" class="interactive w-full py-5 bg-kampung-orange text-white rounded-2xl text-2xl font-black button-shadow mb-4" id="regBtn">Register</button>
             <button onclick="showLogin()" class="interactive w-full py-5 bg-kampung-green text-white rounded-2xl text-2xl font-black button-shadow" id="backBtn">Back</button>
@@ -592,6 +602,8 @@
                 contactNamePlaceholder: "Family contact name",
                 contactNumPlaceholder: "Contact number (e.g. 91234567)",
                 healthNotesPlaceholder: "Any health conditions? (optional)",
+                genderMale: "Male",
+                genderFemale: "Female",
                 register: "Register",
                 back: "Back",
                 notFound: "Name not found. Please register first.",
@@ -607,6 +619,8 @@
                 contactNamePlaceholder: "家人联系人姓名",
                 contactNumPlaceholder: "联系电话（如 91234567）",
                 healthNotesPlaceholder: "有什么健康状况吗？（选填）",
+                genderMale: "男",
+                genderFemale: "女",
                 register: "注册",
                 back: "返回",
                 notFound: "找不到此姓名，请先注册。",
@@ -622,6 +636,8 @@
                 contactNamePlaceholder: "Nama kenalan keluarga",
                 contactNumPlaceholder: "Nombor telefon (cth. 91234567)",
                 healthNotesPlaceholder: "Ada masalah kesihatan? (pilihan)",
+                genderMale: "Lelaki",
+                genderFemale: "Perempuan",
                 register: "Daftar",
                 back: "Kembali",
                 notFound: "Nama tidak dijumpai. Sila daftar dahulu.",
@@ -682,8 +698,25 @@
             document.getElementById('regContactName').placeholder = t.contactNamePlaceholder;
             document.getElementById('regContactNumber').placeholder = t.contactNumPlaceholder;
             document.getElementById('regHealthNotes').placeholder = t.healthNotesPlaceholder;
+            document.getElementById('genderMaleLabel').textContent = t.genderMale;
+            document.getElementById('genderFemaleLabel').textContent = t.genderFemale;
             document.getElementById('regBtn').textContent = t.register;
             document.getElementById('backBtn').textContent = t.back;
+        }
+
+        let selectedGender = '';
+
+        function selectGender(gender) {
+            selectedGender = gender;
+            const male = document.getElementById('genderMale');
+            const female = document.getElementById('genderFemale');
+            male.classList.remove('border-kampung-green', 'bg-kampung-green', 'text-white');
+            female.classList.remove('border-kampung-green', 'bg-kampung-green', 'text-white');
+            male.classList.add('border-gray-300', 'text-kampung-dark', 'bg-white');
+            female.classList.add('border-gray-300', 'text-kampung-dark', 'bg-white');
+            const chosen = gender === 'male' ? male : female;
+            chosen.classList.remove('border-gray-300', 'text-kampung-dark', 'bg-white');
+            chosen.classList.add('border-kampung-green', 'bg-kampung-green', 'text-white');
         }
 
         function showLogin() {
@@ -693,9 +726,16 @@
         }
 
         function showRegister() {
+            selectedGender = '';
             document.getElementById('loginPanel').classList.add('hidden');
             document.getElementById('registerPanel').classList.remove('hidden');
             document.getElementById('regError').classList.add('hidden');
+            // Reset gender buttons
+            ['genderMale','genderFemale'].forEach(id => {
+                const btn = document.getElementById(id);
+                btn.classList.remove('border-kampung-green','bg-kampung-green','text-white');
+                btn.classList.add('border-gray-300','text-kampung-dark','bg-white');
+            });
         }
 
         async function handleLogin() {
@@ -740,7 +780,7 @@
                 const res = await fetch(`${API_BASE}/users`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, contact_name: contactName, contact_number: contactNumber, language: appLang, health_notes: healthNotes }),
+                    body: JSON.stringify({ name, contact_name: contactName, contact_number: contactNumber, language: appLang, health_notes: healthNotes, gender: selectedGender }),
                 });
                 if (res.status === 201) {
                     currentUser = await res.json();
@@ -1104,6 +1144,18 @@
                 : 'No alerts triggered.';
 
             const userName = currentUser?.name || 'the senior';
+            const gender = currentUser?.gender || '';
+            const honorifics = {
+                en:  { male: 'Uncle', female: 'Auntie' },
+                zh:  { male: '伯伯', female: '阿姨' },
+                ms:  { male: 'Pakcik', female: 'Makcik' },
+            };
+            const h = honorifics[lang] || honorifics.en;
+            const addressName = gender === 'male'
+                ? `${h.male} ${userName}`
+                : gender === 'female'
+                ? `${h.female} ${userName}`
+                : userName;
             const healthNotes = currentUser?.health_notes ? `Known health conditions: ${currentUser.health_notes}.` : '';
             const historyText = userHistory.length
                 ? 'Recent conversation history:\n' + userHistory.map(h =>
@@ -1114,17 +1166,18 @@
             const prompt = `You are KampungKonekt, a warm AI companion for elderly Singaporean seniors in Singapore.
 
 Senior's name: ${userName}
+Address them as: ${addressName}
 ${healthNotes}
 ${historyText}
 
-${userName} just said: "${inputText}"
+${addressName} just said: "${inputText}"
 Sentiment detected: ${data.sentiment}
 Welfare concerns: ${concernsList}
 Risk level: ${data.risk_level}
 ${actionsText}
 
-${langInstruction} Write a warm, caring reply (2-3 sentences) directly to ${userName}.
-- Address them by name at least once
+${langInstruction} Write a warm, caring reply (2-3 sentences) directly to ${addressName}.
+- Address them as "${addressName}" at least once
 - Acknowledge specifically what they said
 - If you know their history, reference it naturally (e.g. "You mentioned yesterday that...")
 - If actions were taken, reassure them naturally (e.g. "I've already let your family know", "help is on the way")
