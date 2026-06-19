@@ -270,10 +270,10 @@ def login(req: LoginRequest):
     return user
 
 
-@app.get("/api/history/{user_name}")
-def get_user_history(user_name: str):
-    """Return the last 5 interactions for the user, formatted for Gemini context."""
-    return {"history": _storage.get_user_history_for_ai(settings.SENIOR_ID, last_n=5)}
+@app.get("/api/history/{senior_id}")
+def get_user_history(senior_id: str):
+    """Return the last 5 interactions for a senior, formatted for Gemini context."""
+    return {"history": _storage.get_user_history_for_ai(senior_id, last_n=5)}
 
 
 # ---------------------------------------------------------------------------
